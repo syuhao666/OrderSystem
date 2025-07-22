@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>簡約家居 - 品質生活</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft JhengHei', sans-serif;
+        }
+        body {
+            line-height: 1.6;
+            color: #333;
+        }
+        header {
+            background: #f8f8f8;
+            padding: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #5c3c11;
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        nav ul li {
+            margin-left: 20px;
+        }
+        nav a {
+            text-decoration: none;
+            color: #333;
+        }
+        .hero {
+            background: url('https://placehold.co/1200x500') center/cover;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        .hero-content {
+            background: rgba(0,0,0,0.5);
+            padding: 30px;
+            width: 100%;
+        }
+        .btn {
+            display: inline-block;
+            background: #5c3c11;
+            color: white;
+            padding: 10px 20px;
+            margin-top: 20px;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+        section {
+            padding: 40px 0;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        .product {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .product img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+        .product h3 {
+            margin-bottom: 10px;
+        }
+        .price {
+            color: #5c3c11;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+            }
+            nav ul {
+                margin-top: 15px;
+            }
+            nav ul li {
+                margin: 0 10px;
+            }
+            .hero {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">簡約家居</div>
+                <ul>
+                    <li><a href="#home">首頁</a></li>
+                    <li><a href="#products">商品</a></li>
+                    <li><a href="#about">關於我們</a></li>
+                    <li><a href="#contact">聯繫我們</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>打造您的理想家居</h1>
+                <p>提供高品質、簡約風格的家具，為您創造舒適的生活空間</p>
+                <a href="#products" class="btn">查看商品</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="products">
+        <div class="container">
+            <h2>熱門商品</h2>
+            <div class="products">
+                <div class="product">
+                    <img src="https://placehold.co/300x200" alt="北歐簡約沙發" />
+                    <h3>北歐簡約沙發</h3>
+                    <p>舒適的布料，簡潔的線條設計</p>
+                    <div class="price">NT$12,800</div>
+                    <a href="#" class="btn">加入購物車</a>
+                </div>
+                <div class="product">
+                    <img src="https://placehold.co/300x200" alt="原木餐桌" />
+                    <h3>原木餐桌</h3>
+                    <p>天然木材，環保無毒塗料</p>
+                    <div class="price">NT$8,500</div>
+                    <a href="#" class="btn">加入購物車</a>
+                </div>
+                <div class="product">
+                    <img src="https://placehold.co/300x200" alt="現代書架" />
+                    <h3>現代書架</h3>
+                    <p>多層設計，完美收納</p>
+                    <div class="price">NT$5,200</div>
+                    <a href="#" class="btn">加入購物車</a>
+                </div>
+                <div class="product">
+                    <img src="https://placehold.co/300x200" alt="舒適單人椅" />
+                    <h3>舒適單人椅</h3>
+                    <p>人體工學設計，完美支撐</p>
+                    <div class="price">NT$4,800</div>
+                    <a href="#" class="btn">加入購物車</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="container">
+            <h2>關於我們</h2>
+            <p style="text-align: center; max-width: 800px; margin: 0 auto;">
+                簡約家居成立於2010年，致力於為客戶提供高品質、簡約風格的家具。
+                我們重視環保與永續發展，所有產品均採用環保材料製作，讓您在享受舒適生活的同時也能愛護地球。
+            </p>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <h2>聯繫我們</h2>
+            <div class="contact-info">
+                <div>
+                    <h3>地址</h3>
+                    <p>台北市信義區松仁路123號</p>
+                </div>
+                <div>
+                    <h3>電話</h3>
+                    <p>02-1234-5678</p>
+                </div>
+                <div>
+                    <h3>營業時間</h3>
+                    <p>周一至周日 10:00-21:00</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 簡約家居 版權所有</p>
+        </div>
+    </footer>
+</body>
+</html>
