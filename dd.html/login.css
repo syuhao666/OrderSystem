@@ -1,0 +1,131 @@
+/* 通用設定 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Microsoft JhengHei', sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    /* 最小高度為視窗高度 */
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f9f9;
+}
+
+/* 容器設計 */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* 導覽列樣式 */
+header {
+    background: #f8f8f8;
+    padding: 20px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #5c3c11;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+}
+
+nav ul li {
+    margin-left: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #333;
+}
+
+/* 按鈕樣式 */
+.btn {
+    display: inline-block;
+    background: #5c3c11;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* icon 圖示 */
+.icon-cart {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+/* section 區塊 */
+section {
+    padding: 40px 0;
+}
+
+/* 標題 */
+h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+/* 頁尾 */
+footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
+}
+
+.wrapper {
+    flex: 1;
+    /* 撐開剩餘空間，將 footer 推到底部 */
+}
+
+/* RWD 響應式 */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+    }
+
+    nav ul {
+        margin-top: 15px;
+    }
+
+    nav ul li {
+        margin: 0 10px;
+    }
+}
+
+.icon-cart2 {
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+    /* 讓圖片跟文字垂直置中對齊 */
+}
+
+.xa {
+
+    list-style: none;
+
+}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登入與購物車</title>
+    <link rel="stylesheet" href="./login.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <!-- Header 導覽列 -->
+        <header>
+            <div class="container">
+                <nav>
+                    <div class="logo">簡約家居</div>
+                    <ul>
+                    <li><a href="#home">首頁</a></li>
+                    <li><a href="#products">商品</a></li>
+                    <li><a href="#about">關於我們</a></li>
+                    <li><a href="#contact">聯繫我們</a></li>
+                </ul>
+                <ul class="right">
+                    <li><a href="#contact"><img src="./img/shopping.svg" alt="購物車圖示" class="icon-cart"></a></li>
+                    <li><a href="#contact"><img src="./img/login.svg" class="icon-cart"></a></li>
+                </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!-- 登入表單區塊 -->
+        <section>
+            <div class="container">
+                <h2>會員登入</h2>
+                <form action="/login" method="post" style="max-width: 400px; margin: auto;">
+                    <label for="email">電子郵件：</label><br>
+                    <input type="email" id="email" name="email" required
+                        style="width: 100%; padding: 10px; margin-bottom: 15px;"><br>
+
+                    <label for="password">密碼：</label><br>
+                    <input type="password" id="password" name="password" required
+                        style="width: 100%; padding: 10px; margin-bottom: 20px;"><br>
+
+                    <button type="submit" class="btn">登入</button>
+                </form>
+            </div>
+        </section>
+    </div>
+    <!-- Footer 頁尾 -->
+    <footer>
+        <section id="about">
+            <div class="container">
+                <h2>關於我們</h2>
+                <p style="text-align: center; max-width: 800px; margin: 0 auto;">
+                    簡約家居成立於2010年，致力於為客戶提供高品質、簡約風格的家具。
+                    我們重視環保與永續發展，所有產品均採用環保材料製作，讓您在享受舒適生活的同時也能愛護地球。
+                </p>
+                <ul>
+                    <h2>聯繫我們</h2>
+                    <li class="xa">地址 : 台北市信義區松仁路123號</li>
+                    <li class="xa">電話 : 02-1234-5678</li>
+                  
+                </ul>
+                <div>
+                    <a href>
+                        <img src="./IG.png" alt="IG" class="icon-cart2">
+                    </a>
+                    <a href>
+                        <img src="./FB.png" alt="Facebook" class="icon-cart2">
+                    </a>
+                    <a href>
+                        <img src="./LINE.png" alt="LINE" class="icon-cart2">
+                    </a>
+                </div>
+            </div>
+        </section>
+        <p>&copy; 2025 簡約家居 版權所有</p>
+    </footer>
+</body>
+
+</html>
