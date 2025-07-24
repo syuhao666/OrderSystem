@@ -25,6 +25,11 @@ body {
 
 /* 導覽列樣式 */
 header {
+    position: fixed;           /* 固定定位，會脫離正常文流，位置由 top/left 控制 */
+    top: 0;                    /* 距離瀏覽器上方 0px，即貼齊最上方 */
+    left: 0;                   /* 距離左側 0px，貼齊左側 */
+    width: 100%;
+    
     background: #f8f8f8;
     padding: 20px 0;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);

@@ -16,10 +16,16 @@ body {
     /* 行高設為 1.6 倍字高，讓文字較易閱讀 */
     color: #333;
     /* 深灰色文字 */
+    padding-top: 80px;
 }
 
 /* 頁首區塊樣式 */
 header {
+    position: fixed;           /* 固定定位，會脫離正常文流，位置由 top/left 控制 */
+    top: 0;                    /* 距離瀏覽器上方 0px，即貼齊最上方 */
+    left: 0;                   /* 距離左側 0px，貼齊左側 */
+    width: 100%;  
+     
     background: #f8f8f8;
     /* 淺灰色背景 */
     padding: 20px 0;
