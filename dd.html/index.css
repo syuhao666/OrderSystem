@@ -12,10 +12,12 @@
 
 /* 設定 body 的文字行距與顏色 */
 body {
+    
     line-height: 1.6;
     /* 行高設為 1.6 倍字高，讓文字較易閱讀 */
     color: #333;
     /* 深灰色文字 */
+    background-color: #f9f9f9;
     padding-top: 80px;
 }
 
@@ -40,7 +42,7 @@ header {
     /* 寬度為視窗的 90% */
     max-width: 1200px;
     /* 最大寬度不超過 1200px */
-    margin: 0 auto;
+    margin: auto;
     /* 左右自動置中 */
 }
 
@@ -72,11 +74,6 @@ nav ul {
     /* 移除項目前的點點 */
 }
 
-/* 額外類別 .right 設定導覽列往右對齊 */
-.right {
-    justify-content: flex-end;
-    /* 向右靠齊（用在 Flex 容器內） */
-}
 
 /* 清單項目的間距 */
 nav ul li {
@@ -94,7 +91,7 @@ nav a {
 
 /* 首頁上方的大圖區塊（Hero Banner） */
 .hero {
-    background: url('https://placehold.co/1200x500') center/cover;
+    background: url('https://placehold.co/100x500') center/cover;
     /* 設定背景圖置中並填滿 */
     height: 400px;
     /* 區塊高度 */

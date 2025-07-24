@@ -9,7 +9,7 @@
 body {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    min-height: 1100vh;
     /* 最小高度為視窗高度 */
     line-height: 1.6;
     color: #333;
@@ -21,7 +21,7 @@ body {
 .container {
     width: 90%;
     max-width: 1200px;
-    margin: 0 auto;
+    margin:  auto;
 }
 
 /* 導覽列樣式 */
@@ -79,7 +79,7 @@ nav a {
     width: 24px;
     height: 24px;
     vertical-align: middle;
-    margin-left: 5px;
+    
 }
 
 /* section 區塊 */
@@ -103,10 +103,7 @@ footer {
     margin-top: 40px;
 }
 
-.wrapper {
-    flex: 1;
-    /* 撐開剩餘空間，將 footer 推到底部 */
-}
+
 
 /* RWD 響應式 */
 @media (max-width: 768px) {
@@ -121,8 +118,20 @@ footer {
     nav ul li {
         margin: 0 10px;
     }
+     .hero {
+        height: 300px;
+        /* Hero 區高度縮小 */
+    }
 }
 
+.icon-cart {
+    width: 24px;
+    /* 圖示寬度 */
+    height: 24px;
+    /* 圖示高度 */
+    vertical-align: middle;
+    /* 與文字垂直置中對齊 */
+}
 .icon-cart2 {
     width: 30px;
     height: 30px;
