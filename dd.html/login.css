@@ -9,7 +9,7 @@
 body {
     display: flex;
     flex-direction: column;
-    min-height: 1100vh;
+    min-height: 100vh;
     /* 最小高度為視窗高度 */
     line-height: 1.6;
     color: #333;
@@ -21,7 +21,7 @@ body {
 .container {
     width: 90%;
     max-width: 1200px;
-    margin:  auto;
+    margin:  0 auto;
 }
 
 /* 導覽列樣式 */

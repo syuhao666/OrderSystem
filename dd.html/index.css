@@ -42,7 +42,7 @@ header {
     /* 寬度為視窗的 90% */
     max-width: 1200px;
     /* 最大寬度不超過 1200px */
-    margin: auto;
+    margin: 0 auto;
     /* 左右自動置中 */
 }
 
