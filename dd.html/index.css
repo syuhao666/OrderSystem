@@ -91,7 +91,7 @@ nav a {
 
 /* 首頁上方的大圖區塊（Hero Banner） */
 .hero {
-    background: url('https://placehold.co/100x500') center/cover;
+    background: url('https://placehold.co/1200x500') center/cover;
     /* 設定背景圖置中並填滿 */
     height: 400px;
     /* 區塊高度 */
