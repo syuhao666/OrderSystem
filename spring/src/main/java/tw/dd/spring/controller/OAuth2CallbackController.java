@@ -73,6 +73,7 @@ public class OAuth2CallbackController {
 
         // return ResponseEntity.ok(userInfo.getBody());   ****用法1
 
+        System.out.println(ResponseEntity.ok(userInfo.getBody()));
 
         session.setAttribute("user", userInfo.getBody());
         return new RedirectView("/");

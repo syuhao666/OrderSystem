@@ -1,5 +1,5 @@
 document.getElementById('google-login-btn').addEventListener('click', function () {
-    const clientId = '1097626042096-kvaim9a40uijmsst8o8cejqm5eufq1qm.apps.googleusercontent.com';
+    const clientId = '${{ secrets.CLIENT_ID }}';// 要填的 client ID
     const redirectUri = 'http://localhost:8080/oauth2/callback';
     const scope = 'openid profile email';
     const authUrl =
