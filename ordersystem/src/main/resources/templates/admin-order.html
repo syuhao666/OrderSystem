@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>訂單管理</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="mb-4">訂單管理</h1>
+    <a href="/admin/orders/add" class="btn btn-success mb-3">新增訂單</a>
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>訂單編號</th>
+            <th>用戶ID</th>
+            <th>總金額</th>
+            <th>狀態</th>
+            <th>建立時間</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Thymeleaf 迴圈顯示訂單 -->
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.id}">1</td>
+            <td th:text="${order.userId}">101</td>
+            <td th:text="${order.totalAmount}">999.99</td>
+            <td th:text="${order.status}">pending</td>
+            <td th:text="${#dates.format(order.createdAt, 'yyyy-MM-dd HH:mm')}">2025-07-31 16:00</td>
+            <td>
+                <a th:href="@{'/admin/orders/' + ${order.id}}" class="btn btn-sm btn-info">詳細</a>
+                <form th:action="@{'/admin/orders/delete/' + ${order.id}}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-sm btn-danger"
+                            onclick="return confirm('確定要刪除嗎？')">刪除</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
