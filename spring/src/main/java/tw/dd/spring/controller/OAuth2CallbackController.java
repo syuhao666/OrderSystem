@@ -8,21 +8,26 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.view.RedirectView;
 
 import jakarta.annotation.PostConstruct;
-import jakarta.servlet.http.HttpSession;
+import tw.dd.spring.entity.Users;
+import tw.dd.spring.repository.UsersRepository;
 
 
-@Controller
-// @RestController ****用法1
+@RestController
 public class OAuth2CallbackController {
+
+    private final UsersRepository usersRepository;
+
+    public OAuth2CallbackController(UsersRepository usersRepository) {
+        this.usersRepository = usersRepository;
+    }
 
     @Value("${spring.security.oauth2.client.registration.google.client-id}")
     private String clientId;
@@ -36,10 +41,7 @@ public class OAuth2CallbackController {
     }
 
     @GetMapping("/oauth2/callback")
-
-    // public ResponseEntity<?> callback(@RequestParam String code)   ****用法1
-
-    public RedirectView callback(@RequestParam String code, HttpSession session) throws Exception {
+    public ResponseEntity<?> callback(@RequestParam String code) throws Exception {
         // 1. 用授權碼換取 access token
         RestTemplate restTemplate = new RestTemplate();
 
@@ -56,26 +58,39 @@ public class OAuth2CallbackController {
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(form, headers);
 
         ResponseEntity<Map> response = restTemplate.postForEntity(
-            "https://oauth2.googleapis.com/token", request, Map.class);
+                "https://oauth2.googleapis.com/token", request, Map.class);
 
         String accessToken = (String) response.getBody().get("access_token");
 
         // 2. 用 access token 取得使用者資料
         HttpHeaders userInfoHeaders = new HttpHeaders();
+
         userInfoHeaders.setBearerAuth(accessToken);
 
         HttpEntity<?> userInfoRequest = new HttpEntity<>(userInfoHeaders);
-        ResponseEntity<Map> userInfo = restTemplate.exchange(
-            "https://www.googleapis.com/oauth2/v3/userinfo",
-            HttpMethod.GET,
-            userInfoRequest,
-            Map.class);
 
-        // return ResponseEntity.ok(userInfo.getBody());   ****用法1
+        ResponseEntity<Map> userInfo = restTemplate.exchange(
+                "https://www.googleapis.com/oauth2/v3/userinfo",
+                HttpMethod.GET,
+                userInfoRequest,
+                Map.class);
+
+        // 3. 處理使用者資料
+        Map<String, Object> userInfoMap = userInfo.getBody();
+
+        String sub = (String) userInfoMap.get("sub");
+        String email = (String) userInfoMap.get("email");
+        String name = (String) userInfoMap.get("name");
+
+        Users user = new Users();
+        user.setSub(sub);
+        user.setEmail(email);
+        user.setName(name);
+        usersRepository.save(user);
 
         System.out.println(ResponseEntity.ok(userInfo.getBody()));
 
-        session.setAttribute("user", userInfo.getBody());
-        return new RedirectView("/");
+        return ResponseEntity.ok(userInfo.getBody());
+    //     return new RedirectView("/");
     }
 }

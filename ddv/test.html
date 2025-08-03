@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>购物流程</title>
+    <link rel="stylesheet" href="./test.css">
+</head>
+<body>
+    <div class="container">
+        <header class="progress-bar">
+            <div class="step active">
+                <span class="step-num">01</span>
+                <span class="step-text">购物车</span>
+            </div>
+            <div class="step">
+                <span class="step-num">02</span>
+                <span class="step-text">资料填写</span>
+            </div>
+            <div class="step">
+                <span class="step-num">03</span>
+                <span class="step-text">订单完成</span>
+            </div>
+        </header>
+
+        <main class="content-wrapper">
+            <div class="left-panel">
+                <div class="section product-list-section">
+                    <div class="section-title">商品列表</div>
+                    <table class="product-table">
+                        <thead>
+                            <tr>
+                                <th>商品</th>
+                                <th>售价</th>
+                                <th>数量</th>
+                                <th>小计</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="4" class="no-items">目前购物车中没有商品。</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <div class="section shipping-method-section">
+                    <div class="section-title">选择运送方式</div>
+                    <div class="shipping-options">
+                        <label class="radio-option">
+                            <input type="radio" name="shipping-method" value="delivery" checked>
+                            <span>货运配送</span>
+                            <a href="#" class="check-delivery-area">查询配送地区</a>
+                        </label>
+                        <div class="delivery-address-selection">
+                            <select class="delivery-select">
+                                <option value="">请选择运送地区</option>
+                                <option value="taipei">台北市</option>
+                                <option value="taichung">台中市</option>
+                            </select>
+                            <select class="delivery-select">
+                                <option value="">请选择层</option>
+                                <option value="floor1">一层</option>
+                                <option value="floor2">二层</option>
+                            </select>
+                        </div>
+                        <p class="shipping-note">输入您的运送地区以计算运费：</p>
+
+                        <label class="radio-option">
+                            <input type="radio" name="shipping-method" value="pickup">
+                            <span>现场取货(将email通知可取货时间)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="section discount-section">
+                    <div class="section-title">选择优惠券</div>
+                    <div class="discount-options">
+                        <label class="radio-option">
+                            <input type="radio" name="discount-type" value="coupon" checked>
+                            <span>输入优惠券代码</span>
+                        </label>
+                        <div class="coupon-input-group">
+                            <input type="text" placeholder="请输入优惠券代码" class="coupon-input">
+                            <button class="btn btn-apply">送出</button>
+                        </div>
+                        <label class="radio-option">
+                            <input type="radio" name="discount-type" value="member-discount">
+                            <span>新会员折扣活动</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="section total-calculation-section">
+                    <div class="section-title">金额计算</div>
+                    <div class="total-row">
+                        <span>运费</span>
+                        <span>+ NT0</span>
+                    </div>
+                    <div class="total-row">
+                        <span>楼层费</span>
+                        <span>+ NT0</span>
+                    </div>
+                    <div class="total-row">
+                        <span>安装费</span>
+                        <span>+ NT0</span>
+                    </div>
+                    <div class="total-row total-products">
+                        <span>全部商品(0)</span>
+                        <span>NT0</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

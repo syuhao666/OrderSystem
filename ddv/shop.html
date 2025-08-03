@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登入與購物車</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./shop.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+
+    <!-- Header 導覽列 -->
+    <header>
+        <div class="my-container">
+            <nav>
+                <div class="logo">簡約家居</div>
+                <ul>
+                    <li><a href="#home">首頁</a></li>
+                    <li><a href="#products">商品</a></li>
+                    <li><a href="#about">關於我們</a></li>
+                </ul>
+                <ul>
+                    <li><a href="#contact"><img src="./img/shopping.svg" class="icon-cart"></a></li>
+                    <li><a href="#contact"><img src="./img/login.svg" class="icon-cart"></a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 登入表單區塊 -->
+
+    <section class="container" style="background-color: aquamarine;">
+        <div class="container" style="background-color: rgb(224, 104, 104);">
+            <h2>購物車</h2>
+            
+        </div>
+        <div class="row">
+            <div class="col-md-8 bg-warning p-4">
+                <div class="bg-info">
+                    <h3>商品</h3>
+                </div>
+                <div id="cart">
+
+                </div>
+
+            </div>
+            <div class="col-md-4">
+                <div class="bg-primary p-5">
+                    <h3>選擇運送方式</h3>
+                    <select>
+                        <option>請選擇運送地點</option>
+                    </select>
+                    <select>
+                        <option>請選擇搬運樓層</option>
+                    </select>
+                </div>
+
+                <div class="p-5" style="background-color: rgb(192, 224, 104);">
+                    <h3>金額計算</h3>
+                    <div class="d-flex justify-content-between">
+                        <span>运费</span>
+                        <span>+ NT0</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span>楼层费</span>
+                        <span>+ NT0</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span>安装费</span>
+                        <span>+ NT0</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span id="product">全部商品(0)</span>
+                        <span id="total">NT0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr>
+    <div class="row">
+        <div class="col-md-1">
+            <button class="btn-black" onclick="addToCart(1)">椅子</button>
+            <button class="btn-black" onclick="addToCart(2)">衣櫃</button>
+        </div>
+        <div class="col-md-11 d-flex">
+            <button class="btn-black ms-auto">
+                <h3>下單結帳</h3>
+                <a></a>
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- Footer 頁尾 -->
+    <footer>
+        <section>
+            <div class="my-container">
+
+                <ul>
+                    <h2 class="my-h2">聯繫我們</h2>
+                    <li class="my-xa">地址 : 台北市信義區松仁路123號</li>
+                    <li class="my-xa">電話 : 02-1234-5678</li>
+
+                </ul>
+                <div>
+                    <a>
+                        <img src="./img/IG.png" alt="IG" class="icon-cart2">
+                    </a>
+                    <a>
+                        <img src="./img/FB.png" alt="Facebook" class="icon-cart2">
+                    </a>
+                    <a>
+                        <img src="./img/LINE.png" alt="LINE" class="icon-cart2">
+                    </a>
+                </div>
+            </div>
+        </section>
+        <p>&copy; 2025 簡約家居 版權所有</p>
+    </footer>
+    <script src="./shop.js"></script>
+</body>
+
+</html>

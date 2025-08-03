@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Vue 3 前端呼叫 API 範例</title>
+  <!-- CDN 引入 Vue 3 -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+  <div id="app">
+    <h1>API 回傳資料：</h1>
+    <pre>{{ data }}</pre>
+    <button @click="loadData">載入資料</button>
+  </div>
+
+  <script>
+    const { createApp, ref } = Vue
+
+    createApp({
+      setup() {
+        const data = ref(null)
+
+        function loadData() {
+          fetch('http://localhost:8080/oauth2/callback') // 這是你的 Spring Boot API 地址，等一下會解釋
+            .then(response => response.json())
+            .then(json => {
+              data.value = json
+            })
+            .catch(err => {
+              data.value = '載入失敗: ' + err
+            })
+        }
+
+        return { data, loadData }
+      }
+    }).mount('#app')
+  </script>
+</body>
+</html>

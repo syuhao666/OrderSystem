@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    
+    
+
+</head>
+
+<body>
+    <div id="app">
+       
+        <h2>購物車</h2>
+        <button @click="clearCart">清空購物車</button>
+        <ul>
+            <li v-for="item in cart" :key="item.id">
+                {{ item.name }} x {{ item.quantity }} - {{ item.price * item.quantity }} 元
+                <button @click="removeFromCart(item.id)">刪除</button>
+                <button @click="decreaseQuantity(item)">－</button>
+                <button @click="increaseQuantity(item)">＋</button>
+            </li>
+
+        </ul>
+        <h3>總金額：{{ totalPrice }} 元</h3>
+        <a href="./products.html">返回商品頁</a>
+
+    </div>
+    <script src="./cart.js"></script>
+        
+
+    </script>
+</body>
+
+</html>
