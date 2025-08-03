@@ -8,14 +8,14 @@ createApp({
         const selectedZip = ref('');
 
         const formData = reactive({
-            name: '',
-            phone: '',
-            email: '',
+            name: '張家綸',
+            phone: '0978265991',
+            email: 'ms0590341@gmail.com',
             city: '',
             district: '',
             zip: '',
-            address: '',
-            paymentMethod: '',
+            address: '文昌街95巷12號',
+            paymentMethod: '信用卡',
         });
 
         // districts 是根據選定縣市動態產生的區列表

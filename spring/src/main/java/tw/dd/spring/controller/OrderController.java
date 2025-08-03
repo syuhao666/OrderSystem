@@ -2,6 +2,7 @@ package tw.dd.spring.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +13,9 @@ import tw.dd.spring.dto.OrderRequestDTO;
 import tw.dd.spring.entity.Order;
 import tw.dd.spring.entity.OrderItem;
 import tw.dd.spring.repository.OrderRepository;
+import tw.dd.spring.repository.ProductRepository;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api")
 public class OrderController {
@@ -20,9 +23,13 @@ public class OrderController {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private ProductRepository productRepository;
+
     @PostMapping("/checkout")
     public ResponseEntity<String> checkout(@RequestBody OrderRequestDTO dto) {
         // 建立訂單主資料
+        
         Order order = new Order();
         order.setName(dto.getName());
         order.setPhone(dto.getPhone());
@@ -37,10 +44,16 @@ public class OrderController {
 
         // 建立訂單項目資料
         for (CartItemDTO itemDTO : dto.getCart()) {
+            
+            
+
             OrderItem item = new OrderItem();
-            item.setP_name(itemDTO.getP_name());
-            item.setP_price(itemDTO.getP_price());
+
+            productRepository.findById(itemDTO.getId()).ifPresent(item::setProduct);
+            item.setName(itemDTO.getName());
+            item.setPrice(itemDTO.getPrice());
             item.setQuantity(itemDTO.getQuantity());
+            
             item.setOrder(order); // 綁定回主訂單
             order.getItems().add(item);
         }

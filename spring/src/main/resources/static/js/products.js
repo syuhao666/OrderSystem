@@ -6,14 +6,15 @@ createApp({
 
 
         onMounted(() => {
-            axios.get('./products.json') // 後端商品資料網址
+            axios.get('http://localhost:8080/api/products') // 後端商品資料網址
                 .then(response => {
                     products.value = response.data
+                    console.log(products.value);
                 })
                 .catch(error => {
                     console.error('發生錯誤', error)
                 })
-                console.log(products.value);
+                
         })
 
         function addToCart(product) {

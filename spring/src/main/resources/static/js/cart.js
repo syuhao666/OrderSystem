@@ -40,7 +40,7 @@ createApp({
 
         // 計算總價
         const totalPrice = computed(() => {
-            return cart.value.reduce((sum, item) => sum + item.p_price * item.quantity, 0)
+            return cart.value.reduce((sum, item) => sum + item.price * item.quantity, 0)
         })
 
         // ----------------結帳傳給後端
