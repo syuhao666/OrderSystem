@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="app">
+
+        <h1>歡迎,{{ name }}!</h1>
+        <h2>你今天的分數是：{{ score }}分</h2>
+        <button @click="addScore">幫我加分</button>
+        <button @click="reset">重設</button>
+        <br><br>
+        <p>計數器：{{ count }}</p>
+        <button @click="increment">增加</button>
+        <br><br>
+        <input v-model="name1" placeholder="輸入你的名字" />
+        <p>你好，{{ name1 }}！</p>
+        <br><br>
+        <ul>
+            <li v-for="item in items" :key="item.id">{{ item.text }}</li>
+        </ul>
+        <br><br>
+        <input v-model="price" type="number" />
+        <input v-model="quantity" type="number" />
+        <p>總價：{{ total }}</p>
+        <br><br>
+        <p>訊息：{{ message }}</p>
+
+    </div>
+    <script>
+        const { createApp, ref, computed,onMounted } = Vue;
+
+        createApp({
+
+            setup() {
+                const name = ref('小明')
+                const score = ref(87)
+                const count = ref(0)
+                const name1 = ref('')
+                const items = ref([
+                    { id: 1, text: '蘋果' },
+                    { id: 2, text: '香蕉' },
+                    { id: 3, text: '橘子' }
+                ])
+
+
+                const price = ref(0)
+                const quantity = ref(0)
+                const total = computed(() => price.value * quantity.value)
+
+                const message = ref('')
+
+
+                function addScore() {
+                    score.value++
+                }
+
+                function reset() {
+                    score.value = 87
+                }
+
+                function increment() {
+                    count.value++
+                }
+
+                onMounted(() => {
+                    message.value = '畫面已載入！'
+                })
+
+
+
+
+
+                return {
+                    items,
+                    name,
+                    score,
+                    count,
+                    name1,
+                    addScore,
+                    reset,
+                    increment,
+                    price,
+                    quantity,
+                    total,
+                    onMounted,
+                    message
+                }
+            }
+        }).mount('#app')
+
+
+    </script>
+</body>
+
+</html>
