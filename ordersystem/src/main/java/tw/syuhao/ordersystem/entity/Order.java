@@ -30,11 +30,18 @@ public class Order {
     @Column(name="address")
     private String address;
 
-    @Column(name="payment_method")
-    private String paymentMethod;
-
     @Column(name = "user_id")
     private Integer userId;
+
+    @Column(name = "total_amount")
+    private BigDecimal totalAmount;
+
+    private String status;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    // --- Getter & Setter ---
 
     public String getName() {
         return name;
@@ -67,24 +74,7 @@ public class Order {
     public void setAddress(String address) {
         this.address = address;
     }
-
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
-    @Column(name = "total_amount")
-    private BigDecimal totalAmount;
-
-    private String status;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    // --- Getter & Setter ---
+    
 
     public Integer getId() {
         return id;
