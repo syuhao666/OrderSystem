@@ -1,4 +1,4 @@
-package tw.dd.spring.entity;
+package tw.syuhao.ordersystem.entity;
 
 import java.math.BigDecimal;
 
@@ -15,7 +15,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "order_item")
-public class OrderItem {
+public class DOrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,10 +32,10 @@ public class OrderItem {
     //--------------------------------
     @ManyToOne
     @JoinColumn(name = "order_id")
-    private Order order;
+    private DOrder order;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    private Product product;
+    private DProduct product;
 
 }

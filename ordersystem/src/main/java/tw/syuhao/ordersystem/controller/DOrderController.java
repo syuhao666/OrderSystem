@@ -1,4 +1,4 @@
-package tw.dd.spring.controller;
+package tw.syuhao.ordersystem.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,29 +8,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import tw.dd.spring.dto.CartItemDTO;
-import tw.dd.spring.dto.OrderRequestDTO;
-import tw.dd.spring.entity.Order;
-import tw.dd.spring.entity.OrderItem;
-import tw.dd.spring.repository.OrderRepository;
-import tw.dd.spring.repository.ProductRepository;
+import tw.syuhao.ordersystem.dto.CartItemDTO;
+import tw.syuhao.ordersystem.dto.OrderRequestDTO;
+import tw.syuhao.ordersystem.entity.DOrder;
+import tw.syuhao.ordersystem.entity.DOrderItem;
+import tw.syuhao.ordersystem.repository.DOrderRepository;
+import tw.syuhao.ordersystem.repository.DProductRepository;
 
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api")
-public class OrderController {
+public class DOrderController {
 
     @Autowired
-    private OrderRepository orderRepository;
+    private DOrderRepository dorderRepository;
 
     @Autowired
-    private ProductRepository productRepository;
+    private DProductRepository dproductRepository;
 
     @PostMapping("/checkout")
     public ResponseEntity<String> checkout(@RequestBody OrderRequestDTO dto) {
         // 建立訂單主資料
         
-        Order order = new Order();
+        DOrder order = new DOrder();
         order.setName(dto.getName());
         order.setPhone(dto.getPhone());
         order.setEmail(dto.getEmail());
@@ -47,9 +47,9 @@ public class OrderController {
             
             
 
-            OrderItem item = new OrderItem();
+            DOrderItem item = new DOrderItem();
 
-            productRepository.findById(itemDTO.getId()).ifPresent(item::setProduct);
+            dproductRepository.findById(itemDTO.getId()).ifPresent(item::setProduct);
             item.setName(itemDTO.getName());
             item.setPrice(itemDTO.getPrice());
             item.setQuantity(itemDTO.getQuantity());
@@ -59,7 +59,7 @@ public class OrderController {
         }
 
         // 儲存訂單
-        orderRepository.save(order);
+        dorderRepository.save(order);
 
         return ResponseEntity.ok("訂單成功，訂單 ID: " + order.getId());
     }
