@@ -1,12 +1,13 @@
 package tw.syuhao.ordersystem.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import tw.syuhao.ordersystem.entity.Order;
-import tw.syuhao.ordersystem.repository.OrderRepository;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import tw.syuhao.ordersystem.entity.Order;
+import tw.syuhao.ordersystem.repository.OrderRepository;
 
 @Service
 public class OrderService {
@@ -25,8 +26,8 @@ public class OrderService {
     }
 
     // 新增或更新訂單
-    public Order saveOrder(Order order) {
-        return orderRepository.save(order);
+    public void saveOrder(Order order) {
+        orderRepository.save(order);
     }
 
     // 刪除訂單

@@ -29,7 +29,7 @@ public class OrderController {
     private OrderRepository orderRepository;
 
     // 顯示所有訂單列表
-    @GetMapping
+    @GetMapping("/")
     public String listOrders(Model model) {
         List<Order> orders = orderService.getAllOrders();
         model.addAttribute("orders", orders);
