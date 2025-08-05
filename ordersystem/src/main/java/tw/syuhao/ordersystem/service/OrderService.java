@@ -15,23 +15,20 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
-    // 取得所有訂單
-    public List<Order> getAllOrders() {
+    public List<Order> findAll() {
         return orderRepository.findAll();
     }
 
-    // 根據 ID 查詢訂單
-    public Optional<Order> getOrderById(Integer id) {
-        return orderRepository.findById(id);
-    }
-
-    // 新增或更新訂單
-    public void saveOrder(Order order) {
+    public void save(Order order) {
         orderRepository.save(order);
     }
 
-    // 刪除訂單
-    public void deleteOrder(Integer id) {
+    public Order findById(Integer id) {
+        return orderRepository.findById(id).orElse(null);
+    }
+
+    public void delete(Integer id) {
         orderRepository.deleteById(id);
     }
 }
+
