@@ -30,6 +30,7 @@
                     <td th:text="${p.price}">100</td>
                     <td th:text="${p.stock}">10</td>
                     <td th:text="${p.enabled ? '上架' : '下架'}">上架</td>
+                    
                     <td>
                         <a th:href="@{/admin/product/edit/{id}(id=${p.id})}" class="btn btn-warning btn-sm">編輯</a>
                         <a th:href="@{/admin/product/delete/{id}(id=${p.id})}" class="btn btn-danger btn-sm">刪除</a>
