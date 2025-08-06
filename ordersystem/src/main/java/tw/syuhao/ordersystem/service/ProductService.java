@@ -22,7 +22,7 @@ public class ProductService {
         repo.save(product);
     }
 
-    public void delete(Long id) {
+    public void deleteById(Long id) {
         repo.deleteById(id);
     }
 
