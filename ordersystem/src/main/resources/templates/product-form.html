@@ -10,7 +10,7 @@
 <body>
     <div class="container mt-5">
         <h2 th:text="${product.id == null ? '新增商品' : '編輯商品'}">表單</h2>
-        <form th:action="@{/admin/product/save}" th:object="${product}" method="post">
+        <form th:action="@{/admin/product/save}" th:object="${product}" method="post" enctype="multipart/form-data">
             <input type="hidden" th:field="*{id}" />
             <div class="mb-3">
                 <label class="form-label">商品名稱</label>
@@ -26,7 +26,7 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">上傳圖片</label>
-                <input type="number" th:field="*{stock}" class="form-control" required />
+                <input type="file" name="imageFile" />
             </div>
             <div class="mb-3 form-check">
                 <input type="checkbox" th:field="*{enabled}" class="form-check-input" />
