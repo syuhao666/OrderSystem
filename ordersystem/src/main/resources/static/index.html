@@ -76,7 +76,7 @@
                         <a href="#" class="btn">加入購物車</a>
                     </div> -->
                     <div class="product" v-for="product in products" :key="product.id">
-                        <img src="https://placehold.co/300x200" alt="舒適單人椅" />
+                        <img :src="`http://localhost:8080/uploads/${product.imageUrl}`" :alt="product.name" />
                         <h3>{{ product.name}}</h3>
                         <p>人體工學設計，完美支撐*產品介紹</p>
                         <div class="price">NT${{product.price}}</div>

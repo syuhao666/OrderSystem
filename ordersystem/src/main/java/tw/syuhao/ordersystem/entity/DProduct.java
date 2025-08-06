@@ -2,6 +2,7 @@ package tw.syuhao.ordersystem.entity;
 
 import java.math.BigDecimal;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,6 +23,9 @@ public class DProduct {
 
     private String name;
     private BigDecimal price;
+
+    @Column(name = "image_url")
+    private String imageUrl;
 
     //  @OneToMany(mappedBy = "product")
     // private List<OrderItem> orderItems = new ArrayList<>();
