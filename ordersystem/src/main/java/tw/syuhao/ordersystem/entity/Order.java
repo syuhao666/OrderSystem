@@ -22,7 +22,6 @@ public class Order {
     private String phone;
     private String email;
     private String address;
-    private String payment_method;
 
     @Column(name = "user_id")
     private Integer userId;
