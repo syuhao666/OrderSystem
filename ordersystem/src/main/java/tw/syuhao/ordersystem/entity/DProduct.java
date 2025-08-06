@@ -27,6 +27,8 @@ public class DProduct {
     @Column(name = "image_url")
     private String imageUrl;
 
+    private String description;
+
     //  @OneToMany(mappedBy = "product")
     // private List<OrderItem> orderItems = new ArrayList<>();
     
