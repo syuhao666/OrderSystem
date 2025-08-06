@@ -67,7 +67,7 @@ public class AdminController {
             System.out.println("File saved to: " + filePath.toAbsolutePath());
 
             // 將圖片路徑存到 product，例如 "/uploads/abc.jpg"
-            product.setImageUrl("/uploads/" + fileName);
+            product.setImageUrl(fileName);
         }
 
         // 儲存商品
@@ -84,7 +84,31 @@ public class AdminController {
 
     @GetMapping("/product/delete/{id}")
     public String deleteProduct(@PathVariable Long id) {
-        service.delete(id);
+        Product product = service.findById(id);
+        if (product != null) {
+            // 刪圖片
+            if (product.getImageUrl() != null && !product.getImageUrl().isEmpty()) {
+                Path imagePath = Paths.get(System.getProperty("user.dir"), "uploads", product.getImageUrl());
+                System.out.println("Deleting image: " + imagePath.toAbsolutePath());
+
+                try {
+                    if (Files.exists(imagePath)) {
+                        Files.delete(imagePath);
+                        System.out.println("Image deleted.");
+                    } else {
+                        System.out.println("Image not found.");
+                    }
+                } catch (IOException e) {
+                    System.err.println("Failed to delete image:");
+                    e.printStackTrace();
+                }
+            }
+
+            // 刪商品
+            service.deleteById(id);
+        }
+
         return "redirect:/admin/products";
     }
+
 }
