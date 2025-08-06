@@ -1,9 +1,12 @@
-package tw.syuhao.ordersystem.entity;
+package tw.syuhao.ordersystem.Dentity;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,7 +18,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "order_item")
-public class DOrderItem {
+public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,12 +33,14 @@ public class DOrderItem {
 
 
     //--------------------------------
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
-    private DOrder order;
+    @JsonBackReference
+    private OrderD order;  //特殊+D
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
-    private DProduct product;
+    @JsonBackReference
+    private ProductD product; //特殊+D
 
 }

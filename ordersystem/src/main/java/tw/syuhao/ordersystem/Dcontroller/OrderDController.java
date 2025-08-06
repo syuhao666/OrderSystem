@@ -1,4 +1,5 @@
-package tw.syuhao.ordersystem.controller;
+package tw.syuhao.ordersystem.Dcontroller;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,58 +9,77 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import tw.syuhao.ordersystem.dto.CartItemDTO;
-import tw.syuhao.ordersystem.dto.OrderRequestDTO;
-import tw.syuhao.ordersystem.entity.DOrder;
-import tw.syuhao.ordersystem.entity.DOrderItem;
-import tw.syuhao.ordersystem.repository.DOrderRepository;
-import tw.syuhao.ordersystem.repository.DProductRepository;
+import jakarta.transaction.Transactional;
+import tw.syuhao.ordersystem.Ddto.CartItemDTO;
+import tw.syuhao.ordersystem.Ddto.OrderRequestDTO;
+import tw.syuhao.ordersystem.Dentity.Cart;
+import tw.syuhao.ordersystem.Dentity.OrderD; //特殊+D
+import tw.syuhao.ordersystem.Dentity.OrderItem;
+import tw.syuhao.ordersystem.Dentity.User;
+import tw.syuhao.ordersystem.Drepository.CartItemRepository;
+import tw.syuhao.ordersystem.Drepository.CartRepository;
+import tw.syuhao.ordersystem.Drepository.OrderDRepository;  //特殊+D
+import tw.syuhao.ordersystem.Drepository.ProductDRepository; //特殊+D
+import tw.syuhao.ordersystem.Drepository.UsersRepository;
 
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api")
-public class DOrderController {
+public class OrderDController {
 
     @Autowired
-    private DOrderRepository dorderRepository;
+    private OrderDRepository orderRepository; //特殊+D
 
     @Autowired
-    private DProductRepository dproductRepository;
+    private ProductDRepository productRepository;   //特殊+D
 
+    @Autowired
+    private CartItemRepository cartItemRepository;
+
+    @Autowired
+    private UsersRepository userRepository;
+
+    @Autowired
+    private CartRepository cartRepository;
+
+
+    @Transactional
     @PostMapping("/checkout")
     public ResponseEntity<String> checkout(@RequestBody OrderRequestDTO dto) {
         // 建立訂單主資料
         
-        DOrder order = new DOrder();
+        OrderD order = new OrderD();  //特殊+D
         order.setName(dto.getName());
         order.setPhone(dto.getPhone());
         order.setEmail(dto.getEmail());
-
-        // order.setCity(dto.getCity());
-        // order.setDistrict(dto.getDistrict());
-        // order.setZip(dto.getZip());
         order.setAddress(dto.getAddress());
-
         order.setPaymentMethod(dto.getPaymentMethod());
+
+       
 
         // 建立訂單項目資料
         for (CartItemDTO itemDTO : dto.getCart()) {
-            
-            
-
-            DOrderItem item = new DOrderItem();
-
-            dproductRepository.findById(itemDTO.getId()).ifPresent(item::setProduct);
+            OrderItem item = new OrderItem();
+            productRepository.findById(itemDTO.getProductId()).ifPresent(item::setProduct);            
             item.setName(itemDTO.getName());
             item.setPrice(itemDTO.getPrice());
             item.setQuantity(itemDTO.getQuantity());
-            
             item.setOrder(order); // 綁定回主訂單
             order.getItems().add(item);
+            
         }
 
         // 儲存訂單
-        dorderRepository.save(order);
+        orderRepository.save(order);
+
+        Long fakeUserId = 2L;
+
+        User user = userRepository.findById(fakeUserId)
+                .orElseThrow(() -> new RuntimeException("找不到使用者"));
+
+        Cart cart = cartRepository.findByUser(user)
+        .orElseThrow(() -> new RuntimeException("找不到購物車"));   
+        cartItemRepository.deleteByCart(cart);
 
         return ResponseEntity.ok("訂單成功，訂單 ID: " + order.getId());
     }

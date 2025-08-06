@@ -47,34 +47,6 @@
             <div class="container">
                 <h2>熱門商品</h2>
                 <div class="products">
-                    <!-- <div class="product">
-                        <img src="https://placehold.co/300x200" alt="北歐簡約沙發" />
-                        <h3>北歐簡約沙發</h3>
-                        <p>舒適的布料，簡潔的線條設計</p>
-                        <div class="price">NT$12,800</div>
-                        <a href="#" class="btn">加入購物車</a>
-                    </div>
-                    <div class="product">
-                        <img src="https://placehold.co/300x200" alt="原木餐桌" />
-                        <h3>原木餐桌</h3>
-                        <p>天然木材，環保無毒塗料</p>
-                        <div class="price">NT$8,500</div>
-                        <a href="#" class="btn">加入購物車</a>
-                    </div>
-                    <div class="product">
-                        <img src="https://placehold.co/300x200" alt="現代書架" />
-                        <h3>現代書架</h3>
-                        <p>多層設計，完美收納</p>
-                        <div class="price">NT$5,200</div>
-                        <a href="#" class="btn">加入購物車</a>
-                    </div>
-                    <div class="product">
-                        <img src="https://placehold.co/300x200" alt="舒適單人椅" />
-                        <h3>舒適單人椅</h3>
-                        <p>人體工學設計，完美支撐</p>
-                        <div class="price">NT$4,800</div>
-                        <a href="#" class="btn">加入購物車</a>
-                    </div> -->
                     <div class="product" v-for="product in products" :key="product.id">
                         <img :src="`http://localhost:8080/uploads/${product.imageUrl}`" :alt="product.name" />
                         <h3>{{ product.name}}</h3>

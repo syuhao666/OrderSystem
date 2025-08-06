@@ -1,11 +1,11 @@
-package tw.syuhao.ordersystem.entity;
+package tw.syuhao.ordersystem.Dentity;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,7 +17,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "orders")
-public class DOrder {
+public class OrderD {  //特殊+D
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,16 +29,16 @@ public class DOrder {
     private String address;
     private String paymentMethod;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    // private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<DOrderItem> items = new ArrayList<>();
+    @JsonManagedReference
+    private List<OrderItem> items = new ArrayList<>();
 
     
 
-    public DOrder() {
-        this.createdAt = LocalDateTime.now();
-    }
+    // public Order() {
+    //     this.createdAt = LocalDateTime.now();
+    // }
 
 }

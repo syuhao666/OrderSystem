@@ -48,7 +48,7 @@
                 <div class="row bg-primary p-2">
                     <h2 class="col-md-8 bg-success p-2"><span class="d me-auto bg-info">購物車</span></h2>
                     <div class="col-md-2 ms-auto d-flex p-3">
-                        <button class="btn btn-sm ms-auto" @click="clearCart">清空購物車</button>
+                        <!-- <button class="btn btn-sm ms-auto" @click="clearCart">清空購物車</button> -->
 
                     </div>
 
@@ -58,19 +58,19 @@
                         <div class="row mb-3" style="background-color: cadetblue;">商品</div>
 
                         <div class="row align-items-center mb-3" style="background-color: rgb(173, 122, 221);"
-                            v-for="item in cart" :key="item.id">
+                            v-for="item in cartItems" :key="item.id">
                             <div class="col-md-8" style="background-color: skyblue;">
                                 {{ item.name }} x {{ item.quantity }} - {{ item.price * item.quantity }} 元
                             </div>
                             <div class="col-md-4 d-flex align-items-center p-2 rounded gap-2"
                                 style="background-color: rgb(255, 255, 255);">
                                 <button class="btn btn-sm py-1 px-2 bg-primary"
-                                    @click="decreaseQuantity(item)">－</button>
+                                    @click="decreaseQuantity(item.cartItemId)">－</button>
                                 <span>{{ item.quantity }}</span>
                                 <button class="btn btn-sm py-1 px-2 bg-primary"
-                                    @click="increaseQuantity(item)">＋</button>
+                                    @click="increaseQuantity(item.cartItemId)">＋</button>
                                 <button class="btn bg-danger btn-sm py-0 px-1 ms-md-auto"
-                                    @click="removeFromCart(item.id)">刪除</button>
+                                    @click="removeFromCart(item.cartItemId)">刪除</button>
 
                             </div>
                         </div>
@@ -108,7 +108,7 @@
                             </div>
                             <div class="d-flex justify-content-between">
                                 <span>總金額：</span>
-                                <span>NT {{ totalPrice }}</span>
+                                <!-- <span>NT {{ totalPrice }}</span> -->
                             </div>
 
                         </div>
