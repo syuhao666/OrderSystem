@@ -54,7 +54,7 @@ createApp({
             return cartItems.value.reduce((sum, item) => sum + item.price * item.quantity, 0)
         })
         
-        console.log(totalPrice.value)
+        
 
         // ----------------前往填寫資料頁面
         function goToForm() {            

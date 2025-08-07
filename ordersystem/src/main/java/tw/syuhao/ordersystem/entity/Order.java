@@ -30,7 +30,8 @@ public class Order {
     @Column(name = "user_id")
     private Integer userId;
 
-    private BigDecimal totalAmount;
+    @Column(name = "total_amount")
+    private BigDecimal totalPrice;
 
     private String status;
 

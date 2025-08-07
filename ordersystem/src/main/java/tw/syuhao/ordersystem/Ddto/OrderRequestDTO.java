@@ -1,5 +1,6 @@
 package tw.syuhao.ordersystem.Ddto;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import lombok.Data;
@@ -12,6 +13,7 @@ public class OrderRequestDTO {
     private String email;   //收件人電子郵件
     private String address;     //收件人地址
     private String paymentMethod;   //付款方式
+    private BigDecimal totalPrice;   //付款方式
     
     
     

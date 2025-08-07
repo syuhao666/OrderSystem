@@ -54,6 +54,7 @@ public class OrderDController {
         order.setEmail(dto.getEmail());
         order.setAddress(dto.getAddress());
         order.setPaymentMethod(dto.getPaymentMethod());
+        order.setTotalPrice(dto.getTotalPrice());
 
        
 
