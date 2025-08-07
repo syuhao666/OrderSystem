@@ -29,7 +29,7 @@ public class OrderD {  //特殊+D
     private String address;
     private String paymentMethod;
 
-    // private LocalDateTime createdAt;
+    
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     @JsonManagedReference
@@ -37,8 +37,6 @@ public class OrderD {  //特殊+D
 
     
 
-    // public Order() {
-    //     this.createdAt = LocalDateTime.now();
-    // }
+    
 
 }
