@@ -1,4 +1,4 @@
-const { createApp, ref, onMounted /*computed*/ } = Vue
+const { createApp, ref, onMounted, computed } = Vue
 
 createApp({
     setup() {
@@ -48,11 +48,16 @@ createApp({
                 }).catch(err => {
                     console.error('刪除失敗', err);
                 });
-        }       
+        }
+        
+        const totalPrice = computed(() => {
+            return cartItems.value.reduce((sum, item) => sum + item.price * item.quantity, 0)
+        })
+        
+        console.log(totalPrice.value)
 
         // ----------------前往填寫資料頁面
-        function goToForm() {
-            localStorage.setItem('cart', JSON.stringify(cart.value));
+        function goToForm() {            
             window.location.href = 'form.html';
         }
 
@@ -72,7 +77,7 @@ createApp({
             fetchCart()
         })
 
-        return {   decreaseQuantity, increaseQuantity, addressData, goToForm, removeItem, cartItems }
+        return { totalPrice, decreaseQuantity, increaseQuantity, addressData, goToForm, removeItem, cartItems}
 
     }
 }).mount('#app')
