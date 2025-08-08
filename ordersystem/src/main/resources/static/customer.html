@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>簡約家居 - 後臺管理</title>
-    <link rel="stylesheet" href="/css/customer.css">
+    <link rel="stylesheet" href="./css/customer.css">
     <style>
         main {
             padding: 40px 20px;
@@ -22,7 +22,8 @@
             background-color: white;
         }
 
-        th, td {
+        th,
+        td {
             padding: 12px 16px;
             text-align: left;
             border-bottom: 1px solid #ddd;
@@ -76,35 +77,27 @@
         <table>
             <thead>
                 <tr>
-                    <th>會員編號</th>
-                    <th>姓名</th>
-                    <th>電子郵件</th>
-                    <th>電話</th>
-                    <th>地址</th>
+                    <th>ID</th>
+                    <th>帳號</th>
+                    <th>Email</th>
+                    <th>地址</th> <!-- 新增 -->
+                    <th>角色</th>
+                    <th>建立時間</th>
                     <th>操作</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>C001</td>
-                    <td>王小明</td>
-                    <td>ming@example.com</td>
-                    <td>0912-345-678</td>
-                    <td>台北市大安區</td>
+                <tr th:each="u : ${users}">
+                    <td th:text="${u.id}"></td>
+                    <td th:text="${u.username}"></td>
+                    <td th:text="${u.email}"></td>
+                    <td th:text="${u.address}"></td> <!-- 新增 -->
+                    <td th:text="${u.role}"></td>
+                    <td th:text="${#temporals.format(u.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
                     <td>
-                        <button class="btn-edit">編輯</button>
-                        <button class="btn-delete">刪除</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>C002</td>
-                    <td>陳美麗</td>
-                    <td>mei@example.com</td>
-                    <td>0933-222-111</td>
-                    <td>台中市西屯區</td>
-                    <td>
-                        <button class="btn-edit">編輯</button>
-                        <button class="btn-delete">刪除</button>
+                        <a th:href="@{/admin/users/edit/{id}(id=${u.id})}" class="btn-edit">編輯</a>
+                        <a th:href="@{/admin/users/delete/{id}(id=${u.id})}" class="btn-delete"
+                            onclick="return confirm('確定要刪除嗎？');">刪除</a>
                     </td>
                 </tr>
                 <!-- 可動態擴充更多列 -->
@@ -121,9 +114,9 @@
                     <li class="xa">電話 : 02-1234-5678</li>
                 </ul>
                 <div>
-                    <a href="#"><img src="./img/IG.png" alt="IG" class="icon-cart2"></a>
-                    <a href="#"><img src="./img/FB.png" alt="Facebook" class="icon-cart2"></a>
-                    <a href="#"><img src="./img/LINE.png" alt="LINE" class="icon-cart2"></a>
+                    <a href="#"><img src="./images/IG.png" alt="IG" class="icon-cart2"></a>
+                    <a href="#"><img src="./images/FB.png" alt="Facebook" class="icon-cart2"></a>
+                    <a href="#"><img src="./images/LINE.png" alt="LINE" class="icon-cart2"></a>
                 </div>
             </div>
         </section>

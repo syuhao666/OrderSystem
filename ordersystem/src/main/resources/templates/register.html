@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+	<head>
+	<meta charset="UTF-8">
+	<title>Brad Big Company</title>
+	</head>
+	<body>
+		<form th:action="@{/register}" 
+			method="post" enctype="multipart/form-data">
+			<div>
+				帳號
+				<input name="username" required="required" />
+			</div>
+			<div>
+				密碼
+				<input type="password" name="password" required="required" />
+			</div>
+			<div>
+				姓名
+				<input name="name" required="required" />
+			</div>
+			<div>
+				信箱
+				<input type="email" name="email" />
+			</div>
+			<button type="submit">Register</button>
+		</form>
+		<p th:if="${error}" th:text="${error}" style="color:red;"></p>
+		<a th:href="@{/login}">已有帳號, 直接登入</a>
+	</body>
+</html>
