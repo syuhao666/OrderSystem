@@ -1,0 +1,69 @@
+MerchantID={{$json["MerchantID"]}}&
+MerchantTradeNo={{$json["MerchantTradeNo"]}}&
+MerchantTradeDate={{$json["MerchantTradeDate"]}}&
+PaymentType={{$json["PaymentType"]}}&
+TotalAmount={{$json["TotalAmount"]}}&
+TradeDesc={{$json["TradeDesc"]}}&
+ItemName={{$json["ItemName"]}}&
+ReturnURL={{$json["ReturnURL"]}}&
+ChoosePayment={{$json["ChoosePayment"]}}&
+EncryptType=1&
+CheckMacValue={{$json["CheckMacValue"]}}
+
+//-----------------------------------------------------------
+
+
+import hashlib
+import urllib.parse
+from datetime import datetime
+
+def encode_special_url(s):
+    encoded = urllib.parse.quote(s, safe='').lower()
+    encoded = (encoded
+        .replace('%20', '+')
+        .replace('%21', '!')
+        .replace('%28', '(')
+        .replace('%29', ')')
+        .replace('%2a', '*'))
+    return encoded
+
+# ✅ 商店資訊
+hash_key = 'pwFHCqoQZGmho4w6'
+hash_iv = 'EkRm7iFT261dpevs'
+merchant_id = '3002607'
+
+# ✅ 模擬輸入資料（從前節點拿）
+body = items[0]['json']['body']
+now = datetime.now()
+merchant_trade_date = now.strftime('%Y/%m/%d %H:%M:%S')
+order_id = 'TEST' + str(int(now.timestamp() * 1000))
+total_amount = 1000
+item_names = '#'.join(item['name'] for item in body['cart'])
+
+# ✅ 組參數
+params = {
+    'MerchantID': merchant_id,
+    'MerchantTradeNo': order_id,
+    'MerchantTradeDate': merchant_trade_date,
+    'PaymentType': 'aio',
+    'TotalAmount': str(total_amount),
+    'TradeDesc': '訂單測試',
+    'ItemName': item_names,
+    'ReturnURL': 'https://accurately-enhanced-raven.ngrok-free.app/webhook-test/ecpay/callback',
+    'ChoosePayment': 'Credit',
+    'ClientBackURL': 'http://localhost:8080/success',
+    'EncryptType': '1',
+}
+
+# ✅ 排序組合字串
+sorted_keys = sorted(params)
+raw_query = '&'.join(f'{key}={params[key]}' for key in sorted_keys)
+raw_string = f'HashKey={hash_key}&{raw_query}&HashIV={hash_iv}'
+encoded_string = encode_special_url(raw_string)
+
+# ✅ 計算 CheckMacValue（SHA256）
+check_mac_value = hashlib.sha256(encoded_string.encode('utf-8')).hexdigest().upper()
+params['CheckMacValue'] = check_mac_value
+
+# ✅ 回傳給下一個節點
+return [{ 'json': params }]
