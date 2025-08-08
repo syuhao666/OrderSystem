@@ -85,26 +85,16 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>C001</td>
-                    <td>王小明</td>
-                    <td>ming@example.com</td>
-                    <td>0912-345-678</td>
-                    <td>台北市大安區</td>
+                <tr th:each="c : ${customers}">
+                    <td th:text="${c.id}"></td>
+                    <td th:text="${c.name}"></td>
+                    <td th:text="${c.email}"></td>
+                    <td th:text="${c.phone}"></td>
+                    <td th:text="${c.address}"></td>
                     <td>
-                        <button class="btn-edit">編輯</button>
-                        <button class="btn-delete">刪除</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>C002</td>
-                    <td>陳美麗</td>
-                    <td>mei@example.com</td>
-                    <td>0933-222-111</td>
-                    <td>台中市西屯區</td>
-                    <td>
-                        <button class="btn-edit">編輯</button>
-                        <button class="btn-delete">刪除</button>
+                        <a th:href="@{/admin/customers/edit/{id}(id=${c.id})}" class="btn-edit">編輯</a>
+                        <a th:href="@{/admin/customers/delete/{id}(id=${c.id})}" class="btn-delete"
+                        onclick="return confirm('確定要刪除嗎？');">刪除</a>
                     </td>
                 </tr>
                 <!-- 可動態擴充更多列 -->
@@ -121,9 +111,9 @@
                     <li class="xa">電話 : 02-1234-5678</li>
                 </ul>
                 <div>
-                    <a href="#"><img src="./img/IG.png" alt="IG" class="icon-cart2"></a>
-                    <a href="#"><img src="./img/FB.png" alt="Facebook" class="icon-cart2"></a>
-                    <a href="#"><img src="./img/LINE.png" alt="LINE" class="icon-cart2"></a>
+                    <a href="#"><img src="./images/IG.png" alt="IG" class="icon-cart2"></a>
+                    <a href="#"><img src="./images/FB.png" alt="Facebook" class="icon-cart2"></a>
+                    <a href="#"><img src="./images/LINE.png" alt="LINE" class="icon-cart2"></a>
                 </div>
             </div>
         </section>

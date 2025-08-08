@@ -18,6 +18,7 @@ createApp({
             zip: '',
             address: '文昌街95巷12號',
             paymentMethod: '信用卡',
+            
         });
 
 
@@ -80,6 +81,7 @@ createApp({
             formData.zip = selectedZip.value;
 
             console.log(cartItems.value)
+            console.log(totalPrice.value)
 
                 axios.post('/api/checkout', {
                     cart: cartItems.value,
@@ -87,7 +89,8 @@ createApp({
                     phone: formData.phone,
                     email: formData.email,
                     address: fullAddress.value,
-                    paymentMethod: formData.paymentMethod
+                    paymentMethod: formData.paymentMethod,
+                    totalPrice: totalPrice.value
 
                 }, {
                     headers: {
@@ -104,7 +107,9 @@ createApp({
         }
 
        
-
+        const totalPrice = computed(() => {
+            return cartItems.value.reduce((sum, item) => sum + item.price * item.quantity, 0)
+        })
 
 
         return {
@@ -118,7 +123,8 @@ createApp({
             checkout,
             formData,
             cartItems,
-            fullAddress
+            fullAddress,
+            totalPrice
         }
     }
 }).mount('#app');
