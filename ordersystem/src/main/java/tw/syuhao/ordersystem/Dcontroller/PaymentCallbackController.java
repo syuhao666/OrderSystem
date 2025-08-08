@@ -30,9 +30,7 @@ public class PaymentCallbackController {
     public String ecpayNotify(@RequestParam Map<String, String> params) {
         System.out.println("綠界回傳參數：" + params);
 
-        // Step 1: 驗證 CheckMacValue（確保資料沒被竄改）
-        String hashKey = "你的HashKey";
-        String hashIV = "你的HashIV";
+       
 
         // 使用你的工具類別計算 CheckMacValue，範例:
         String receivedCheckMacValue = params.get("CheckMacValue");
