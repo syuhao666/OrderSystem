@@ -25,7 +25,7 @@
             <td th:text="${order.name}"></td>
             <td th:text="${order.phone}"></td>
             <td th:text="${order.status}"></td>
-            <td th:text="${order.totalAmount}"></td>
+            <td th:text="${order.totalPrice}"></td>
             <td>
                 <a th:href="@{/admin/orders/edit/{id}(id=${order.id})}" class="btn btn-sm btn-primary">編輯</a>
                 <a th:href="@{/admin/orders/delete/{id}(id=${order.id})}" class="btn btn-sm btn-danger">刪除</a>
