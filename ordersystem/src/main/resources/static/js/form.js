@@ -7,7 +7,7 @@ createApp({
         const selectedCity = ref('');
         const selectedDistrict = ref('');
         const selectedZip = ref('');
-        
+
 
         const formData = reactive({
             name: '張家綸',
@@ -18,7 +18,7 @@ createApp({
             zip: '',
             address: '文昌街95巷12號',
             paymentMethod: '信用卡',
-            
+
         });
 
 
@@ -55,7 +55,7 @@ createApp({
         });
         //--------------------------------------
 
-        
+
 
         function onCityChange() {
             selectedDistrict.value = '';
@@ -74,39 +74,68 @@ createApp({
             formData.district = selectedDistrict.value;
             formData.zip = selectedZip.value;
         }
+        //----------------------------------------好的
+        // function checkout() {
+        //     formData.city = selectedCity.value;
+        //     formData.district = selectedDistrict.value;
+        //     formData.zip = selectedZip.value;
 
+        //     console.log(cartItems.value)
+        //     console.log(totalPrice.value)
+
+        //         axios.post('/api/checkout', {
+        //             cart: cartItems.value,
+        //             name: formData.name,
+        //             phone: formData.phone,
+        //             email: formData.email,
+        //             address: fullAddress.value,
+        //             paymentMethod: formData.paymentMethod,
+        //             totalPrice: totalPrice.value
+
+        //         }, {
+        //             headers: {
+        //                 'Content-Type': 'application/json'
+        //             }
+        //         })
+        //             .then(res => {
+        //                 alert(res.data);                        
+        //             })
+        //             .catch(err => {
+        //                 console.error("結帳失敗", err);
+        //             });
+
+        // }
+
+        //------------------------------------------------------------
         function checkout() {
             formData.city = selectedCity.value;
             formData.district = selectedDistrict.value;
             formData.zip = selectedZip.value;
 
-            console.log(cartItems.value)
-            console.log(totalPrice.value)
-
-                axios.post('/api/checkout', {
-                    cart: cartItems.value,
-                    name: formData.name,
-                    phone: formData.phone,
-                    email: formData.email,
-                    address: fullAddress.value,
-                    paymentMethod: formData.paymentMethod,
-                    totalPrice: totalPrice.value
-
-                }, {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
+            axios.post('/api/checkout', {
+                cart: cartItems.value,
+                name: formData.name,
+                phone: formData.phone,
+                email: formData.email,
+                address: fullAddress.value,
+                paymentMethod: formData.paymentMethod,
+                totalPrice: totalPrice.value
+            }, {
+                headers: { 'Content-Type': 'application/json' }
+            })
+                .then(res => {
+                    // 後端回傳的會是綠界付款表單 HTML
+                    document.open();
+                    document.write(res.data);
+                    document.close();
                 })
-                    .then(res => {
-                        alert(res.data);                        
-                    })
-                    .catch(err => {
-                        console.error("結帳失敗", err);
-                    });
-
+                .catch(err => {
+                    console.error("結帳失敗", err);
+                });
         }
+        //------------------------------------------------------------
 
-       
+
         const totalPrice = computed(() => {
             return cartItems.value.reduce((sum, item) => sum + item.price * item.quantity, 0)
         })
@@ -132,18 +161,18 @@ createApp({
 
 
 
-   //---------------測試用的資料結構----------------
-            // const postData = {
-            //     cart: JSON.parse(localStorage.getItem('cart') || '[]'),
-            //     name: formData.name,
-            //     phone: formData.phone,
-            //     email: formData.email,
-            //     // city: formData.city,
-            //     // district: formData.district,
-            //     // zip: formData.zip,
-            //     address: fullAddress.value,
-            //     paymentMethod: formData.paymentMethod
-            // };
+//---------------測試用的資料結構----------------
+// const postData = {
+//     cart: JSON.parse(localStorage.getItem('cart') || '[]'),
+//     name: formData.name,
+//     phone: formData.phone,
+//     email: formData.email,
+//     // city: formData.city,
+//     // district: formData.district,
+//     // zip: formData.zip,
+//     address: fullAddress.value,
+//     paymentMethod: formData.paymentMethod
+// };
 
-            // console.log('準備送出的資料:', postData);
-            //-------------------------------------------------------
+// console.log('準備送出的資料:', postData);
+//-------------------------------------------------------
