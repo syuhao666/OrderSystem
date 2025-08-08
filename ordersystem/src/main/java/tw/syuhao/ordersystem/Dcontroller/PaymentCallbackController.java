@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,8 +14,9 @@ import tw.syuhao.ordersystem.Dentity.OrderD;
 import tw.syuhao.ordersystem.Drepository.OrderDRepository;
 import tw.syuhao.ordersystem.utils.EcpayUtils;
 
+@CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/payment")
+@RequestMapping("/api")
 public class PaymentCallbackController {
 
     @Value("${ecpay.hashKey}")
@@ -26,7 +28,7 @@ public class PaymentCallbackController {
     @Autowired
     private OrderDRepository orderRepository;
 
-    @PostMapping("/notify")
+    @PostMapping("/payment/notify")
     public String ecpayNotify(@RequestParam Map<String, String> params) {
         System.out.println("綠界回傳參數：" + params);
 

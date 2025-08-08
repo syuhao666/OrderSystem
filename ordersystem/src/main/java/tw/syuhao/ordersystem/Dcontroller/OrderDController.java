@@ -24,9 +24,9 @@ import tw.syuhao.ordersystem.Dentity.OrderItem;
 import tw.syuhao.ordersystem.Dentity.User;
 import tw.syuhao.ordersystem.Drepository.CartItemRepository;
 import tw.syuhao.ordersystem.Drepository.CartRepository;
-import tw.syuhao.ordersystem.Drepository.OrderDRepository; //特殊+D
+import tw.syuhao.ordersystem.Drepository.OrderDRepository;
 import tw.syuhao.ordersystem.Drepository.ProductDRepository;
-import tw.syuhao.ordersystem.Drepository.UsersRepository;
+import tw.syuhao.ordersystem.Drepository.UsersRepository; //特殊+D
 
 @CrossOrigin(origins = "*")
 @RestController
