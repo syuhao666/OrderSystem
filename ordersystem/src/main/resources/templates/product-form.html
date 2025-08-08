@@ -26,12 +26,16 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">上傳圖片</label>
+<<<<<<< HEAD
                 <input type="file" name="imageFile" />
             </div>
             <div>
                 <label for="description">商品描述</label><br>
                 <textarea id="description" name="description" rows="5" cols="50"
                     th:text="${product.description}"></textarea>
+=======
+                <input type="number" th:field="*{stock}" class="form-control" required />
+>>>>>>> 32da1eb (080505)
             </div>
             <div class="mb-3 form-check">
                 <input type="checkbox" th:field="*{enabled}" class="form-check-input" />
