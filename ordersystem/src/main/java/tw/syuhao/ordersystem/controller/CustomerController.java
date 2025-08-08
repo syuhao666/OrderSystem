@@ -1,18 +1,18 @@
 package tw.syuhao.ordersystem.controller;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import tw.syuhao.ordersystem.entity.Customer;
 import tw.syuhao.ordersystem.repository.CustomerRepository;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/customers")
 public class CustomerController {
@@ -22,14 +22,14 @@ public class CustomerController {
     @GetMapping
     public String listCustomers(Model model) {
         model.addAttribute("customers", customerRepository.findAll());
-        return "customer-list";
+        return "customerList";
     }
 
     // 新增表單
-    @GetMapping("/new")
+    @PostMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("customer", new Customer());
-        return "customer-form";
+        return "customerForm";
     }
 
     // 編輯表單
@@ -38,7 +38,7 @@ public class CustomerController {
         Customer customer = customerRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid customer ID:" + id));
         model.addAttribute("customer", customer);
-        return "customer-form";
+        return "customerForm";
     }
 
     // 儲存（新增或更新）
