@@ -1,20 +1,70 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8">
-		<title>Insert title here</title>
-	</head>
-	<body>
-		<h1>Login Page</h1>
-		<form th:action="@{/login}" 
-			method="post">
-			<div>
-				<input name="username" required="required" />
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>會員登入</title>
+	<link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+
+<body>
+	<header>
+		<div class="container">
+			<nav>
+				<div class="logo">簡約家居</div>
+				<ul>
+					<li><a th:href="@{/}">首頁</a></li>
+					<li><a th:href="@{/products}">商品</a></li>
+					<li><a href="#about">關於我們</a></li>
+					<li><a href="#contact">聯繫我們</a></li>
+				</ul>
+				<ul>
+					<li><a th:href="@{/cart}"><img th:src="@{/images/shopping.svg}" class="icon-cart"></a></li>
+					<li><a th:href="@{/login}"><img th:src="@{/images/login.svg}" class="icon-cart"></a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<section>
+		<div class="container">
+			<h2>會員登入</h2>
+			<form th:action="@{/login}" method="post" style="max-width: 400px; margin: auto;">
+				<label for="email">電子郵件：</label><br>
+				<input type="email" id="email" name="email" required
+					style="width: 100%; padding: 10px; margin-bottom: 15px;"><br>
+
+				<label for="password">密碼：</label><br>
+				<input type="password" id="password" name="password" required
+					style="width: 100%; padding: 10px; margin-bottom: 20px;"><br>
+
+				<button type="submit" class="btn">登入</button>
+				<a th:href="@{/register}" class="btn">註冊帳號</a><br><br>
+				<button id="google-login-btn" class="btn" style="background-color: blue;">使用 Google 登入</button>
+			</form>
+		</div>
+	</section>
+
+	<footer>
+		<section>
+			<div class="container">
+				<ul>
+					<h2>聯繫我們</h2>
+					<li class="xa">地址 : 台北市信義區松仁路123號</li>
+					<li class="xa">電話 : 02-1234-5678</li>
+				</ul>
+				<div>
+					<a href="#"><img th:src="@{/images/IG.png}" alt="IG" class="icon-cart2"></a>
+					<a href="#"><img th:src="@{/images/FB.png}" alt="Facebook" class="icon-cart2"></a>
+					<a href="#"><img th:src="@{/images/LINE.png}" alt="LINE" class="icon-cart2"></a>
+				</div>
 			</div>
-			<div>
-				<input type="password" name="password" required="required" />
-			</div>
-			<button type="submit">Login</button>
-		</form>
-	</body>
+		</section>
+		<p>&copy; 2025 簡約家居 版權所有</p>
+	</footer>
+
+	<script th:src="@{/js/login.js}"></script>
+</body>
+
 </html>

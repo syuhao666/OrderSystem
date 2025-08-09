@@ -13,8 +13,8 @@ public class UserService {
     @Autowired
     private UserRepository repo;
 
-    public Users register(String username, String password, String name, String email) throws Exception {
-        if(repo.findByUsername(username) != null){
+    public Users register(String username, String password, String email) throws Exception {
+        if(repo.findByEmail(email) != null){
             throw new Exception();
         }
 
@@ -23,14 +23,13 @@ public class UserService {
         Users user = new Users();
         user.setUsername(username);
         user.setPassword(hashPasswd);
-        user.setName(name);
-        user.setUsername(username);
+        user.setEmail(email);
         
         return repo.save(user);
     }
 
-    public Users login(String username, String password) {
-		Users user = repo.findByUsername(username);
+    public Users login(String email, String password) {
+		Users user = repo.findByEmail(email);
 		if (user!=null && BCrypt.checkpw(password, user.getPassword())) {
 			return user;
 		}
