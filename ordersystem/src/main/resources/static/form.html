@@ -33,7 +33,6 @@
         </div>
     </header>
     <!-- -------------------------------- -->
-
     <!-- 填寫資料 -->
     <section id="app" class="container" style="background-color: cadetblue;">
         <div class="container" style="background-color: cornflowerblue;">
@@ -44,20 +43,16 @@
                     <span>同訂購人資料</span>
                 </label>
             </div>
-
             <form action="#" method="post">
-
                 <div class="row p-3" style="background-color: lightpink;">
                     <label class="col-md-12">姓名</label>
                     <input type="text" v-model="formData.name"  required >
                 </div>
-
                 <div class="row p-3" style="background-color: mediumturquoise;">
                     <label f>手機號碼 (主聯繫)<span class="required-star">*</span></label>
                     <div>請保持暢通並留意陌生來電，以免無法送達</div>
                     <input type="tel" v-model="formData.phone" placeholder="請輸入手機號碼 (範例：09XXXXXXXX)" required>
                 </div>
-
                 <!-- <div class="row p-3" style="background-color: mediumorchid;">
                     <label>手機號碼 (備存聯繫)</label>
                     <div>確保送貨時有備用聯繫人可收貨</div>
@@ -85,12 +80,9 @@
                                 }}</option>
                         </select>
                         <input class="col-md-2" type="text" v-model="selectedZip" required />
-
-
                     </div>
                     <input type="text" v-model="formData.address" placeholder="請輸入詳細地址" required />
                 </div>
-
                 <!-- -------------------------------- -->
                 <div class="row p-3" style="background-color: rgb(128, 238, 128);">
                     <label>付費方式<span>*</span></label>
@@ -98,36 +90,19 @@
                         <option>信用卡</option>
                         <option>ATM轉帳</option>
                     </select>
-
                 </div>
                 <!-- <div class="row p-3" style="background-color: rgb(128, 238, 128);">
                     <label>有無電梯<span>*</span></label>
                     <select required>
                         <option value="電梯大樓或平地一樓">我在電梯大樓或平地一樓</option>
                     </select>
-
                 </div> -->
-
             </form>
-            <div  class="p-3 d-flex">
-              
+            <div  class="p-3 d-flex">             
                 <button class="btn btn-success ms-auto" @click="checkout">結帳</button>
-
             </div>
         </div>
-
     </section>
-
-
-
-
-
-
-
-
-
-
-
     <!-- ------------------------------------------ -->
     <footer>
         <section>
@@ -156,8 +131,6 @@
     </footer>
     <script src="./js/form.js"></script>
 
-
-    </script>
 </body>
 
 </html>

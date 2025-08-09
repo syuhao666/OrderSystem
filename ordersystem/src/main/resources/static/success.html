@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>付款成功</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+        .container {
+            width: 90%;
+            max-width: 400px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 30px;
+            transition: all 0.3s ease-in-out;
+        }
+        .icon {
+            font-size: 60px;
+            color: #4CAF50; /* 成功的綠色 */
+            margin-bottom: 20px;
+            animation: bounceIn 0.8s ease-in-out;
+        }
+        .title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .message {
+            font-size: 16px;
+            color: #7f8c8d;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .details {
+            text-align: left;
+            border-top: 1px solid #ecf0f1;
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+        .details p {
+            margin: 8px 0;
+            font-size: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .details .label {
+            font-weight: bold;
+            color: #34495e;
+        }
+        .details .value {
+            color: #555;
+        }
+        .button-group {
+            margin-top: 30px;
+        }
+        .btn {
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-primary {
+            background-color: #3498db; /* 主要操作的藍色 */
+            color: #ffffff;
+        }
+        .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background-color: #bdc3c7; /* 次要操作的灰色 */
+            color: #ffffff;
+            margin-left: 15px;
+        }
+        .btn-secondary:hover {
+            background-color: #95a5a6;
+            transform: translateY(-2px);
+        }
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.1); opacity: 1; }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+        /* 響應式設計 */
+        @media (max-width: 500px) {
+            .container {
+                padding: 20px;
+            }
+            .title {
+                font-size: 24px;
+            }
+            .icon {
+                font-size: 50px;
+            }
+            .btn {
+                width: 100%;
+                margin-top: 10px;
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">✓</div>
+        <div class="title">付款成功！</div>
+        <p class="message">您的交易已成功完成，感謝您的使用。請務必取回您的信用卡。</p>
+        
+        <div class="details">
+            <p><span class="label">交易單號：</span><span class="value">A1234567890</span></p>
+            <p><span class="label">交易金額：</span><span class="value">NT$ 5,000</span></p>
+            <p><span class="label">交易時間：</span><span class="value">2025/07/18 10:30</span></p>
+            <p><span class="label">付款卡號：</span><span class="value">**** **** **** 1234</span></p>
+        </div>
+
+        <div class="button-group">
+            <a href="#" class="btn btn-primary">列印明細</a>
+            <a href="index.html" class="btn btn-secondary">返回首頁</a>
+        </div>
+    </div>
+</body>
+</html>
