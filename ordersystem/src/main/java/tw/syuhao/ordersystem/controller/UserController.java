@@ -66,12 +66,4 @@ public class UserController {
 		
 		return "login";
 	}
-
-	@GetMapping("/home")
-	public String home(HttpSession session, Model model) {
-		Users user = (Users)session.getAttribute("user");
-		if (user == null) return "redirect:/login";
-
-		return "home";
-	}
 }
