@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org">
-	<head>
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
+
+<head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>會員註冊</title>
@@ -11,7 +12,7 @@
 	<header>
 		<div class="container">
 			<nav>
-				<div class="logo">簡約家</div>
+				<div class="logo">簡約家居</div>
 				<ul>
 					<li><a th:href="@{/}">首頁</a></li>
 					<li><a th:href="@{/products}">商品</a></li>
@@ -66,21 +67,11 @@
 					<a href="#"><img th:src="@{/images/LINE.png}" alt="LINE" class="icon-cart2"></a>
 				</div>
 			</div>
-			<div>
-				密碼
-				<input type="password" name="password" required="required" />
-			</div>
-			<div>
-				姓名
-				<input name="name" required="required" />
-			</div>
-			<div>
-				信箱
-				<input type="email" name="email" />
-			</div>
-			<button type="submit">Register</button>
-		</form>
-		<p th:if="${error}" th:text="${error}" style="color:red;"></p>
-		<a th:href="@{/login}">已有帳號, 直接登入</a>
-	</body>
+		</section>
+		<p>&copy; 2025 簡約家居 版權所有</p>
+	</footer>
+
+	<script th:src="@{/js/login.js}"></script>
+</body>
+
 </html>

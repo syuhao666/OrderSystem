@@ -35,10 +35,9 @@ public class UserController {
 			Model model,
 			@RequestParam String username,
 			@RequestParam String password,
-			@RequestParam String name,
 			@RequestParam String email) {
 		try {
-			service.register(username, password, name, email);
+			service.register(username, password, email);
 			return "redirect:/login";
 		} catch (Exception e) {
 			System.out.println(e);
@@ -55,14 +54,14 @@ public class UserController {
     @PostMapping("/login")
 	public String doLogin(			
 			Model model,
-			@RequestParam String username,
+			@RequestParam String email,
 			@RequestParam String password,
 			HttpSession session) {
 		
-		Users user = service.login(username, password);
+		Users user = service.login(email, password);
 		if (user != null) {
 			session.setAttribute("user", user);
-			return "redirect:/home";
+			return "redirect:/index.html";
 		}
 		
 		return "login";
