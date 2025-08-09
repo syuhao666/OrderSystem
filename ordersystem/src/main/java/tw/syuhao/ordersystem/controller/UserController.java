@@ -5,7 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpSession;
 import tw.syuhao.ordersystem.entity.Users;
@@ -66,4 +68,21 @@ public class UserController {
 		
 		return "login";
 	}
+
+	@RequestMapping("/api/currentUser")
+    @ResponseBody
+    public Users getCurrentUser(HttpSession session) {
+        Users user = (Users) session.getAttribute("user");
+        if (user != null) {
+            // 避免回傳密碼
+            user.setPassword(null);
+        }
+        return user;
+    }
+
+    @PostMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/login";
+    }
 }
