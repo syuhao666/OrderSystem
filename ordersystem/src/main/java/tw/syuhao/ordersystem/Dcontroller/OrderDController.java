@@ -18,15 +18,15 @@ import org.springframework.web.client.RestTemplate;
 import jakarta.transaction.Transactional;
 import tw.syuhao.ordersystem.Ddto.CartItemDTO;
 import tw.syuhao.ordersystem.Ddto.OrderRequestDTO;
-import tw.syuhao.ordersystem.Dentity.Cart;
-import tw.syuhao.ordersystem.Dentity.OrderD;
-import tw.syuhao.ordersystem.Dentity.OrderItem;
-import tw.syuhao.ordersystem.Dentity.User;
-import tw.syuhao.ordersystem.Drepository.CartItemRepository;
-import tw.syuhao.ordersystem.Drepository.CartRepository;
-import tw.syuhao.ordersystem.Drepository.OrderDRepository;
-import tw.syuhao.ordersystem.Drepository.ProductDRepository;
-import tw.syuhao.ordersystem.Drepository.UsersRepository; //特殊+D
+import tw.syuhao.ordersystem.entity.Cart;
+import tw.syuhao.ordersystem.entity.Order;
+import tw.syuhao.ordersystem.entity.OrderItem;
+import tw.syuhao.ordersystem.entity.Users;
+import tw.syuhao.ordersystem.repository.CartItemRepository;
+import tw.syuhao.ordersystem.repository.CartRepository;
+import tw.syuhao.ordersystem.repository.OrderRepository;
+import tw.syuhao.ordersystem.repository.ProductRepository;
+import tw.syuhao.ordersystem.repository.UserRepository; //特殊+D
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -34,16 +34,16 @@ import tw.syuhao.ordersystem.Drepository.UsersRepository; //特殊+D
 public class OrderDController {
 
     @Autowired
-    private OrderDRepository orderRepository; // 特殊+D
+    private OrderRepository orderRepository; // 特殊+D
 
     @Autowired
-    private ProductDRepository productRepository; // 特殊+D
+    private ProductRepository productRepository; // 特殊+D
 
     @Autowired
     private CartItemRepository cartItemRepository;
 
     @Autowired
-    private UsersRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private CartRepository cartRepository;
@@ -52,7 +52,7 @@ public class OrderDController {
     @PostMapping("/checkout")
     public ResponseEntity<String> checkout(@RequestBody OrderRequestDTO dto) {
         // 1. 建立訂單主資料
-        OrderD order = new OrderD();
+        Order order = new Order();
         order.setName(dto.getName());
         order.setPhone(dto.getPhone());
         order.setEmail(dto.getEmail());
@@ -76,7 +76,7 @@ public class OrderDController {
 
         // 4. 清空購物車
         Long fakeUserId = 2L;
-        User user = userRepository.findById(fakeUserId)
+        Users user = userRepository.findById(fakeUserId)
                 .orElseThrow(() -> new RuntimeException("找不到使用者"));
         Cart cart = cartRepository.findByUser(user)
                 .orElseThrow(() -> new RuntimeException("找不到購物車"));

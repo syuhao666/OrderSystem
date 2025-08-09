@@ -3,7 +3,7 @@ package tw.syuhao.ordersystem.Ddto;
 import java.math.BigDecimal;
 
 import lombok.Data;
-import tw.syuhao.ordersystem.Dentity.CartItem;
+import tw.syuhao.ordersystem.entity.CartItem;
 
 
 

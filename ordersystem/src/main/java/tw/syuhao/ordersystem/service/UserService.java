@@ -23,7 +23,6 @@ public class UserService {
         Users user = new Users();
         user.setUsername(username);
         user.setPassword(hashPasswd);
-        user.setName(name);
         user.setUsername(username);
         
         return repo.save(user);
