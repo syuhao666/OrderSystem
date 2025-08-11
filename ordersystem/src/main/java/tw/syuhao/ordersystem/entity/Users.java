@@ -35,5 +35,5 @@ public class Users {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
     @ToString.Exclude
-    private List<Order> orders;
+    private List<Order> order;
 }
