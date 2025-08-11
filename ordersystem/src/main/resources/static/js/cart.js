@@ -37,7 +37,8 @@ createApp({
                 fetchCart()
             }).catch(err => console.error('減少失敗', err))
         }
-
+        
+        //刪除
         function removeItem(cartItemId) {
             axios.delete('/cart/remove', { params: { cartItemId },
             headers: {'Content-Type': 'application/json'}
