@@ -24,10 +24,21 @@
                     <li><a href="./products.html">商品</a></li>
                     <li><a href="#about">關於我們</a></li>
                     <li><a href="#contact">聯繫我們</a></li>
+                    <li id="member-center-link" style="display:none;">
+                        <a href="./memberCenter.html" id="member-name"></a>
+                    </li>
                 </ul>
                 <ul>
                     <li><a href="./cart.html"><img src="./images/shopping.svg" class="icon-cart"></a></li>
-                    <li><a href="./login.html"><img src="./images/login.svg" class="icon-cart"></a></li>
+                    <!-- <li><a href="./login.html"><img src="./images/login.svg" class="icon-cart"></a></li> -->
+                    <li id="login-link"><a href="/login"><img src="./images/login.svg" class="icon-cart"></a></li>
+                    <li id="logout-link" style="display:none;">
+                        <form action="/logout" method="post" style="display:inline;">
+                            <button type="submit" style="background:none;border:none;padding:0;">
+                                <img src="./images/login.svg" class="icon-cart" title="登出">
+                            </button>
+                        </form>
+                    </li>
                 </ul>
             </nav>
         </div>
