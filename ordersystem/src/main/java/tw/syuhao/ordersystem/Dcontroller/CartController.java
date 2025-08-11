@@ -1,6 +1,5 @@
 package tw.syuhao.ordersystem.Dcontroller;
 
-
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpSession;
 import tw.syuhao.ordersystem.Ddto.AddCartDTO;
 import tw.syuhao.ordersystem.Ddto.CartItemUpdateDTO;
 import tw.syuhao.ordersystem.entity.Cart;
@@ -22,8 +22,6 @@ import tw.syuhao.ordersystem.repository.CartItemRepository;
 import tw.syuhao.ordersystem.repository.CartRepository;
 import tw.syuhao.ordersystem.repository.ProductRepository; //特殊+D
 import tw.syuhao.ordersystem.repository.UserRepository;
-
-
 
 @RestController
 @RequestMapping("/cart")
@@ -39,16 +37,22 @@ public class CartController {
     private UserRepository userRepository;
 
     @Autowired
-    private ProductRepository productRepository; //特殊+D
+    private ProductRepository productRepository; // 特殊+D
 
+    // ----------------------------------------------創建購物車
     @PostMapping("/add")
-    public ResponseEntity<String> addCart(@RequestBody AddCartDTO cdto) {
-        // 1. 假設會員固定為 ID = 1
-        Long fakeUserId = 2L;
-        Users user = userRepository.findById(fakeUserId)
-                .orElseThrow(() -> new RuntimeException("找不到使用者"));
+    public ResponseEntity<String> addCart(@RequestBody AddCartDTO cdto, HttpSession session) {
+        // // 1. 假設會員固定為 ID = 1
+        // Long fakeUserId = 2L;
+        // Users user = userRepository.findById(fakeUserId)
+        // .orElseThrow(() -> new RuntimeException("找不到使用者"));
+        // System.err.println(user);
 
-        System.err.println(user);
+        Users user = (Users) session.getAttribute("user");
+        if (user == null) {
+            // 沒登入就回傳錯誤
+            return ResponseEntity.status(401).body("請先登入");
+        }
 
         // 2. 找出或建立使用者的購物車
         Cart cart = cartRepository.findByUser(user)
@@ -59,7 +63,7 @@ public class CartController {
                 });
 
         // 3. 查商品
-        Product product = productRepository.findById(cdto.getId())  //特殊+D
+        Product product = productRepository.findById(cdto.getId()) // 特殊+D
                 .orElseThrow(() -> new RuntimeException("找不到商品"));
 
         // 4. 檢查購物車中是否已有該商品
@@ -99,6 +103,11 @@ public class CartController {
                 .orElseThrow(() -> new RuntimeException("找不到購物車商品"));
         int newQty = item.getQuantity() - 1;
         if (newQty <= 0) {
+            // ---新增因為購物車刪不掉
+            Cart cart = item.getCart();
+            if (cart != null) {
+                cart.getCartItems().remove(item);
+            }
             cartItemRepository.delete(item);
         } else {
             item.setQuantity(newQty);
@@ -111,6 +120,13 @@ public class CartController {
     public ResponseEntity<String> removeItem(@RequestParam Long cartItemId) {
         CartItem item = cartItemRepository.findById(cartItemId)
                 .orElseThrow(() -> new RuntimeException("找不到購物車商品"));
+
+        // -----新增因為購物車刪不掉
+        Cart cart = item.getCart();
+        if (cart != null) {
+            cart.getCartItems().remove(item); // 從關聯集合移除
+        }
+        // -----
         cartItemRepository.delete(item);
         return ResponseEntity.ok("商品已移除購物車");
     }
