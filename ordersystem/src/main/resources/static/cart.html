@@ -79,9 +79,10 @@
                         <div class="bg-info p-5">
                             <h3>選擇運送方式</h3>
                             <div class="row p-3">
-                                <select required >
+                                <select required>
                                     <option selected disabled>請選擇縣市</option>
-                                    <option v-for="(districts, city) in addressData" :key="city" :value="city">{{ city }}</option>
+                                    <option v-for="(districts, city) in addressData" :key="city" :value="city">{{ city
+                                        }}</option>
                                 </select>
                                 <select required>
                                     <option selected disabled>請選擇搬運樓層</option>
@@ -162,8 +163,18 @@
         <p>&copy; 2025 簡約家居 版權所有</p>
     </footer>
     <script src="./js/cart.js"></script>
-
-
+    <script>
+        // 取得會員資料並顯示
+        fetch('/api/currentUser')
+            .then(res => res.json())
+            .then(user => {
+                if (user && user.username) {
+                    document.getElementById('member-center-link').style.display = '';
+                    document.getElementById('member-name').textContent = '會員中心';
+                    document.getElementById('login-link').style.display = 'none';
+                    document.getElementById('logout-link').style.display = '';
+                }
+            });
     </script>
 </body>
 

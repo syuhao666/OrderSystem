@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import tw.syuhao.ordersystem.Ddto.CartItemDTO;
 import tw.syuhao.ordersystem.Ddto.OrderRequestDTO;
@@ -47,10 +48,17 @@ public class OrderDController {
 
     @Autowired
     private CartRepository cartRepository;
-    
+
     @Transactional
     @PostMapping("/checkout")
-    public ResponseEntity<String> checkout(@RequestBody OrderRequestDTO dto) {
+    public ResponseEntity<String> checkout(@RequestBody OrderRequestDTO dto, HttpSession session) {
+
+        // 1. 從 Session 拿使用者
+        Users user = (Users) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.status(401).body("請先登入");
+        }
+
         // 1. 建立訂單主資料
         Order order = new Order();
         order.setName(dto.getName());
@@ -74,15 +82,11 @@ public class OrderDController {
         // 3. 儲存訂單
         orderRepository.save(order);
 
-        // 4. 清空購物車
-        Long fakeUserId = 2L;
-        Users user = userRepository.findById(fakeUserId)
-                .orElseThrow(() -> new RuntimeException("找不到使用者"));
+        // 5. 清空購物車，要用真正登入使用者的購物車
         Cart cart = cartRepository.findByUser(user)
                 .orElseThrow(() -> new RuntimeException("找不到購物車"));
         cartItemRepository.deleteByCart(cart);
 
-   
         // 5. 呼叫 n8n 付款流程 webhook（改用 exchange 搭配 HttpEntity）
         RestTemplate restTemplate = new RestTemplate();
         String n8nUrl = "https://accurately-enhanced-raven.ngrok-free.app/webhook/ecpay/dd";
@@ -159,80 +163,68 @@ public class OrderDController {
 // return ResponseEntity.ok("訂單已建立！");
 // }
 
-//---------------------------------------
+// ---------------------------------------
 
+// 5. 呼叫 n8n 付款流程 webhook
+// RestTemplate restTemplate = new RestTemplate();
+// String n8nUrl =
+// "https://accurately-enhanced-raven.ngrok-free.app/webhook/ecpay/dd";
 
-     // 5. 呼叫 n8n 付款流程 webhook
-        // RestTemplate restTemplate = new RestTemplate();
-        // String n8nUrl =
-        // "https://accurately-enhanced-raven.ngrok-free.app/webhook/ecpay/dd";
+// // 送給 n8n 的資料，可以包含剛剛存的訂單內容
+// Map<String, Object> paymentData = new HashMap<>();
+// paymentData.put("orderId", order.getId());
+// paymentData.put("name", order.getName());
+// paymentData.put("totalAmount", order.getTotalPrice());
+// paymentData.put("items", dto.getCart()); // 原本的購物車項目
 
-        // // 送給 n8n 的資料，可以包含剛剛存的訂單內容
-        // Map<String, Object> paymentData = new HashMap<>();
-        // paymentData.put("orderId", order.getId());
-        // paymentData.put("name", order.getName());
-        // paymentData.put("totalAmount", order.getTotalPrice());
-        // paymentData.put("items", dto.getCart()); // 原本的購物車項目
+// String ecpayHtml = restTemplate.postForObject(n8nUrl, paymentData,
+// String.class);
+// System.out.println(ecpayHtml);
 
-        // String ecpayHtml = restTemplate.postForObject(n8nUrl, paymentData,
-        // String.class);
-        // System.out.println(ecpayHtml);
+// // 6. 回傳 HTML 給前端
+// return ResponseEntity.ok()
+// .contentType(MediaType.TEXT_HTML)
+// .body(ecpayHtml);
+// ----------------------------------------
 
-        // // 6. 回傳 HTML 給前端
-        // return ResponseEntity.ok()
-        // .contentType(MediaType.TEXT_HTML)
-        // .body(ecpayHtml);
-        // ----------------------------------------
+// -------------------------------------------
+// @Transactional
+// @PostMapping("/checkout")
+// public ResponseEntity<String> checkout(@RequestBody OrderRequestDTO dto) {
+// // 建立訂單主資料
 
+// OrderD order = new OrderD(); // 特殊+D
+// order.setName(dto.getName());
+// order.setPhone(dto.getPhone());
+// order.setEmail(dto.getEmail());
+// order.setAddress(dto.getAddress());
+// order.setPaymentMethod(dto.getPaymentMethod());
+// order.setTotalPrice(dto.getTotalPrice());
 
+// // 建立訂單項目資料
+// for (CartItemDTO itemDTO : dto.getCart()) {
+// OrderItem item = new OrderItem();
+// productRepository.findById(itemDTO.getProductId()).ifPresent(item::setProduct);
+// item.setName(itemDTO.getName());
+// item.setPrice(itemDTO.getPrice());
+// item.setQuantity(itemDTO.getQuantity());
+// item.setOrder(order); // 綁定回主訂單
+// order.getItems().add(item);
 
+// }
 
+// // 儲存訂單
+// orderRepository.save(order);
 
+// Long fakeUserId = 2L;
 
+// User user = userRepository.findById(fakeUserId)
+// .orElseThrow(() -> new RuntimeException("找不到使用者"));
 
+// Cart cart = cartRepository.findByUser(user)
+// .orElseThrow(() -> new RuntimeException("找不到購物車"));
+// cartItemRepository.deleteByCart(cart);
 
-
-
-        
-
-        // -------------------------------------------
-    // @Transactional
-    // @PostMapping("/checkout")
-    // public ResponseEntity<String> checkout(@RequestBody OrderRequestDTO dto) {
-    // // 建立訂單主資料
-
-    // OrderD order = new OrderD(); // 特殊+D
-    // order.setName(dto.getName());
-    // order.setPhone(dto.getPhone());
-    // order.setEmail(dto.getEmail());
-    // order.setAddress(dto.getAddress());
-    // order.setPaymentMethod(dto.getPaymentMethod());
-    // order.setTotalPrice(dto.getTotalPrice());
-
-    // // 建立訂單項目資料
-    // for (CartItemDTO itemDTO : dto.getCart()) {
-    // OrderItem item = new OrderItem();
-    // productRepository.findById(itemDTO.getProductId()).ifPresent(item::setProduct);
-    // item.setName(itemDTO.getName());
-    // item.setPrice(itemDTO.getPrice());
-    // item.setQuantity(itemDTO.getQuantity());
-    // item.setOrder(order); // 綁定回主訂單
-    // order.getItems().add(item);
-
-    // }
-
-    // // 儲存訂單
-    // orderRepository.save(order);
-
-    // Long fakeUserId = 2L;
-
-    // User user = userRepository.findById(fakeUserId)
-    // .orElseThrow(() -> new RuntimeException("找不到使用者"));
-
-    // Cart cart = cartRepository.findByUser(user)
-    // .orElseThrow(() -> new RuntimeException("找不到購物車"));
-    // cartItemRepository.deleteByCart(cart);
-
-    // return ResponseEntity.ok("訂單成功，訂單 ID: " + order.getId());
-    // }
-    // -------------------------------------------------------------------------
+// return ResponseEntity.ok("訂單成功，訂單 ID: " + order.getId());
+// }
+// -------------------------------------------------------------------------
