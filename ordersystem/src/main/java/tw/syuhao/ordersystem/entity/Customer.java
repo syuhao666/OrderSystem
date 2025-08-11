@@ -32,8 +32,8 @@ public class Customer {
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 
-    @Column(length = 1000)
-    private String address;
+    // @Column(length = 1000)
+    // private String address;
 
     @Column(nullable = false, length = 20)
     private String role; // ADMIN, USER...
