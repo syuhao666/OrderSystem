@@ -103,6 +103,11 @@ public class CartController {
                 .orElseThrow(() -> new RuntimeException("找不到購物車商品"));
         int newQty = item.getQuantity() - 1;
         if (newQty <= 0) {
+            // ---新增因為購物車刪不掉
+            Cart cart = item.getCart();
+            if (cart != null) {
+                cart.getCartItems().remove(item);
+            }
             cartItemRepository.delete(item);
         } else {
             item.setQuantity(newQty);
@@ -115,6 +120,13 @@ public class CartController {
     public ResponseEntity<String> removeItem(@RequestParam Long cartItemId) {
         CartItem item = cartItemRepository.findById(cartItemId)
                 .orElseThrow(() -> new RuntimeException("找不到購物車商品"));
+
+        // -----新增因為購物車刪不掉
+        Cart cart = item.getCart();
+        if (cart != null) {
+            cart.getCartItems().remove(item); // 從關聯集合移除
+        }
+        // -----
         cartItemRepository.delete(item);
         return ResponseEntity.ok("商品已移除購物車");
     }
