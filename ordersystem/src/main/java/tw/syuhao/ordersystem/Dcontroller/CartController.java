@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import tw.syuhao.ordersystem.Ddto.AddCartDTO;
 import tw.syuhao.ordersystem.Ddto.CartItemUpdateDTO;
-import tw.syuhao.ordersystem.Dentity.Cart;
-import tw.syuhao.ordersystem.Dentity.CartItem;
-import tw.syuhao.ordersystem.Dentity.ProductD; //特殊+D
-import tw.syuhao.ordersystem.Dentity.User;
-import tw.syuhao.ordersystem.Drepository.CartItemRepository;
-import tw.syuhao.ordersystem.Drepository.CartRepository;
-import tw.syuhao.ordersystem.Drepository.ProductDRepository; //特殊+D
-import tw.syuhao.ordersystem.Drepository.UsersRepository;
+import tw.syuhao.ordersystem.entity.Cart;
+import tw.syuhao.ordersystem.entity.CartItem;
+import tw.syuhao.ordersystem.entity.Product; //特殊+D
+import tw.syuhao.ordersystem.entity.Users;
+import tw.syuhao.ordersystem.repository.CartItemRepository;
+import tw.syuhao.ordersystem.repository.CartRepository;
+import tw.syuhao.ordersystem.repository.ProductRepository; //特殊+D
+import tw.syuhao.ordersystem.repository.UserRepository;
 
 
 
@@ -36,16 +36,16 @@ public class CartController {
     private CartItemRepository cartItemRepository;
 
     @Autowired
-    private UsersRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    private ProductDRepository productRepository; //特殊+D
+    private ProductRepository productRepository; //特殊+D
 
     @PostMapping("/add")
     public ResponseEntity<String> addCart(@RequestBody AddCartDTO cdto) {
         // 1. 假設會員固定為 ID = 1
         Long fakeUserId = 2L;
-        User user = userRepository.findById(fakeUserId)
+        Users user = userRepository.findById(fakeUserId)
                 .orElseThrow(() -> new RuntimeException("找不到使用者"));
 
         System.err.println(user);
@@ -59,7 +59,7 @@ public class CartController {
                 });
 
         // 3. 查商品
-        ProductD product = productRepository.findById(cdto.getId())  //特殊+D
+        Product product = productRepository.findById(cdto.getId())  //特殊+D
                 .orElseThrow(() -> new RuntimeException("找不到商品"));
 
         // 4. 檢查購物車中是否已有該商品

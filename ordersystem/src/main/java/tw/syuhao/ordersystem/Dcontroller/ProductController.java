@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import tw.syuhao.ordersystem.Ddto.CartItemResponseDTO;
-import tw.syuhao.ordersystem.Dentity.Cart;
-import tw.syuhao.ordersystem.Dentity.CartItem;
-import tw.syuhao.ordersystem.Dentity.ProductD;  //特殊+D
-import tw.syuhao.ordersystem.Dentity.User;
-import tw.syuhao.ordersystem.Drepository.CartItemRepository;
-import tw.syuhao.ordersystem.Drepository.CartRepository;
-import tw.syuhao.ordersystem.Drepository.ProductDRepository; //特殊+D
-import tw.syuhao.ordersystem.Drepository.UsersRepository;
+import tw.syuhao.ordersystem.entity.Cart;
+import tw.syuhao.ordersystem.entity.CartItem;
+import tw.syuhao.ordersystem.entity.Product;  //特殊+D
+import tw.syuhao.ordersystem.entity.Users;
+import tw.syuhao.ordersystem.repository.CartItemRepository;
+import tw.syuhao.ordersystem.repository.CartRepository;
+import tw.syuhao.ordersystem.repository.ProductRepository; //特殊+D
+import tw.syuhao.ordersystem.repository.UserRepository;
 
 
 
@@ -26,7 +26,7 @@ import tw.syuhao.ordersystem.Drepository.UsersRepository;
 public class ProductController {
 
     @Autowired
-    private ProductDRepository productRepository; //特殊+D
+    private ProductRepository productRepository; //特殊+D
 
     @Autowired
     private CartItemRepository cartItemRepository;
@@ -35,10 +35,10 @@ public class ProductController {
     private CartRepository cartRepository;
 
     @Autowired
-    private UsersRepository userRepository;
+    private UserRepository userRepository;
 
     @GetMapping("/products")
-    public List<ProductD> getAllProducts() {  //特殊+D
+    public List<Product> getAllProducts() {  //特殊+D
         return productRepository.findAll();
     }
 
@@ -51,7 +51,7 @@ public class ProductController {
     public ResponseEntity<List<CartItemResponseDTO>> getCartItems() {
         Long fakeUserId = 2L;
 
-        User user = userRepository.findById(fakeUserId)
+        Users user = userRepository.findById(fakeUserId)
                 .orElseThrow(() -> new RuntimeException("找不到使用者"));
 
         Cart cart = cartRepository.findByUser(user)
