@@ -25,6 +25,7 @@ public class OrderController {
     public String listOrders(Model model) {
         List<Order> orders = orderService.findAll();
         model.addAttribute("orders", orders);
+        model.addAttribute("activePage", "order");
         return "adminOrder";
     }
 
