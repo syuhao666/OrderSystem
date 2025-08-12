@@ -25,8 +25,8 @@ public class CustomerController {
     // 列表：一定從 users 出發，LEFT JOIN address
     @GetMapping
     public String listCustomers(Model model) {
-        var users = userRepository.findAllWithAddress();
-        model.addAttribute("customers", users);
+        // var users = userRepository.findAllWithAddress();
+        model.addAttribute("users", userRepository.findAllWithAddress());
         return "customerList";
     }
 
@@ -51,7 +51,7 @@ public class CustomerController {
 
     // 儲存（新增或更新）
     @PostMapping("/save")
-    public String saveCustomer(@ModelAttribute("users") Users formUser) {
+    public String saveCustomer(@ModelAttribute("user") Users formUser) {
         if (formUser.getId() == null) {
             formUser.setCreatedAt(LocalDateTime.now());
         } else {
