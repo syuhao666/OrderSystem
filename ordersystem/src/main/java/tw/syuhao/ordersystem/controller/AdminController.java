@@ -30,15 +30,17 @@ public class AdminController {
     private ProductService service;
 
     @GetMapping("/")
-    public String adminHome() {
-        return "admin-home";
+    public String adminHome(Model model) {
+        model.addAttribute("activePage", "admin");
+        return "adminHome";
     }
 
     @GetMapping("/products")
     public String listProducts(Model model) {
         List<Product> products = service.getAllProducts();
+        model.addAttribute("activePage", "product");
         model.addAttribute("products", products);
-        return "admin-product";
+        return "adminProduct";
     }
 
     @GetMapping("/product/new")

@@ -8,25 +8,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpSession;
 import tw.syuhao.ordersystem.Ddto.CartItemResponseDTO;
 import tw.syuhao.ordersystem.entity.Cart;
 import tw.syuhao.ordersystem.entity.CartItem;
-import tw.syuhao.ordersystem.entity.Product;  //特殊+D
+import tw.syuhao.ordersystem.entity.Product; //特殊+D
 import tw.syuhao.ordersystem.entity.Users;
 import tw.syuhao.ordersystem.repository.CartItemRepository;
 import tw.syuhao.ordersystem.repository.CartRepository;
 import tw.syuhao.ordersystem.repository.ProductRepository; //特殊+D
 import tw.syuhao.ordersystem.repository.UserRepository;
 
-
-
-
 @RestController
 @RequestMapping("/api")
 public class ProductController {
 
     @Autowired
-    private ProductRepository productRepository; //特殊+D
+    private ProductRepository productRepository; // 特殊+D
 
     @Autowired
     private CartItemRepository cartItemRepository;
@@ -38,7 +36,7 @@ public class ProductController {
     private UserRepository userRepository;
 
     @GetMapping("/products")
-    public List<Product> getAllProducts() {  //特殊+D
+    public List<Product> getAllProducts() { // 特殊+D
         return productRepository.findAll();
     }
 
@@ -48,11 +46,14 @@ public class ProductController {
     }
 
     @GetMapping("/items")
-    public ResponseEntity<List<CartItemResponseDTO>> getCartItems() {
-        Long fakeUserId = 2L;
-
-        Users user = userRepository.findById(fakeUserId)
-                .orElseThrow(() -> new RuntimeException("找不到使用者"));
+    public ResponseEntity<List<CartItemResponseDTO>> getCartItems(HttpSession session) {
+        
+        // 從 Session 取得目前登入的使用者
+        Users user = (Users) session.getAttribute("user");
+        if (user == null) {
+            // 沒登入，回 401 Unauthorized 或你想要的錯誤
+            return ResponseEntity.status(401).build();
+        }
 
         Cart cart = cartRepository.findByUser(user)
                 .orElseThrow(() -> new RuntimeException("使用者尚未建立購物車"));

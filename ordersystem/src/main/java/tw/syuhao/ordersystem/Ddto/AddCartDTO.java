@@ -6,5 +6,5 @@ import lombok.Data;
 public class AddCartDTO {
     private Long id;  // 商品ID
     private int quantity;    // 商品數量
-    // private Long userId;
+    
 }
