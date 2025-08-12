@@ -1,16 +1,12 @@
 package tw.syuhao.ordersystem.entity;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,8 +27,6 @@ public class Users {
     private String email;
     private String role;
 
-    @Column(name="created_at", nullable=false)
-    private LocalDateTime createdAt;
     
      // 一對一：User <-> Address
     @OneToOne(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -43,8 +37,7 @@ public class Users {
     // @ToString.Exclude
     // private Cart cart;
 
-    @PrePersist
-    void prePersist() { if (createdAt == null) createdAt = LocalDateTime.now(); }
+    
 
      // 工具方法（可選）：維護雙向關聯一致性
     public void attachAddress(Address addr) {

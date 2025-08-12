@@ -1,7 +1,5 @@
 package tw.syuhao.ordersystem.controller;
 
-import java.time.LocalDateTime;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,13 +49,13 @@ public class CustomerController {
     // 儲存（新增或更新）
     @PostMapping("/save")
     public String saveCustomer(@ModelAttribute("users") Users formUser) {
-        if (formUser.getId() == null) {
-            formUser.setCreatedAt(LocalDateTime.now());
-        } else {
-            var existing = userRepository.findById(formUser.getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Invalid user ID: " + formUser.getId()));
-            formUser.setCreatedAt(existing.getCreatedAt());
-        }
+        // if (formUser.getId() == null) {
+        //     formUser.setCreatedAt(LocalDateTime.now());
+        // } else {
+        //     var existing = userRepository.findById(formUser.getId())
+        //             .orElseThrow(() -> new IllegalArgumentException("Invalid user ID: " + formUser.getId()));
+        //     formUser.setCreatedAt(existing.getCreatedAt());
+        // }
 
         // 維護雙向關聯：Address.user 指回來 Users
         if (formUser.getAddress() != null) {
