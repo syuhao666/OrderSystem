@@ -76,6 +76,7 @@ public class UserController {
         if (user != null) {
             // 避免回傳密碼
             user.setPassword(null);
+			
         }
         return user;
     }

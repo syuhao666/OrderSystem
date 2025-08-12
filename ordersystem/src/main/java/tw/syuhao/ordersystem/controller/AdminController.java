@@ -31,14 +31,14 @@ public class AdminController {
 
     @GetMapping("/")
     public String adminHome() {
-        return "admin-home";
+        return "adminHome";
     }
 
     @GetMapping("/products")
     public String listProducts(Model model) {
         List<Product> products = service.getAllProducts();
         model.addAttribute("products", products);
-        return "admin-product";
+        return "adminProduct";
     }
 
     @GetMapping("/product/new")
