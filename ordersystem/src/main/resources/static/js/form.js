@@ -10,13 +10,13 @@ createApp({
 
 
         const formData = reactive({
-            name: '張家綸',
-            phone: '0978265991',
-            email: 'ms0590341@gmail.com',
+            name: 'hwgtwet',
+            phone: '0987654321',
+            email: 'fsdfsfsfd@gmail.com',
             city: '',
             district: '',
             zip: '',
-            address: '文昌街95巷12號',
+            address: 'rawsrar',
             paymentMethod: '信用卡',
 
         });
