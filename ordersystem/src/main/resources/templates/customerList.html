@@ -23,7 +23,7 @@
                     <th>ID</th>
                     <th>帳號</th>
                     <th>Email</th>
-                    <!-- <th>地址</th>  -->
+                    <th>地址</th> 
                     <th>角色</th>
                     <th>建立時間</th>
                     <th>操作</th>
@@ -34,6 +34,7 @@
                     <td th:text="${u.id}"></td>
                     <td th:text="${u.username}"></td>
                     <td th:text="${u.email}"></td>
+                    <td th:text="${u.address != null ? u.address.address : '—'}"></td>
                     <!-- <td th:text="${u.address}"></td>  -->
                     <td th:text="${u.role}"></td>
                     <td th:text="${#temporals.format(u.createdAt, 'yyyy-MM-dd HH:mm')}"></td>

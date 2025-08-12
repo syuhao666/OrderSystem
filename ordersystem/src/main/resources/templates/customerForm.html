@@ -16,7 +16,7 @@
 
     <main class="container">
         <h2 th:text="${user.id != null ? '編輯使用者' : '新增使用者'}"></h2>
-        <form th:action="@{/admin/users/save}" th:object="${user}" method="post">
+        <form th:action="@{/admin/customers/save}" th:object="${user}" method="post">
             <input type="hidden" th:field="*{id}">
 
             <label>帳號：</label>
@@ -28,8 +28,8 @@
             <label>Email：</label>
             <input type="email" th:field="*{email}" required>
 
-            <label>地址：</label> <!-- 新增 -->
-            <input type="text" th:field="*{address}">
+            <label>地址：</label>
+            <input type="text" th:field="*{address.address}" placeholder="例如：台北市信義區松仁路123號" />
 
             <label>角色：</label>
             <select th:field="*{role}" required>
@@ -38,7 +38,7 @@
             </select>
 
             <button type="submit" class="btn-save">儲存</button>
-            <a th:href="@{/admin/users}" class="btn-cancel">取消</a>
+            <a th:href="@{/admin/customers}" class="btn-cancel">取消</a>
         </form>
     </main>
 </body>
