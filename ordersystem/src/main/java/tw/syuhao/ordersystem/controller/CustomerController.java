@@ -9,14 +9,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import tw.syuhao.ordersystem.entity.Address;
 import tw.syuhao.ordersystem.entity.Users;
 import tw.syuhao.ordersystem.repository.UserRepository;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/customers")
 public class CustomerController {
@@ -51,7 +50,7 @@ public class CustomerController {
 
     // 儲存（新增或更新）
     @PostMapping("/save")
-    public String saveCustomer(@ModelAttribute("user") Users formUser) {
+    public String saveCustomer(@ModelAttribute("users") Users formUser) {
         if (formUser.getId() == null) {
             formUser.setCreatedAt(LocalDateTime.now());
         } else {
