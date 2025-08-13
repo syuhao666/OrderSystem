@@ -94,7 +94,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr th:each="order : ${orders}">
+                                <tr th:each="order : ${orderPage.content}">
                                     <td th:text="${order.id}"></td>
                                     <td th:text="${order.name}"></td>
                                     <td th:text="${order.phone}"></td>
@@ -109,6 +109,30 @@
                                 </tr>
                             </tbody>
                         </table>
+
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <!-- 上一頁 -->
+                                <li class="page-item" th:classappend="${orderPage.first} ? 'disabled'">
+                                    <a class="page-link"
+                                        th:href="@{/admin/orders(page=${orderPage.number - 1}, size=${orderPage.size})}">上一頁</a>
+                                </li>
+
+                                <!-- 頁碼 -->
+                                <li class="page-item" th:each="i : ${#numbers.sequence(0, orderPage.totalPages - 1)}"
+                                    th:classappend="${i == orderPage.number} ? 'active'">
+                                    <a class="page-link" th:text="${i + 1}"
+                                        th:href="@{/admin/orders(page=${i}, size=${orderPage.size})}"></a>
+                                </li>
+
+                                <!-- 下一頁 -->
+                                <li class="page-item" th:classappend="${orderPage.last} ? 'disabled'">
+                                    <a class="page-link"
+                                        th:href="@{/admin/orders(page=${orderPage.number + 1}, size=${orderPage.size})}">下一頁</a>
+                                </li>
+                            </ul>
+                        </nav>
+
                     </div>
                 </div>
             </main>

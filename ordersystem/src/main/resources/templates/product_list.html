@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>商品管理 - 查詢列表</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+</head>
+<body>
+<div class="container mt-4">
+
+    <h2>商品查詢</h2>
+
+    <form method="get" class="row g-3 mb-3">
+        <div class="col-md-3">
+            <input type="text" class="form-control" name="name" placeholder="商品名稱" th:value="${name}" />
+        </div>
+        <div class="col-md-2">
+            <input type="text" class="form-control" name="category" placeholder="分類" th:value="${category}" />
+        </div>
+        <div class="col-md-2">
+            <select name="status" class="form-select">
+                <option th:selected="${status == null or status == ''}" value="">全部狀態</option>
+                <option th:selected="${status == 'available'}" value="available">上架</option>
+                <option th:selected="${status == 'out_of_stock'}" value="out_of_stock">缺貨</option>
+            </select>
+        </div>
+        <div class="col-md-1">
+            <input type="number" step="0.01" class="form-control" name="minPrice" placeholder="最低價" th:value="${minPrice}" />
+        </div>
+        <div class="col-md-1">
+            <input type="number" step="0.01" class="form-control" name="maxPrice" placeholder="最高價" th:value="${maxPrice}" />
+        </div>
+        <div class="col-md-1 d-grid">
+            <button type="submit" class="btn btn-primary">查詢</button>
+        </div>
+    </form>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>名稱</th>
+                <th>價格</th>
+                <th>庫存</th>
+                <th>狀態</th>
+                <th>建立時間</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="product : ${products.content}">
+                <td th:text="${product.id}">1</td>
+                <td th:text="${product.name}">商品A</td>
+                <td th:text="${product.price}">1000</td>
+                <td th:text="${product.stock}">50</td>
+                <td th:text="${product.status}">上架</td>
+                <td th:text="${product.createdAt.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm'))}"></td>
+
+            </tr>
+        </tbody>
+    </table>
+
+    <nav>
+      <ul class="pagination">
+        <li th:classappend="${products.first}? 'disabled'">
+          <a th:href="@{/admin/products(page=${products.number-1}, size=${products.size}, name=${name}, status=${status}, minPrice=${minPrice}, maxPrice=${maxPrice})}" class="page-link">上一頁</a>
+        </li>
+        <li th:each="pageNum : ${#numbers.sequence(0, products.totalPages-1)}" th:classappend="${pageNum == products.number}? 'active'">
+          <a th:href="@{/admin/products(page=${pageNum}, size=${products.size}, name=${name}, status=${status}, minPrice=${minPrice}, maxPrice=${maxPrice})}" class="page-link" th:text="${pageNum + 1}">1</a>
+        </li>
+        <li th:classappend="${products.last}? 'disabled'">
+          <a th:href="@{/admin/products(page=${products.number+1}, size=${products.size}, name=${name}, status=${status}, minPrice=${minPrice}, maxPrice=${maxPrice})}" class="page-link">下一頁</a>
+        </li>
+      </ul>
+    </nav>
+
+</div>
+</body>
+</html>

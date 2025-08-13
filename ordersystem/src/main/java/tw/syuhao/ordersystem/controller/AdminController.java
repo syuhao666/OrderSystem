@@ -1,14 +1,15 @@
 package tw.syuhao.ordersystem.controller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,10 +37,15 @@ public class AdminController {
     }
 
     @GetMapping("/products")
-    public String listProducts(Model model) {
-        List<Product> products = service.getAllProducts();
+    public String listProducts(Model model,
+                               @RequestParam(defaultValue = "0") int page, // 第幾頁（0 起算）
+                               @RequestParam(defaultValue = "10") int size // 每頁顯示幾筆
+                                ) {
+
+        Page<Product> productPage = service.getProducts(page, size);
+        model.addAttribute("productPage", productPage);
+
         model.addAttribute("activePage", "product");
-        model.addAttribute("products", products);
         return "adminProduct";
     }
 
@@ -113,4 +119,25 @@ public class AdminController {
         return "redirect:/admin/products";
     }
 
+
+    @GetMapping("/product/search")
+    public String listProducts(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) BigDecimal minPrice,
+            @RequestParam(required = false) BigDecimal maxPrice,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            Model model) {
+
+        Page<Product> products = service.searchProducts(name, status, minPrice, maxPrice, page, size);
+
+        model.addAttribute("products", products);
+        model.addAttribute("name", name);
+        model.addAttribute("status", status);
+        model.addAttribute("minPrice", minPrice);
+        model.addAttribute("maxPrice", maxPrice);
+
+        return "product_list";
+    }
 }
