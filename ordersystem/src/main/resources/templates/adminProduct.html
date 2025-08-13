@@ -83,6 +83,7 @@
                     <h2>商品管理</h2>
                     <div class="container mt-5">
                         <a href="/admin/product/new" class="btn btn-success mb-3">新增商品</a>
+                        <a href="/admin/product/search" class="btn btn-success mb-3">查詢商品</a>
 
 
                         <table class="table table-bordered">
@@ -97,7 +98,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr th:each="p : ${products}">
+                                <tr th:each="p : ${productPage.content}">
                                     <td th:text="${p.id}">1</td>
                                     <td th:text="${p.name}">商品名稱</td>
                                     <td th:text="${p.price}">100</td>
@@ -113,6 +114,29 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <!-- 上一頁 -->
+                                <li class="page-item" th:classappend="${productPage.first} ? 'disabled'">
+                                    <a class="page-link"
+                                        th:href="@{/admin/products(page=${productPage.number - 1}, size=${productPage.size})}">上一頁</a>
+                                </li>
+
+                                <!-- 頁碼 -->
+                                <li class="page-item" th:each="i : ${#numbers.sequence(0, productPage.totalPages - 1)}"
+                                    th:classappend="${i == productPage.number} ? 'active'">
+                                    <a class="page-link" th:text="${i + 1}"
+                                        th:href="@{/admin/products(page=${i}, size=${productPage.size})}"></a>
+                                </li>
+
+                                <!-- 下一頁 -->
+                                <li class="page-item" th:classappend="${productPage.last} ? 'disabled'">
+                                    <a class="page-link"
+                                        th:href="@{/admin/products(page=${productPage.number + 1}, size=${productPage.size})}">下一頁</a>
+                                </li>
+                            </ul>
+                        </nav>
+
                     </div>
                 </div>
             </main>
