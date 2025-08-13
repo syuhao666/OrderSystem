@@ -38,6 +38,9 @@ public class Order {
     @Column(name = "total_amount")
     private BigDecimal totalPrice;
 
+    // @Column(name = "merchant_trade_no")
+    // private String merchanttradeno;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<OrderItem> items = new ArrayList<>();

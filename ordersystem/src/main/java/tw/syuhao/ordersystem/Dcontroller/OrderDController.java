@@ -67,7 +67,6 @@ public class OrderDController {
         order.setAddress(dto.getAddress());
         order.setPaymentMethod(dto.getPaymentMethod());
         order.setTotalPrice(dto.getTotalPrice());
-        // order.setUser(user);
         userRepository.findById(user.getId()).ifPresent(order::setUser);
         System.out.println(order);
         // 2. 建立訂單項目資料
