@@ -1,6 +1,7 @@
 package tw.syuhao.ordersystem.entity;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +36,10 @@ public class Product {
     private String description;
 
     private Boolean enabled;
+
+    private String status;
+
+    private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "product")
     @JsonBackReference
