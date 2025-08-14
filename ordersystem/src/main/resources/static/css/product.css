@@ -128,7 +128,19 @@ nav a {
     text-decoration: none;
     /* 移除超連結底線 */
 }
+ /*----------------------- */
+.btn-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  padding: 0;             /* 去掉預設內距 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
+.btn-circle.large { width: 80px; height: 80px; font-size: 32px; }
+ /*----------------------- */
 /* 每個區塊 section 的內邊距 */
 section {
     padding: 40px 0;
