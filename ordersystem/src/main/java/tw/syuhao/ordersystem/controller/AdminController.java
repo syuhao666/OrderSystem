@@ -140,26 +140,4 @@ public class AdminController {
 
         return "redirect:/admin/products";
     }
-
-    // @GetMapping("/product/search")
-    // public String listProducts(
-    // @RequestParam(required = false) String name,
-    // @RequestParam(required = false) String status,
-    // @RequestParam(required = false) BigDecimal minPrice,
-    // @RequestParam(required = false) BigDecimal maxPrice,
-    // @RequestParam(defaultValue = "0") int page,
-    // @RequestParam(defaultValue = "10") int size,
-    // Model model) {
-
-    // Page<Product> products = service.searchProducts(name, status, minPrice,
-    // maxPrice, page, size);
-
-    // model.addAttribute("products", products);
-    // model.addAttribute("name", name);
-    // model.addAttribute("status", status);
-    // model.addAttribute("minPrice", minPrice);
-    // model.addAttribute("maxPrice", maxPrice);
-
-    // return "product_list";
-    // }
 }
