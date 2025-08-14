@@ -6,7 +6,7 @@ createApp({
 
 
         onMounted(() => {
-            axios.get('/api/productsA') // 後端商品資料網址
+            axios.get('/api/products') // 後端商品資料網址
                 .then(response => {
                     products.value = response.data
                     console.log(products.value);

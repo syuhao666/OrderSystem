@@ -2,25 +2,23 @@ package tw.syuhao.ordersystem.Dcontroller;
 
 
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpSession;
 import tw.syuhao.ordersystem.Ddto.CartItemResponseDTO;
 import tw.syuhao.ordersystem.entity.Cart;
 import tw.syuhao.ordersystem.entity.CartItem;
-import tw.syuhao.ordersystem.entity.Product; //特殊+D
+import tw.syuhao.ordersystem.entity.Product;
 import tw.syuhao.ordersystem.entity.Users;
-import tw.syuhao.ordersystem.repository.CartItemRepository;
+import tw.syuhao.ordersystem.repository.CartItemRepository; //特殊+D
 import tw.syuhao.ordersystem.repository.CartRepository;
-import tw.syuhao.ordersystem.repository.ProductRepository; //特殊+D
+import tw.syuhao.ordersystem.repository.ProductRepository;
 import tw.syuhao.ordersystem.repository.UserRepository;
 
 @RestController
@@ -44,15 +42,15 @@ public class ProductController {
         return productRepository.findAll();
     }
 
-    @GetMapping("/productsA")
-    public List<Product> getXllProducts(
-        @RequestParam(required = false) String name,
-        @RequestParam(required = false) String description,
-        @RequestParam(required = false) BigDecimal price,
-        @RequestParam(required = false) String imageUrl
-    ) { // 特殊+D
-        return productRepository.findByNameAndDescriptionAndPriceAndImageUrl(name, description, price, imageUrl);
-    }
+    // @GetMapping("/productsA")
+    // public List<Product> getXllProducts(
+    //     @RequestParam(required = false) String name,
+    //     @RequestParam(required = false) String description,
+    //     @RequestParam(required = false) BigDecimal price,
+    //     @RequestParam(required = false) String imageUrl
+    // ) { // 特殊+D
+    //     return productRepository.searchProducts(name, description, price, imageUrl);
+    // }
     
     @GetMapping("/carts")
     public List<CartItem> getAllCartItems() {

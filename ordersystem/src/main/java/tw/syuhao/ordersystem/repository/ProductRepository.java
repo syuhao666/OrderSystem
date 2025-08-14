@@ -1,7 +1,6 @@
 package tw.syuhao.ordersystem.repository;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,17 +10,35 @@ import tw.syuhao.ordersystem.entity.Product;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product> findByNameContaining(String name, Pageable pageable);
+
     Page<Product> findByCategoryContaining(String category, Pageable pageable);
+
     Page<Product> findByNameContainingAndCategoryContaining(String name, String category, Pageable pageable);
+
     Page<Product> findByNameContainingAndCategoryContainingAndPriceBetween(
-        String name, String category, BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
+            String name, String category, BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
+
     Page<Product> findByNameContainingAndPriceBetween(
-        String name, BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
+            String name, BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
+
     Page<Product> findByCategoryContainingAndPriceBetween(
-        String category, BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
+            String category, BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
+
     Page<Product> findByPriceBetween(
-        BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
+            BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
 
     
-    List<Product> findByNameAndDescriptionAndPriceAndImageUrl(String name, String description, BigDecimal price, String imageUrl );      
+
+    // @Query("""
+    //             SELECT p FROM Product p
+    //             WHERE (:name IS NULL OR p.name = :name)
+    //               AND (:description IS NULL OR p.description = :description)
+    //               AND (:price IS NULL OR p.price = :price)
+    //               AND (:imageUrl IS NULL OR p.imageUrl = :imageUrl)
+    //         """)
+    // List<Product> searchProducts(
+    //         @Param("name") String name,
+    //         @Param("description") String description,
+    //         @Param("price") BigDecimal price,
+    //         @Param("imageUrl") String imageUrl);
 }
