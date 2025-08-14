@@ -1,6 +1,7 @@
 package tw.syuhao.ordersystem.service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class ProductService {
     }
 
     public void save(Product product) {
+        if (product.getCreatedAt() == null) {
+            product.setCreatedAt(LocalDateTime.now());
+        }
         repo.save(product);
     }
 
