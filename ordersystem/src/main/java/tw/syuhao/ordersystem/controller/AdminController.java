@@ -1,7 +1,6 @@
 package tw.syuhao.ordersystem.controller;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -36,16 +35,39 @@ public class AdminController {
         return "adminHome";
     }
 
+    // @GetMapping("/products")
+    // public String listProducts(Model model,
+    // @RequestParam(defaultValue = "1") int page, // 第幾頁（0 起算）
+    // @RequestParam(defaultValue = "1") int size // 每頁顯示幾筆
+    // ) {
+
+    // int pageIndex = page - 1;
+    // Page<Product> productPage = service.getProducts(pageIndex, size);
+
+    // model.addAttribute("productPage", productPage);
+    // model.addAttribute("activePage", "product");
+
+    // return "adminProduct";
+    // }
+
     @GetMapping("/products")
-    public String listProducts(Model model,
-                               @RequestParam(defaultValue = "0") int page, // 第幾頁（0 起算）
-                               @RequestParam(defaultValue = "10") int size // 每頁顯示幾筆
-                                ) {
+    public String listProducts(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String category,
+            Model model) {
 
-        Page<Product> productPage = service.getProducts(page, size);
+        int pageSize = 10;
+
+        Page<Product> productPage = service.findProducts(name, category, page, pageSize);
+
         model.addAttribute("productPage", productPage);
-
-        model.addAttribute("activePage", "product");
+        model.addAttribute("currentPage", productPage.getNumber() + 1); // 修正頁碼
+        model.addAttribute("totalPages", productPage.getTotalPages());
+        model.addAttribute("totalItems", productPage.getTotalElements());
+        model.addAttribute("name", name);
+        model.addAttribute("category", category);
+        model.addAttribute("activePage", "product"); // 補上 activePage
         return "adminProduct";
     }
 
@@ -119,25 +141,25 @@ public class AdminController {
         return "redirect:/admin/products";
     }
 
+    // @GetMapping("/product/search")
+    // public String listProducts(
+    // @RequestParam(required = false) String name,
+    // @RequestParam(required = false) String status,
+    // @RequestParam(required = false) BigDecimal minPrice,
+    // @RequestParam(required = false) BigDecimal maxPrice,
+    // @RequestParam(defaultValue = "0") int page,
+    // @RequestParam(defaultValue = "10") int size,
+    // Model model) {
 
-    @GetMapping("/product/search")
-    public String listProducts(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String status,
-            @RequestParam(required = false) BigDecimal minPrice,
-            @RequestParam(required = false) BigDecimal maxPrice,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            Model model) {
+    // Page<Product> products = service.searchProducts(name, status, minPrice,
+    // maxPrice, page, size);
 
-        Page<Product> products = service.searchProducts(name, status, minPrice, maxPrice, page, size);
+    // model.addAttribute("products", products);
+    // model.addAttribute("name", name);
+    // model.addAttribute("status", status);
+    // model.addAttribute("minPrice", minPrice);
+    // model.addAttribute("maxPrice", maxPrice);
 
-        model.addAttribute("products", products);
-        model.addAttribute("name", name);
-        model.addAttribute("status", status);
-        model.addAttribute("minPrice", minPrice);
-        model.addAttribute("maxPrice", maxPrice);
-
-        return "product_list";
-    }
+    // return "product_list";
+    // }
 }

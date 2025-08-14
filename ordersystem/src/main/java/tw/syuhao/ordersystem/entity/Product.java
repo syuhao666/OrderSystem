@@ -39,6 +39,8 @@ public class Product {
 
     private String status;
 
+    private String category;
+
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "product")

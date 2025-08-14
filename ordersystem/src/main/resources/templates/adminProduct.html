@@ -83,7 +83,47 @@
                     <h2>商品管理</h2>
                     <div class="container mt-5">
                         <a href="/admin/product/new" class="btn btn-success mb-3">新增商品</a>
-                        <a href="/admin/product/search" class="btn btn-success mb-3">查詢商品</a>
+
+                        <!-- <form method="get" th:action="@{/admin/products}">
+                            <input type="text" name="keyword" th:value="${keyword}" placeholder="搜尋商品名稱">
+                            <button type="submit">搜尋</button>
+                        </form> -->
+
+                        <!-- 查詢區 -->
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <form class="row g-3" method="get" action="#" th:action="@{/admin/products}">
+                                    <div class="col-md-3">
+                                        <label class="form-label">商品名稱</label>
+                                        <input type="text" class="form-control" name="name" placeholder="輸入商品名稱"
+                                            th:value="${param.name}">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">分類</label>
+                                        <input type="text" class="form-control" name="category" placeholder="輸入分類"
+                                            th:value="${param.category}">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">價格範圍</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" name="minPrice" placeholder="最低"
+                                                th:value="${param.minPrice}">
+                                            <span class="input-group-text">~</span>
+                                            <input type="number" class="form-control" name="maxPrice" placeholder="最高"
+                                                th:value="${param.maxPrice}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 d-flex align-items-end">
+                                        <button type="submit" class="btn btn-primary me-2">
+                                            <i class="bi bi-search"></i> 查詢
+                                        </button>
+                                        <a href="/products" class="btn btn-secondary">
+                                            <i class="bi bi-arrow-counterclockwise"></i> 重置
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
 
 
                         <table class="table table-bordered">
@@ -112,30 +152,100 @@
                                             class="btn btn-danger btn-sm">刪除</a>
                                     </td>
                                 </tr>
+                                <tr th:if="${#lists.isEmpty(productPage.content)}">
+                                    <td colspan="6" class="text-center">查無資料</td>
+                                </tr>
                             </tbody>
                         </table>
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination">
-                                <!-- 上一頁 -->
-                                <li class="page-item" th:classappend="${productPage.first} ? 'disabled'">
+
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                共有 <span th:text="${totalItems}"></span> 筆資料
+                            </div>
+                            <nav>
+                                <ul class="pagination mb-0">
+                                    <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                                        <a class="page-link"
+                                            th:href="@{/admin/products(page=${currentPage - 1}, name=${name}, category=${category})}">上一頁</a>
+                                    </li>
+                                    <li class="page-item" th:each="pageNum : ${#numbers.sequence(1, totalPages)}"
+                                        th:classappend="${pageNum == currentPage} ? 'active'">
+                                        <a class="page-link"
+                                            th:href="@{/admin/products(page=${pageNum}, name=${name}, category=${category})}"
+                                            th:text="${pageNum}"></a>
+                                    </li>
+                                    <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                                        <a class="page-link"
+                                            th:href="@{/admin/products(page=${currentPage + 1}, name=${name}, category=${category})}">下一頁</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                            <!-- 頁碼輸入 -->
+                            <form class="d-flex" method="get" th:action="@{/admin/products}">
+                                <input type="number" name="page" min="1" th:max="${totalPages}"
+                                    class="form-control page-input me-2" placeholder="頁碼">
+                                <input type="hidden" name="name" th:value="${name}">
+                                <input type="hidden" name="category" th:value="${category}">
+                                <button class="btn btn-outline-primary">跳轉</button>
+                            </form>
+                        </div>
+
+                        <!-- <nav aria-label="Page navigation">
+                            <ul class="pagination"> -->
+                        <!-- 上一頁 -->
+                        <!-- <li class="page-item" th:classappend="${productPage.first} ? 'disabled'">
                                     <a class="page-link"
                                         th:href="@{/admin/products(page=${productPage.number - 1}, size=${productPage.size})}">上一頁</a>
-                                </li>
+                                </li> -->
 
-                                <!-- 頁碼 -->
-                                <li class="page-item" th:each="i : ${#numbers.sequence(0, productPage.totalPages - 1)}"
+                        <!-- 頁碼 -->
+                        <!-- <li class="page-item" th:each="i : ${#numbers.sequence(0, productPage.totalPages - 1)}"
                                     th:classappend="${i == productPage.number} ? 'active'">
                                     <a class="page-link" th:text="${i + 1}"
                                         th:href="@{/admin/products(page=${i}, size=${productPage.size})}"></a>
-                                </li>
+                                </li> -->
 
-                                <!-- 下一頁 -->
-                                <li class="page-item" th:classappend="${productPage.last} ? 'disabled'">
+                        <!-- 頁碼輸入框 -->
+                        <!-- <form th:action="@{/admin/products}" method="get"
+                                    class="d-flex align-items-center mt-2">
+                                    <input type="hidden" name="size" th:value="${productPage.size}">
+                                    <input type="hidden" name="keyword" th:value="${keyword}">
+                                    <label class="me-2">跳到頁碼:</label>
+                                    <input type="number" name="page" min="1" th:max="${productPage.totalPages}"
+                                        class="form-control me-2" style="width:100px" placeholder="1" required>
+                                    <button type="submit" class="btn btn-outline-primary">Go</button>
+                                </form> -->
+
+                        <!-- 下一頁 -->
+                        <!-- <li class="page-item" th:classappend="${productPage.last} ? 'disabled'">
                                     <a class="page-link"
                                         th:href="@{/admin/products(page=${productPage.number + 1}, size=${productPage.size})}">下一頁</a>
-                                </li>
-                            </ul>
-                        </nav>
+                                </li> -->
+
+                        <!-- 分頁導航 -->
+                        <!-- <div>
+                                    <a th:if="${productPage.hasPrevious()}"
+                                        th:href="@{/admin/products(page=${currentPage - 1}, keyword=${keyword})}">上一頁</a>
+
+                                    <span
+                                        th:text="'第 ' + ${currentPage} + ' 頁 / 共 ' + ${productPage.totalPages} + ' 頁'"></span>
+
+                                    <a th:if="${productPage.hasNext()}"
+                                        th:href="@{/admin/products(page=${currentPage + 1}, keyword=${keyword})}">下一頁</a>
+                                </div> -->
+
+                        <!-- 跳頁輸入框 -->
+                        <!-- <form method="get" th:action="@{/admin/products}">
+                                    <input type="hidden" name="keyword" th:value="${keyword}">
+                                    <label>跳到頁碼:</label>
+                                    <input type="number" name="page" min="1" th:attr="max=${productPage.totalPages}"
+                                        required>
+                                    <button type="submit">前往</button>
+                                </form> -->
+
+                        <!-- </ul>
+                        </nav> -->
 
                     </div>
                 </div>
