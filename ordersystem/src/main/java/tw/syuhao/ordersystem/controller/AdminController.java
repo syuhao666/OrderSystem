@@ -1,6 +1,7 @@
 package tw.syuhao.ordersystem.controller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -55,11 +56,13 @@ public class AdminController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String category,
+            @RequestParam(required = false) BigDecimal minPrice,
+            @RequestParam(required = false) BigDecimal maxPrice,
             Model model) {
 
         int pageSize = 10;
 
-        Page<Product> productPage = service.findProducts(name, category, page, pageSize);
+        Page<Product> productPage = service.findProducts(name, category, page, pageSize, minPrice, maxPrice);
 
         model.addAttribute("productPage", productPage);
         model.addAttribute("currentPage", productPage.getNumber() + 1); // 修正頁碼
@@ -67,6 +70,8 @@ public class AdminController {
         model.addAttribute("totalItems", productPage.getTotalElements());
         model.addAttribute("name", name);
         model.addAttribute("category", category);
+        model.addAttribute("minPrice", minPrice);
+        model.addAttribute("maxPrice", maxPrice);
         model.addAttribute("activePage", "product"); // 補上 activePage
         return "adminProduct";
     }

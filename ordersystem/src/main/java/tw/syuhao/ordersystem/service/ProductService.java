@@ -1,5 +1,6 @@
 package tw.syuhao.ordersystem.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,14 +73,28 @@ public class ProductService {
         }
     }
 
-    public Page<Product> findProducts(String name, String category, int page, int size) {
+    public Page<Product> findProducts(String name, String category, Integer page, Integer size,
+                                      BigDecimal minPrice, BigDecimal maxPrice) {
         Pageable pageable = PageRequest.of(page - 1, size, Sort.by("id").descending());
 
-        if (name != null && !name.isEmpty() && category != null && !category.isEmpty()) {
+        boolean hasName = name != null && !name.isEmpty();
+        boolean hasCategory = category != null && !category.isEmpty();
+        boolean hasMin = minPrice != null;
+        boolean hasMax = maxPrice != null;
+
+        if (hasName && hasCategory && hasMin && hasMax) {
+            return repo.findByNameContainingAndCategoryContainingAndPriceBetween(name, category, minPrice, maxPrice, pageable);
+        } else if (hasName && hasMin && hasMax) {
+            return repo.findByNameContainingAndPriceBetween(name, minPrice, maxPrice, pageable);
+        } else if (hasCategory && hasMin && hasMax) {
+            return repo.findByCategoryContainingAndPriceBetween(category, minPrice, maxPrice, pageable);
+        } else if (hasMin && hasMax) {
+            return repo.findByPriceBetween(minPrice, maxPrice, pageable);
+        } else if (hasName && hasCategory) {
             return repo.findByNameContainingAndCategoryContaining(name, category, pageable);
-        } else if (name != null && !name.isEmpty()) {
+        } else if (hasName) {
             return repo.findByNameContaining(name, pageable);
-        } else if (category != null && !category.isEmpty()) {
+        } else if (hasCategory) {
             return repo.findByCategoryContaining(category, pageable);
         } else {
             return repo.findAll(pageable);
