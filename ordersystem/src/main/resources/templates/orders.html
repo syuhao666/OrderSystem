@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"><title>我的訂單</title>
+  <link rel="stylesheet" th:href="@{/css/member.css}">
+</head>
+<body>
+<section class="table-container">
+  <h2>我的訂單</h2>
+  <table>
+    <thead>
+    <tr><th>訂單編號</th><th>日期</th><th>狀態</th><th style="text-align:right;">金額</th></tr>
+    </thead>
+    <tbody>
+    <tr th:each="o : ${orders}">
+      <td th:text="${o.no}">A20250813-001</td>
+      <td th:text="${o.date}">2025-08-13</td>
+      <td th:text="${o.status}">已出貨</td>
+      <td style="text-align:right;" th:text="${#numbers.formatInteger(o.amount, 0, 'COMMA')}">1,280</td>
+    </tr>
+    </tbody>
+  </table>
+  <p><a class="btn" th:href="@{/member}">返回會員中心</a></p>
+</section>
+</body>
+</html>
