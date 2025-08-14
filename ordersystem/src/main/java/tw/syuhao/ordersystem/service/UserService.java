@@ -24,6 +24,7 @@ public class UserService {
         user.setUsername(username);
         user.setPassword(hashPasswd);
         user.setEmail(email);
+        user.setRole("customer");
         
         return repo.save(user);
     }
