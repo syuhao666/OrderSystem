@@ -1,6 +1,7 @@
 package tw.syuhao.ordersystem.repository;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,4 +21,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         String category, BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
     Page<Product> findByPriceBetween(
         BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
+
+    
+    List<Product> findByNameAndDescriptionAndPriceAndImageUrl(String name, String description, BigDecimal price, String imageUrl );      
 }
