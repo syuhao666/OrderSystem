@@ -42,42 +42,33 @@
     </header>
     <div id="app">
         <section class="container">
-            <!-- <div class="d-flex justify-content-between">
-                <button class="btn btn-circle large">全部產品</button>
-                <button class="btn btn-circle large">桌子</button>
-                <button class="btn btn-circle large">椅子</button>
-                <button class="btn btn-circle large">書架</button>
-                <button class="btn btn-circle large">鞋架</button>
-                <button class="btn btn-circle large">床墊</button>
-                <button class="btn btn-circle large">衣櫃</button>
-            </div> -->
             <div class="d-flex justify-content-between flex-wrap">
                 <div class="d-flex flex-column align-items-center">
-                    <button class="btn btn-circle large"></button>
+                    <button class="btn btn-circle large" @click="filterByCategory('')"></button>
                     <span>全部產品</span>
                 </div>
                 <div class="d-flex flex-column align-items-center">
-                    <button class="btn btn-circle large"></button>
+                    <button class="btn btn-circle large" @click="filterByCategory('桌子')"></button>
                     <span>桌子</span>
                 </div>
                 <div class="d-flex flex-column align-items-center">
-                    <button class="btn btn-circle large"></button>
+                    <button class="btn btn-circle large" @click="filterByCategory('椅子')"></button>
                     <span>椅子</span>
                 </div>
                 <div class="d-flex flex-column align-items-center">
-                    <button class="btn btn-circle large"></button>
+                    <button class="btn btn-circle large" @click="filterByCategory('書架')"></button>
                     <span>書架</span>
                 </div>
                 <div class="d-flex flex-column align-items-center">
-                    <button class="btn btn-circle large"></button>
+                    <button class="btn btn-circle large" @click="filterByCategory('鞋架')"></button>
                     <span>鞋架</span>
                 </div>
                 <div class="d-flex flex-column align-items-center">
-                    <button class="btn btn-circle large"></button>
+                    <button class="btn btn-circle large" @click="filterByCategory('床墊')"></button>
                     <span>床墊</span>
                 </div>
                 <div class="d-flex flex-column align-items-center">
-                    <button class="btn btn-circle large"></button>
+                    <button class="btn btn-circle large" @click="filterByCategory('衣櫃')"></button>
                     <span>衣櫃</span>
                 </div>
             </div>

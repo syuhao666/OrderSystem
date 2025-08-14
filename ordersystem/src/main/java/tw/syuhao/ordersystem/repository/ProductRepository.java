@@ -29,16 +29,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     
 
-    // @Query("""
-    //             SELECT p FROM Product p
-    //             WHERE (:name IS NULL OR p.name = :name)
-    //               AND (:description IS NULL OR p.description = :description)
-    //               AND (:price IS NULL OR p.price = :price)
-    //               AND (:imageUrl IS NULL OR p.imageUrl = :imageUrl)
-    //         """)
-    // List<Product> searchProducts(
-    //         @Param("name") String name,
-    //         @Param("description") String description,
-    //         @Param("price") BigDecimal price,
-    //         @Param("imageUrl") String imageUrl);
+  
 }

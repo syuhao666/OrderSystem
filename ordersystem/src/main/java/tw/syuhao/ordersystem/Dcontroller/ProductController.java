@@ -1,13 +1,15 @@
 package tw.syuhao.ordersystem.Dcontroller;
 
-
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpSession;
@@ -42,16 +44,6 @@ public class ProductController {
         return productRepository.findAll();
     }
 
-    // @GetMapping("/productsA")
-    // public List<Product> getXllProducts(
-    //     @RequestParam(required = false) String name,
-    //     @RequestParam(required = false) String description,
-    //     @RequestParam(required = false) BigDecimal price,
-    //     @RequestParam(required = false) String imageUrl
-    // ) { // 特殊+D
-    //     return productRepository.searchProducts(name, description, price, imageUrl);
-    // }
-    
     @GetMapping("/carts")
     public List<CartItem> getAllCartItems() {
         return cartItemRepository.findAll();
@@ -59,7 +51,7 @@ public class ProductController {
 
     @GetMapping("/items")
     public ResponseEntity<List<CartItemResponseDTO>> getCartItems(HttpSession session) {
-        
+
         // 從 Session 取得目前登入的使用者
         Users user = (Users) session.getAttribute("user");
         if (user == null) {
@@ -77,6 +69,16 @@ public class ProductController {
                 .toList();
 
         return ResponseEntity.ok(responseList);
+    }
+
+    @GetMapping("/category")
+    public Page<Product> getProductsByCategory(
+            @RequestParam String category,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        return productRepository.findByCategoryContaining(category, pageable);
     }
 
 }
