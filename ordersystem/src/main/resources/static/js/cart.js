@@ -4,6 +4,7 @@ createApp({
     setup() {
         const cartItems = ref([]);
         const cartCount = ref(0); // 🔴 購物車紅點數量
+        const shippingMethod = ref(null);
         
         // 取得購物車內容
         function fetchCart() {
@@ -65,14 +66,14 @@ createApp({
         }
 
         // ---------------------------縣市資料
-        const addressData = ref({});
-        axios.get('./address.json')
-            .then(res => {
-                addressData.value = res.data;
-            })
-            .catch(err => {
-                console.error('載入地址資料錯誤', err);
-            });
+        // const addressData = ref({});
+        // axios.get('./address.json')
+        //     .then(res => {
+        //         addressData.value = res.data;
+        //     })
+        //     .catch(err => {
+        //         console.error('載入地址資料錯誤', err);
+        //     });
 
         // ------------------------------------------
 
@@ -80,7 +81,7 @@ createApp({
             fetchCart()
         })
 
-        return { totalPrice, decreaseQuantity, increaseQuantity, addressData, goToForm, removeItem, cartItems, cartCount}
+        return { totalPrice, decreaseQuantity, increaseQuantity, goToForm, removeItem, cartItems, cartCount, shippingMethod}
 
     }
 }).mount('#app')

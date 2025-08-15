@@ -51,9 +51,9 @@
         </header>
         <!-- -------------------------------- -->
         <!-- 填寫資料 -->
-        <section class="container" style="background-color: cadetblue;">
-            <div class="container" style="background-color: cornflowerblue;">
-                <div class="d-flex p-3" style="background-color: coral;">
+        <section class="container">
+            <div class="container">
+                <div class="d-flex p-3">
                     <h2>收件人資料填寫</h2>
                     <label class="ms-auto">
                         <input type="checkbox">
@@ -61,11 +61,11 @@
                     </label>
                 </div>
                 <form action="#" method="post">
-                    <div class="row p-3" style="background-color: lightpink;">
+                    <div class="row p-3">
                         <label class="col-md-12">姓名</label>
                         <input type="text" v-model="formData.name" required>
                     </div>
-                    <div class="row p-3" style="background-color: mediumturquoise;">
+                    <div class="row p-3">
                         <label f>手機號碼 (主聯繫)<span class="required-star">*</span></label>
                         <div>請保持暢通並留意陌生來電，以免無法送達</div>
                         <input type="tel" v-model="formData.phone" placeholder="請輸入手機號碼 (範例：09XXXXXXXX)" required>
@@ -75,12 +75,12 @@
                     <div>確保送貨時有備用聯繫人可收貨</div>
                     <input type="tel" placeholder="請輸入手機號碼 (範例：09XXXXXXXX)">
                     </div> -->
-                    <div class="row p-3" style="background-color: palevioletred;">
+                    <div class="row p-3">
                         <label>E-mail</label>
                         <input type="email" v-model="formData.email" placeholder="">
                     </div>
                     <!-- ----------------------- -->
-                    <div class="row p-3" style="background-color: rgb(241, 240, 159);">
+                    <div class="row p-3">
                         <label>收件人地址<span>*</span></label>
                         <div class="row p-3">
                             <select class="col-md-5" v-model="selectedCity" @change="onCityChange" required>
@@ -100,19 +100,19 @@
                         <input type="text" v-model="formData.address" placeholder="請輸入詳細地址" required />
                     </div>
                     <!-- -------------------------------- -->
-                    <div class="row p-3" style="background-color: rgb(128, 238, 128);">
+                    <div class="row p-3">
                         <label>付費方式<span>*</span></label>
                         <select v-model="formData.paymentMethod" required>
                             <option>信用卡</option>
                             <option>ATM轉帳</option>
                         </select>
                     </div>
-                    <!-- <div class="row p-3" style="background-color: rgb(128, 238, 128);">
+                    <div class="row p-3" >
                     <label>有無電梯<span>*</span></label>
                     <select required>
                         <option value="電梯大樓或平地一樓">我在電梯大樓或平地一樓</option>
                     </select>
-                    </div> -->
+                    </div>
                 </form>
                 <div class="p-3 d-flex">
                     <button class="btn btn-success ms-auto" @click="checkout">結帳</button>

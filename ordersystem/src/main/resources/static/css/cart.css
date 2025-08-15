@@ -118,10 +118,12 @@ footer {
     nav ul li {
         margin: 0 10px;
     }
-     .hero {
+    
+    .hero {
         height: 300px;
         /* Hero 區高度縮小 */
     }
+    
 }
 
 .icon-cart {
