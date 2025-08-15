@@ -14,39 +14,39 @@
 
 <body>
     <div id="app">
-    <header>
-        <div class="container">
-            <nav>
-                <div class="logo">簡約家居</div>
-                <ul>
-                    <li><a href="./index.html">首頁</a></li>
-                    <li><a href="./products.html">商品</a></li>
-                    <li><a href="#about">關於我們</a></li>
-                    <li id="member-center-link" style="display:none;">
-                        <a href="./memberCenter.html" id="member-name"></a>
-                    </li>
-                </ul>
-                <ul>
-                    <li>
-                        <a href="./cart.html" class="cart-link"><img src="./images/shopping.svg" class="icon-cart">
-                            <span v-show="cartCount > 0" class="cart-badge">
-                                {{ cartCount }}
-                            </span>
-                        </a>
-                    </li>
-                    <li id="login-link"><a href="/login"><img src="./images/login.svg" class="icon-cart"></a></li>
-                    <li id="logout-link" style="display:none;">
-                        <form action="/logout" method="post" style="display:inline;">
-                            <button type="submit" style="background:none;border:none;padding:0;">
-                                <img src="./images/login.svg" class="icon-cart" title="登出">
-                            </button>
-                        </form>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-    
+        <header>
+            <div class="container">
+                <nav>
+                    <div class="logo">簡約家居</div>
+                    <ul>
+                        <li><a href="./index.html">首頁</a></li>
+                        <li><a href="./products.html">商品</a></li>
+                        <li><a href="#about">關於我們</a></li>
+                        <li id="member-center-link" style="display:none;">
+                            <a href="./memberCenter.html" id="member-name"></a>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            <a href="./cart.html" class="cart-link"><img src="./images/shopping.svg" class="icon-cart">
+                                <span v-show="cartCount > 0" class="cart-badge">
+                                    {{ cartCount }}
+                                </span>
+                            </a>
+                        </li>
+                        <li id="login-link"><a href="/login"><img src="./images/login.svg" class="icon-cart"></a></li>
+                        <li id="logout-link" style="display:none;">
+                            <form action="/logout" method="post" style="display:inline;">
+                                <button type="submit" style="background:none;border:none;padding:0;">
+                                    <img src="./images/login.svg" class="icon-cart" title="登出">
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
         <section class="container">
             <div class="d-flex justify-content-between flex-wrap">
                 <div class="d-flex flex-column align-items-center">
@@ -91,7 +91,6 @@
                         <h3>{{ product.name }}</h3>
                         <p>{{ product.description}}</p>
                         <div class="price">NT${{product.price}}</div>
-                        <!-- <button class="btn" @click="addToCart(product)">加入購物車</button> -->
                         <a class="btn" :href="`products_x.html?id=${product.id}`">查看商品詳細</a>
                     </div>
                 </div>
@@ -102,12 +101,10 @@
     <footer>
         <section>
             <div class="container">
-
                 <ul>
                     <h2>聯繫我們</h2>
                     <li class="xa">地址 : 台北市信義區松仁路123號</li>
                     <li class="xa">電話 : 02-1234-5678</li>
-
                 </ul>
                 <div>
                     <a href>
