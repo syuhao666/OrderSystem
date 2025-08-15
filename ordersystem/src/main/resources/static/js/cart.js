@@ -3,6 +3,7 @@ const { createApp, ref, onMounted, computed } = Vue
 createApp({
     setup() {
         const cartItems = ref([]);
+        const cartCount = ref(0); // 🔴 購物車紅點數量
         
         // 取得購物車內容
         function fetchCart() {
@@ -10,6 +11,7 @@ createApp({
                 .then(response => {
                     cartItems.value = response.data
                     console.log(cartItems.value);
+                    cartCount.value = cartItems.value.reduce((sum, item) => sum + item.quantity, 0); // 🔴 更新紅點
                 })
                 .catch(error => {
                     console.error('發生錯誤', error)
@@ -78,10 +80,13 @@ createApp({
             fetchCart()
         })
 
-        return { totalPrice, decreaseQuantity, increaseQuantity, addressData, goToForm, removeItem, cartItems}
+        return { totalPrice, decreaseQuantity, increaseQuantity, addressData, goToForm, removeItem, cartItems, cartCount}
 
     }
 }).mount('#app')
+
+
+
 
 
 

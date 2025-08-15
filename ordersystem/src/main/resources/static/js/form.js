@@ -7,6 +7,8 @@ createApp({
         const selectedCity = ref('');
         const selectedDistrict = ref('');
         const selectedZip = ref('');
+        
+        const cartCount = ref(0); // 🔴 購物車紅點數量
 
 
         const formData = reactive({
@@ -30,6 +32,7 @@ createApp({
         const districts = computed(() => {
             return selectedCity.value ? addressData.value[selectedCity.value] : {};
         });
+        //-----------------------------------------
 
         //-------------------------------------新
         // 🆕 載入購物車資料（從後端）
@@ -38,6 +41,7 @@ createApp({
                 .then(response => {
                     cartItems.value = response.data
                     console.log(cartItems.value);
+                    cartCount.value = cartItems.value.reduce((sum, item) => sum + item.quantity, 0); // 🔴 更新紅點
                 })
                 .catch(err => {
                     console.error('抓取購物車失敗', err);
@@ -52,6 +56,8 @@ createApp({
                 .catch(err => {
                     console.error('載入地址資料錯誤', err);
                 });
+
+                
         });
         //--------------------------------------
 
@@ -75,37 +81,7 @@ createApp({
             formData.zip = selectedZip.value;
         }
         //----------------------------------------好的
-        // function checkout() {
-        //     formData.city = selectedCity.value;
-        //     formData.district = selectedDistrict.value;
-        //     formData.zip = selectedZip.value;
-
-        //     console.log(cartItems.value)
-        //     console.log(totalPrice.value)
-
-        //         axios.post('/api/checkout', {
-        //             cart: cartItems.value,
-        //             name: formData.name,
-        //             phone: formData.phone,
-        //             email: formData.email,
-        //             address: fullAddress.value,
-        //             paymentMethod: formData.paymentMethod,
-        //             totalPrice: totalPrice.value
-
-        //         }, {
-        //             headers: {
-        //                 'Content-Type': 'application/json'
-        //             }
-        //         })
-        //             .then(res => {
-        //                 alert(res.data);                        
-        //             })
-        //             .catch(err => {
-        //                 console.error("結帳失敗", err);
-        //             });
-
-        // }
-
+        
         //------------------------------------------------------------
         function checkout() {
             formData.city = selectedCity.value;
@@ -153,10 +129,35 @@ createApp({
             formData,
             cartItems,
             fullAddress,
-            totalPrice
+            totalPrice,
+            cartCount
+
         }
     }
 }).mount('#app');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
