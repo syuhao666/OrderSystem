@@ -7,7 +7,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="./css/index.css" />
   <style>
-    /* 會員中心區塊（不影響 index.css） */
+    /* 會員中心頁內樣式（不影響 index.css） */
     .mc-wrap { padding: 40px 0; }
     .mc-hero {
       display:flex; align-items:center; gap:20px; background:#fff; border:1px solid #eee;
@@ -36,11 +36,18 @@
     .mc-kpi .num { font-size:24px; font-weight:800 }
     .mc-kpi .lbl { color:#666; font-size:13px }
     .btn-brown { background:#5c3c11; color:#fff; }
+    /* 導覽列會員頭像 */
+    .member-link { display:flex; align-items:center; gap:6px; text-decoration:none; color:#333; }
+    .member-avatar {
+      width:30px; height:30px; border-radius:50%; background:#5c3c11; color:#fff;
+      display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:14px; overflow:hidden;
+    }
+    .btn-logout { background:#5c3c11; color:#fff; border:none; border-radius:4px; padding:6px 10px; cursor:pointer; }
   </style>
 </head>
 <body>
 
-  <!-- Header：跟 index.html 一樣 -->
+  <!-- Header（與首頁一致） -->
   <header>
     <div class="container">
       <nav>
@@ -51,18 +58,28 @@
           <li><a href="./index.html#about">關於我們</a></li>
           <li><a href="./index.html#contact">聯繫我們</a></li>
           <li id="member-center-link" style="display:none;">
-            <a href="./memberCenter.html" id="member-name"></a>
+            <a href="./memberCenter.html" id="member-name">會員中心</a>
           </li>
         </ul>
         <ul>
           <li><a href="./cart.html"><img src="./images/shopping.svg" class="icon-cart" alt="購物車"></a></li>
-          <li id="login-link"><a href="/login"><img src="./images/login.svg" class="icon-cart" alt="登入"></a></li>
-          <li id="logout-link" style="display:none;">
-            <form action="/logout" method="post" style="display:inline;">
-              <button type="submit" style="background:none;border:none;padding:0;">
-                <img src="./images/login.svg" class="icon-cart" title="登出" alt="登出">
-              </button>
-            </form>
+
+          <!-- 未登入 -->
+          <li id="login-link">
+            <a href="/login"><img src="./images/login.svg" class="icon-cart" alt="登入"></a>
+          </li>
+
+          <!-- 已登入：會員頭像＋名稱 -->
+          <li id="member-icon" style="display:none;">
+            <a href="./memberCenter.html" class="member-link">
+              <div id="member-avatar" class="member-avatar">會</div>
+              <span id="member-displayname" style="font-weight:bold;"></span>
+            </a>
+          </li>
+
+          <!-- 已登入：登出 -->
+          <li id="real-logout" style="display:none;">
+            <button type="button" class="btn-logout" id="btn-logout">登出</button>
           </li>
         </ul>
       </nav>
@@ -152,7 +169,7 @@
     </div>
   </section>
 
-  <!-- Footer：跟 index.html 一樣 -->
+  <!-- Footer -->
   <footer>
     <section>
       <div class="container">
@@ -177,35 +194,6 @@
     <p>&copy; 2025 簡約家居 版權所有</p>
   </footer>
 
-  <script>
-    // 與 index.html 相同的登入狀態切換 + 會員資料載入
-    fetch('/api/currentUser')
-      .then(res => res.json())
-      .then(user => {
-        if (!user || !user.username) {
-          // 未登入 → 回登入頁
-          window.location.href = '/login';
-          return;
-        }
-        // 導覽列
-        document.getElementById('member-center-link').style.display = '';
-        document.getElementById('member-name').textContent = '會員中心';
-        document.getElementById('login-link').style.display = 'none';
-        document.getElementById('logout-link').style.display = '';
-
-        // 會員卡資訊
-        document.getElementById('mcUsername').textContent = user.username;
-        document.getElementById('mcEmail').textContent = user.email || '';
-        document.getElementById('mcJoinDate').textContent = user.registerDate ? String(user.registerDate).split('T')[0] : '';
-        document.getElementById('mcPoints').textContent = user.points ?? 0;
-        document.getElementById('kpiPoints').textContent = user.points ?? 0;
-        document.getElementById('mcAvatar').textContent = user.username ? user.username.charAt(0) : '用';
-
-        // KPI 其他兩個可等你串後端再填
-        // document.getElementById('kpiPending').textContent = ...
-        // document.getElementById('kpiCoupons').textContent = ...
-      })
-      .catch(() => { window.location.href = '/login'; });
-  </script>
+  <script src="./js/nav.js"></script>
 </body>
 </html>
