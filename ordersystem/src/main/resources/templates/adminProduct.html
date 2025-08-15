@@ -140,7 +140,7 @@
                                     <td th:text="${p.price}">100</td>
                                     <td th:text="${p.category}">類別</td>
                                     <td th:text="${p.stock}">10</td>
-                                    <td th:text="${p.enabled ? '上架' : '未上架'}">上架</td>
+                                    <td th:text="${p.status}">狀態</td>
 
                                     <td>
                                         <a th:href="@{/admin/product/edit/{id}(id=${p.id})}"
