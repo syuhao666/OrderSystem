@@ -1,14 +1,17 @@
 package tw.syuhao.ordersystem.controller;
 
-import jakarta.servlet.http.HttpSession;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import tw.syuhao.ordersystem.entity.Users;
 import tw.syuhao.ordersystem.service.UserService;
-
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -17,19 +20,13 @@ public class MemberCenterController {
     private final UserService userService;
 
     /** 會員中心 */
-    @GetMapping("/member")
-    public String member(HttpSession session, Model model) {
-        Users current = (Users) session.getAttribute("currentUser");
-        if (current == null) return "redirect:/login";
-
-        Users fresh = userService.loadByPrincipal(
-                current.getEmail() != null ? current.getEmail() : current.getUsername());
-        Users toShow = (fresh != null ? fresh : current);
-        toShow.setPassword(null);
-
-        model.addAttribute("member", toShow);
-        return "member";
-    }
+@GetMapping("/member")
+public String member(HttpSession session, Model model) {
+    Users u = (Users) session.getAttribute("currentUser");
+    if (u == null) return "redirect:/login";
+    model.addAttribute("member", u);
+    return "member"; // 對應 templates/member.html 或你的 memberCenter.html(靜態版則用 /memberCenter.html)
+}
 
     /** 個資頁 */
     @GetMapping("/profile")

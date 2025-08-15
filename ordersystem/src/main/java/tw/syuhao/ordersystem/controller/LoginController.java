@@ -30,12 +30,15 @@ public class LoginController {
             model.addAttribute("error", "帳號或密碼錯誤");
             return "login";
         }
-        u.setPassword(null);                     // 不把密碼放 Session
-        session.setAttribute("currentUser", u);  // 標記已登入
-        return "redirect:/member";               // → 會員中心
+        u.setPassword(null);
+        // ★ 統一使用這個 key
+        session.setAttribute("currentUser", u);
+
+        // ★ 登入後回首頁（你的 index.html 會自動 fetch /api/currentUser 來切 UI）
+        return "redirect:/index.html";
     }
 
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/login";
