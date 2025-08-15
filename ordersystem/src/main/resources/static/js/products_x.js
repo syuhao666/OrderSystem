@@ -55,11 +55,13 @@ createApp({
         .post('/cart/add', data, { headers: { 'Content-Type': 'application/json' } })
         .then(() => {
           alert(`已成功將 ${product.name} 加入購物車！`);
+          fetchCart();
         })
         .catch((error) => {
           console.error("加入購物車失敗", error);
           alert("加入購物車失敗，請稍後再試。");
         });
+        
     };
 
     onMounted(() => {
