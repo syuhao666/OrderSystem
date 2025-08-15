@@ -91,7 +91,7 @@
 </script>
 
 <body>
-
+    <div id="app">
     <header>
         <div class="container">
             <nav>
@@ -105,7 +105,13 @@
                     </li>
                 </ul>
                 <ul>
-                    <li><a href="./cart.html"><img src="./images/shopping.svg" class="icon-cart"></a></li>
+                    <li>
+                        <a href="./cart.html" class="cart-link"><img src="./images/shopping.svg" class="icon-cart">
+                            <span v-show="cartCount > 0" class="cart-badge">
+                                {{ cartCount }}
+                            </span>
+                        </a>
+                    </li>
                     <li id="login-link"><a href="/login"><img src="./images/login.svg" class="icon-cart"></a></li>
                     <li id="real-logout" style="display:none;">
                         <form action="/logout" method="post" style="display:inline;">
@@ -124,7 +130,7 @@
         </video>
     </div>
 
-    <div id="app">
+    
         <section id="products">
             <div class="container">
                 <h2>熱門商品</h2>
@@ -143,8 +149,8 @@
             </div>
         </section>
 
+    
     </div>
-
 
 
     <footer>

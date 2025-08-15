@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import jakarta.transaction.Transactional;
 import tw.syuhao.ordersystem.entity.Cart;
 import tw.syuhao.ordersystem.entity.CartItem;
 
@@ -15,8 +16,11 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
     
     List<CartItem> findByCart(Cart cart);
 
-    // @Transactional
+    @Transactional
     @Modifying
     @Query("delete from CartItem ci where ci.cart = :cart")
     void deleteByCart(Cart cart);
+
+    @Query("SELECT COUNT(ci) FROM CartItem ci WHERE ci.cart = :cart")
+    long countByCart(Cart cart);
 }
