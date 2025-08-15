@@ -36,21 +36,6 @@ public class AdminController {
         return "adminHome";
     }
 
-    // @GetMapping("/products")
-    // public String listProducts(Model model,
-    // @RequestParam(defaultValue = "1") int page, // 第幾頁（0 起算）
-    // @RequestParam(defaultValue = "1") int size // 每頁顯示幾筆
-    // ) {
-
-    // int pageIndex = page - 1;
-    // Page<Product> productPage = service.getProducts(pageIndex, size);
-
-    // model.addAttribute("productPage", productPage);
-    // model.addAttribute("activePage", "product");
-
-    // return "adminProduct";
-    // }
-
     @GetMapping("/products")
     public String listProducts(
             @RequestParam(defaultValue = "1") int page,
@@ -86,9 +71,14 @@ public class AdminController {
     public String saveProduct(@ModelAttribute Product product,
             @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) throws IOException {
 
-        // 如果有上傳圖片
-        if (!imageFile.isEmpty()) {
+        // 取得原商品（編輯時才有id）
+        Product original = null;
+        if (product.getId() != null) {
+            original = service.findById(product.getId());
+        }
 
+        // 如果有上傳圖片
+        if (imageFile != null && !imageFile.isEmpty()) {
             String fileName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
             Path uploadPath = Paths.get(System.getProperty("user.dir"), "uploads");
 
@@ -99,10 +89,10 @@ public class AdminController {
             Path filePath = uploadPath.resolve(fileName);
             Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-            System.out.println("File saved to: " + filePath.toAbsolutePath());
-
-            // 將圖片路徑存到 product，例如 "/uploads/abc.jpg"
             product.setImageUrl(fileName);
+        } else if (original != null) {
+            // 沒有上傳新圖片，保留原圖片
+            product.setImageUrl(original.getImageUrl());
         }
 
         if (product.getEnabled() == true) {
@@ -111,7 +101,6 @@ public class AdminController {
             product.setStatus("未上架");
         }
 
-        // 儲存商品
         service.save(product);
         return "redirect:/admin/products";
     }
@@ -149,6 +138,17 @@ public class AdminController {
             service.deleteById(id);
         }
 
+        return "redirect:/admin/products";
+    }
+
+    @GetMapping("/product/off/{id}")
+    public String offProduct(@PathVariable Long id) {
+        Product product = service.findById(id);
+        if (product != null) {
+            product.setEnabled(false);
+            product.setStatus("下架");
+            service.save(product);
+        }
         return "redirect:/admin/products";
     }
 }
