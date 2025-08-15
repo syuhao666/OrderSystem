@@ -105,6 +105,12 @@ public class AdminController {
             product.setImageUrl(fileName);
         }
 
+        if (product.getEnabled() == true) {
+            product.setStatus("上架");
+        } else {
+            product.setStatus("未上架");
+        }
+
         // 儲存商品
         service.save(product);
         return "redirect:/admin/products";
