@@ -1,6 +1,7 @@
 package tw.syuhao.ordersystem.Dcontroller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -81,4 +83,19 @@ public class ProductController {
         return productRepository.findByCategoryContaining(category, pageable);
     }
 
+    // 新增的商品詳細內容 API
+    @GetMapping("/product/{id}")
+    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+        // 使用 JpaRepository 內建的 findById 方法來尋找單一商品
+        Optional<Product> product = productRepository.findById(id);
+
+        // 判斷商品是否存在
+        if (product.isPresent()) {
+            // 如果找到商品，回傳 200 OK 狀態碼與商品資料
+            return ResponseEntity.ok(product.get());
+        } else {
+            // 如果沒找到，回傳 404 Not Found 狀態碼
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
