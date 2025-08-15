@@ -12,6 +12,84 @@
 
 </head>
 
+<script>
+(function () {
+  // 取得常用元素（不存在也不會報錯）
+  const $ = (id) => document.getElementById(id);
+  const elLoginLink       = $('login-link');           // 未登入時的「登入」圖示
+  const elMemberIcon      = $('member-icon');          // 已登入時的「會員中心」圖示
+  const elMemberCenterLi  = $('member-center-link');   // 左側選單中的「會員中心」(文字)
+  const elMemberName      = $('member-name');          // 左側選單「會員中心」文字
+  const elRealLogout      = $('real-logout');          // 真的「登出」按鈕（可選）
+
+  // 顯示登入後的導覽列狀態
+  function showLoggedIn(user) {
+    if (elLoginLink)      elLoginLink.style.display = 'none';
+    if (elMemberIcon)     elMemberIcon.style.display = '';
+    if (elMemberCenterLi) elMemberCenterLi.style.display = '';
+    if (elMemberName)     elMemberName.textContent = '會員中心';
+    if (elRealLogout)     elRealLogout.style.display = ''; // 想隱藏真正登出就註解這行
+  }
+
+  // 顯示登出後的導覽列狀態
+  function showLoggedOut() {
+    if (elLoginLink)      elLoginLink.style.display = '';
+    if (elMemberIcon)     elMemberIcon.style.display = 'none';
+    if (elMemberCenterLi) elMemberCenterLi.style.display = 'none';
+    if (elRealLogout)     elRealLogout.style.display = 'none';
+  }
+
+  // 呼叫 API 取得目前使用者
+  async function fetchCurrentUser() {
+    try {
+      const res = await fetch('/api/currentUser', {
+        method: 'GET',
+        credentials: 'include',
+        headers: { 'Accept': 'application/json' }
+      });
+      if (!res.ok) return null;
+      const user = await res.json();
+      // user 可能是 null 或空物件，需檢查 username
+      if (user && user.username) return user;
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // 送出 POST /logout（用隱藏表單避免 CORS/CSRF 問題）
+  function postLogout() {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/logout';
+    document.body.appendChild(form);
+    form.submit();
+  }
+
+  // 綁定真正的登出按鈕
+  function bindLogoutButton() {
+    if (!elRealLogout) return;
+    elRealLogout.addEventListener('click', function (e) {
+      e.preventDefault();
+      postLogout(); // 送出登出請求，後端 redirect:/login
+    });
+  }
+
+  async function init() {
+    const user = await fetchCurrentUser();
+    if (user) {
+      showLoggedIn(user);
+    } else {
+      showLoggedOut();
+    }
+    bindLogoutButton();
+  }
+
+  // DOM 準備好就執行
+  document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+
 <body>
 
     <header>
@@ -30,11 +108,9 @@
                 <ul>
                     <li><a href="./cart.html"><img src="./images/shopping.svg" class="icon-cart"></a></li>
                     <li id="login-link"><a href="/login"><img src="./images/login.svg" class="icon-cart"></a></li>
-                    <li id="logout-link" style="display:none;">
+                    <li id="real-logout" style="display:none;">
                         <form action="/logout" method="post" style="display:inline;">
-                            <button type="submit" style="background:none;border:none;padding:0;">
-                                <img src="./images/login.svg" class="icon-cart" title="登出">
-                            </button>
+                            <button type="submit" class="btn-logout">登出</button>
                         </form>
                     </li>
                 </ul>
