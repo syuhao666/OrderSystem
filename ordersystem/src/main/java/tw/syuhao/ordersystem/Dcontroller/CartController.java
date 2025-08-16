@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.servlet.http.HttpSession;
 import tw.syuhao.ordersystem.Ddto.AddCartDTO;
 import tw.syuhao.ordersystem.Ddto.CartItemUpdateDTO;
+import tw.syuhao.ordersystem.Ddto.CheckoutRequest;
+import tw.syuhao.ordersystem.Ddto.OrderResponse;
 import tw.syuhao.ordersystem.entity.Cart;
 import tw.syuhao.ordersystem.entity.CartItem;
 import tw.syuhao.ordersystem.entity.Product; //特殊+D
@@ -43,12 +45,7 @@ public class CartController {
     // ----------------------------------------------創建購物車
     @PostMapping("/add")
     public ResponseEntity<String> addCart(@RequestBody AddCartDTO cdto, HttpSession session) {
-        // // 1. 假設會員固定為 ID = 1
-        // Long fakeUserId = 2L;
-        // Users user = userRepository.findById(fakeUserId)
-        // .orElseThrow(() -> new RuntimeException("找不到使用者"));
-        // System.err.println(user);
-
+    
         Users user = (Users) session.getAttribute("user");
         if (user == null) {
             // 沒登入就回傳錯誤
@@ -140,5 +137,32 @@ public class CartController {
             return 0;
         }
         return cartItemRepository.countByCart(cart);
+    }
+
+    // ------------------------------------------- 結帳計算
+    @PostMapping("/xa")
+    public ResponseEntity<OrderResponse> checkout(@RequestBody CheckoutRequest request, HttpSession session) {
+        Users user = (Users) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.status(401).build(); // 未登入
+        }
+
+        // 運送費
+        int deliveryFee = 0;
+        if ("DELIVERY".equalsIgnoreCase(request.getDeliveryMethod())) {
+            deliveryFee = 100; // 假設運送費固定 100 元
+        }
+
+        // 樓層費
+        int floorFee = 0;
+        if (request.getFloor() > 1) {
+            floorFee = (request.getFloor() - 1) * 50; // 每層加 50 元
+        }
+
+        OrderResponse response = new OrderResponse();
+        response.setDeliveryFee(deliveryFee);
+        response.setFloorFee(floorFee);
+
+        return ResponseEntity.ok(response);
     }
 }
