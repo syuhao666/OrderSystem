@@ -36,11 +36,14 @@ public class Users {
     private String password;
     private String email;
     private String role;
+    private String remark; //客戶備註
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
     @ToString.Exclude
     private Cart cart;
+
+
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
