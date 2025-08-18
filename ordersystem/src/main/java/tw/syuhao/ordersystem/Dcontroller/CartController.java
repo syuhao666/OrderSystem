@@ -1,8 +1,5 @@
 package tw.syuhao.ordersystem.Dcontroller;
 
-import java.math.BigDecimal;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,118 +15,43 @@ import tw.syuhao.ordersystem.Ddto.AddCartDTO;
 import tw.syuhao.ordersystem.Ddto.CartItemUpdateDTO;
 import tw.syuhao.ordersystem.Ddto.CheckoutRequest;
 import tw.syuhao.ordersystem.Ddto.OrderResponse;
-import tw.syuhao.ordersystem.entity.Cart;
-import tw.syuhao.ordersystem.entity.CartItem;
-import tw.syuhao.ordersystem.entity.Product;
 import tw.syuhao.ordersystem.entity.Users;
-import tw.syuhao.ordersystem.repository.CartItemRepository; //特殊+D
-import tw.syuhao.ordersystem.repository.CartRepository;
-import tw.syuhao.ordersystem.repository.ProductRepository;
-import tw.syuhao.ordersystem.repository.UserRepository;
+import tw.syuhao.ordersystem.service.CartService;
 
 @RestController
 @RequestMapping("/cart")
 public class CartController {
 
     @Autowired
-    private CartRepository cartRepository;
-
-    @Autowired
-    private CartItemRepository cartItemRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private ProductRepository productRepository; // 特殊+D
+    private CartService cartService;
 
     // ----------------------------------------------創建購物車
     @PostMapping("/add")
     public ResponseEntity<String> addCart(@RequestBody AddCartDTO cdto, HttpSession session) {
-
         Users user = (Users) session.getAttribute("user");
         if (user == null) {
-            // 沒登入就回傳錯誤
             return ResponseEntity.status(401).body("請先登入");
         }
-
-        // 2. 找出或建立使用者的購物車
-        Cart cart = cartRepository.findByUser(user)
-                .orElseGet(() -> {
-                    Cart newCart = new Cart();
-                    newCart.setUser(user);
-                    return cartRepository.save(newCart);
-                });
-
-        // 3. 查商品
-        Product product = productRepository.findById(cdto.getId()) // 特殊+D
-                .orElseThrow(() -> new RuntimeException("找不到商品"));
-
-        // 4. 檢查購物車中是否已有該商品
-        Optional<CartItem> existingItemOpt = cart.getCartItems()
-                .stream()
-                .filter(item -> item.getProduct().getId().equals(product.getId()))
-                .findFirst();
-
-        if (existingItemOpt.isPresent()) {
-            CartItem existingItem = existingItemOpt.get();
-            existingItem.setQuantity(existingItem.getQuantity() + 1);
-            // //-----新修改
-            // BigDecimal totalPrice = product.getPrice().multiply(BigDecimal.valueOf(existingItem.getQuantity()));
-            // existingItem.setTotalPrice(totalPrice);
-            cartItemRepository.save(existingItem);
-        } else {
-            CartItem newItem = new CartItem();
-            newItem.setProduct(product);
-            newItem.setQuantity(cdto.getQuantity());
-            newItem.setCart(cart);
-            cartItemRepository.save(newItem);
-        }
-
+        cartService.addCart(user, cdto);
         return ResponseEntity.ok("加入購物車成功");
     }
 
     // -----------------------------------------------------------
     @PostMapping("/increase")
     public ResponseEntity<String> increaseQuantity(@RequestBody CartItemUpdateDTO dto) {
-        CartItem item = cartItemRepository.findById(dto.getCartItemId())
-                .orElseThrow(() -> new RuntimeException("找不到購物車商品"));
-        item.setQuantity(item.getQuantity() + 1);
-        cartItemRepository.save(item);
+        cartService.increaseQuantity(dto.getCartItemId());
         return ResponseEntity.ok("數量增加成功");
     }
 
     @PostMapping("/decrease")
     public ResponseEntity<String> decreaseQuantity(@RequestBody CartItemUpdateDTO dto) {
-        CartItem item = cartItemRepository.findById(dto.getCartItemId())
-                .orElseThrow(() -> new RuntimeException("找不到購物車商品"));
-        int newQty = item.getQuantity() - 1;
-        if (newQty <= 0) {
-            // ---新增因為購物車刪不掉
-            Cart cart = item.getCart();
-            if (cart != null) {
-                cart.getCartItems().remove(item);
-            }
-            cartItemRepository.delete(item);
-        } else {
-            item.setQuantity(newQty);
-            cartItemRepository.save(item);
-        }
+        cartService.decreaseQuantity(dto.getCartItemId());
         return ResponseEntity.ok("數量減少成功");
     }
 
     @DeleteMapping("/remove")
     public ResponseEntity<String> removeItem(@RequestParam Long cartItemId) {
-        CartItem item = cartItemRepository.findById(cartItemId)
-                .orElseThrow(() -> new RuntimeException("找不到購物車商品"));
-
-        // -----新增因為購物車刪不掉
-        Cart cart = item.getCart();
-        if (cart != null) {
-            cart.getCartItems().remove(item); // 從關聯集合移除
-        }
-        // -----
-        cartItemRepository.delete(item);
+        cartService.removeItem(cartItemId);
         return ResponseEntity.ok("商品已移除購物車");
     }
 
@@ -138,18 +60,9 @@ public class CartController {
     public ResponseEntity<Long> getCartCount(HttpSession session) {
         Users user = (Users) session.getAttribute("user");
         if (user == null) {
-            return ResponseEntity.status(401).build(); // 未登入，不回 body
+            return ResponseEntity.status(401).build(); // 未登入
         }
-
-        // 找使用者的購物車
-        Optional<Cart> cartOpt = cartRepository.findByUser(user);
-        if (cartOpt.isEmpty()) {
-            return ResponseEntity.ok(0L); // 沒有購物車，數量 = 0
-        }
-
-        Cart cart = cartOpt.get();
-        long count = cartItemRepository.countByCart(cart);
-
+        long count = cartService.getCartCount(user);
         return ResponseEntity.ok(count);
     }
 
@@ -160,36 +73,7 @@ public class CartController {
         if (user == null) {
             return ResponseEntity.status(401).build(); // 未登入
         }
-
-        // 取得使用者購物車
-        Cart cart = cartRepository.findByUser(user)
-                .orElseThrow(() -> new RuntimeException("購物車不存在"));
-
-        BigDecimal productTotal = BigDecimal.ZERO;
-        for (CartItem item : cart.getCartItems()) {
-            BigDecimal itemTotal = item.getProduct().getPrice()
-                    .multiply(BigDecimal.valueOf(item.getQuantity()));
-            productTotal = productTotal.add(itemTotal);
-        }
-
-        // 運送費
-        int deliveryFee = "DELIVERY".equalsIgnoreCase(request.getDeliveryMethod()) ? 100 : 0;
-
-        // 樓層費
-        int floorFee = request.getFloor() > 1 ? (request.getFloor() - 1) * 50 : 0;
-
-        // 總金額
-        BigDecimal deliveryFeeBD = BigDecimal.valueOf(deliveryFee);
-        BigDecimal floorFeeBD = BigDecimal.valueOf(floorFee);
-
-        BigDecimal finalTotal = productTotal.add(deliveryFeeBD).add(floorFeeBD);
-
-        OrderResponse response = new OrderResponse();
-        response.setProductTotal(productTotal);
-        response.setDeliveryFee(deliveryFee);
-        response.setFloorFee(floorFee);
-        response.setFinalTotal(finalTotal);
-
+        OrderResponse response = cartService.checkout(user, request);
         return ResponseEntity.ok(response);
     }
 }
