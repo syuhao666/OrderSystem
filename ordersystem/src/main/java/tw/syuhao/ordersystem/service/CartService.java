@@ -29,6 +29,8 @@ public class CartService {
     @Autowired
     private CartItemRepository cartItemRepository;
 
+
+    //建立購物車
     public void addCart(Users user, AddCartDTO cdto) {
 
         // 找出或建立使用者的購物車
@@ -104,14 +106,17 @@ public class CartService {
         cartItemRepository.delete(item);
     }
 
+    //-購物車內容數量
     public long getCartCount(Users user) {
         Optional<Cart> cartOpt = cartRepository.findByUser(user);
         if (cartOpt.isEmpty()) {
             return 0L; // 沒有購物車
         }
-        return cartItemRepository.countByCart(cartOpt.get());
+        return cartItemRepository.sumQuantityByCart(cartOpt.get());
     }
 
+
+    
     public OrderResponse checkout(Users user, CheckoutRequest request) {
         // 取得使用者購物車
         Cart cart = cartRepository.findByUser(user)
@@ -134,6 +139,8 @@ public class CartService {
         BigDecimal finalTotal = productTotal
                 .add(BigDecimal.valueOf(deliveryFee))
                 .add(BigDecimal.valueOf(floorFee));
+
+        
 
         OrderResponse response = new OrderResponse();
         response.setProductTotal(productTotal);

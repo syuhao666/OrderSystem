@@ -39,17 +39,24 @@ createApp({
         .then((response) => {
           cartItems.value = response.data;
           console.log(cartItems.value);
-          cartCount.value = cartItems.value.reduce(
-            (sum, item) => sum + item.quantity,
-            0,
-          ); // 🔴 更新紅點
         })
         .catch((err) => {
           console.error("抓取購物車失敗", err);
         });
     }
+
+    function fetchCartCount() {
+      axios
+        .get("/cart/count")
+        .then((res) => {
+          cartCount.value = res.data; // 後端算好的總數量
+        })
+        .catch((err) => console.error("無法取得購物車數量", err));
+    }
+
     onMounted(() => {
       fetchCart(); // 載入購物車
+      fetchCartCount();
       axios
         .get("./address.json")
         .then((res) => {
@@ -137,6 +144,7 @@ createApp({
       fullAddress,
       totalPrice,
       cartCount,
+      fetchCartCount
     };
   },
 }).mount("#app");

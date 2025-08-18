@@ -19,14 +19,19 @@ createApp({
         .then((response) => {
           cartItems.value = response.data;
           console.log(cartItems.value);
-          cartCount.value = cartItems.value.reduce(
-            (sum, item) => sum + item.quantity,
-            0,
-          ); // 🔴 更新紅點
         })
         .catch((error) => {
           console.error("發生錯誤", error);
         });
+    }
+
+    function fetchCartCount() {
+      axios
+        .get("/cart/count")
+        .then((res) => {
+          cartCount.value = res.data; // 後端算好的總數量
+        })
+        .catch((err) => console.error("無法取得購物車數量", err));
     }
 
     // 增加數量
@@ -44,6 +49,7 @@ createApp({
           console.log("數量增加");
           fetchCart();
           shippingMethod();
+          fetchCartCount();
         })
         .catch((err) => console.error("增加失敗", err));
     }
@@ -62,6 +68,7 @@ createApp({
           console.log("數量減少");
           fetchCart();
           shippingMethod();
+          fetchCartCount();
         })
         .catch((err) => console.error("減少失敗", err));
     }
@@ -77,6 +84,7 @@ createApp({
           console.log("刪除成功");
           fetchCart();
           shippingMethod();
+          fetchCartCount();
           // 更新購物車畫面
         })
         .catch((err) => {
@@ -84,12 +92,9 @@ createApp({
         });
     }
 
-    
-
     function shippingMethod() {
       axios
         .post("/cart/xa", {
-          
           deliveryMethod: selectedShippingMethod.value || "PICKUP",
           floor: Number(selectedFloor.value) || 1,
         })
@@ -109,10 +114,10 @@ createApp({
     onMounted(() => {
       fetchCart();
       shippingMethod();
+      fetchCartCount();
     });
 
     return {
-      
       decreaseQuantity,
       increaseQuantity,
       goToForm,
@@ -125,7 +130,8 @@ createApp({
       floorFee,
       deliveryFee,
       productTotal,
-      finalTotal
+      finalTotal,
+      fetchCartCount
     };
   },
 }).mount("#app");
