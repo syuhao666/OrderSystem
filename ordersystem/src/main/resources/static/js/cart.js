@@ -7,9 +7,10 @@ createApp({
     const selectedShippingMethod = ref(null);
     const selectedFloor = ref(""); // 樓層選擇
 
-    const backendTotal = ref(0);
+    const productTotal = ref(0);
     const deliveryFee = ref(0);
     const floorFee = ref(0);
+    const finalTotal = ref(0);
 
     // 取得購物車內容
     function fetchCart() {
@@ -42,6 +43,7 @@ createApp({
         .then(() => {
           console.log("數量增加");
           fetchCart();
+          shippingMethod();
         })
         .catch((err) => console.error("增加失敗", err));
     }
@@ -59,6 +61,7 @@ createApp({
         .then(() => {
           console.log("數量減少");
           fetchCart();
+          shippingMethod();
         })
         .catch((err) => console.error("減少失敗", err));
     }
@@ -73,6 +76,7 @@ createApp({
         .then(() => {
           console.log("刪除成功");
           fetchCart();
+          shippingMethod();
           // 更新購物車畫面
         })
         .catch((err) => {
@@ -80,36 +84,35 @@ createApp({
         });
     }
 
-    const totalPrice = computed(() => {
-      return cartItems.value.reduce(
-        (sum, item) => sum + item.price * item.quantity,
-        0,
-      );
-    });
+    
 
     function shippingMethod() {
       axios
         .post("/cart/xa", {
+          
           deliveryMethod: selectedShippingMethod.value || "PICKUP",
           floor: Number(selectedFloor.value) || 1,
         })
         .then((res) => {
           deliveryFee.value = res.data.deliveryFee;
           floorFee.value = res.data.floorFee;
+          productTotal.value = res.data.productTotal;
+          finalTotal.value = res.data.finalTotal;
         });
     }
 
     // ----------------前往填寫資料頁面
     function goToForm() {
-      window.location.href = "form.html";
+      window.location.href = "formV1.html";
     }
 
     onMounted(() => {
       fetchCart();
+      shippingMethod();
     });
 
     return {
-      totalPrice,
+      
       decreaseQuantity,
       increaseQuantity,
       goToForm,
@@ -117,11 +120,12 @@ createApp({
       cartItems,
       cartCount,
       shippingMethod,
-      backendTotal,
-      deliveryFee,
-      floorFee,
       selectedShippingMethod,
-      selectedFloor
+      selectedFloor,
+      floorFee,
+      deliveryFee,
+      productTotal,
+      finalTotal
     };
   },
 }).mount("#app");

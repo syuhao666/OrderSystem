@@ -1,5 +1,6 @@
 package tw.syuhao.ordersystem.Dcontroller;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,11 @@ import tw.syuhao.ordersystem.Ddto.CheckoutRequest;
 import tw.syuhao.ordersystem.Ddto.OrderResponse;
 import tw.syuhao.ordersystem.entity.Cart;
 import tw.syuhao.ordersystem.entity.CartItem;
-import tw.syuhao.ordersystem.entity.Product; //特殊+D
+import tw.syuhao.ordersystem.entity.Product;
 import tw.syuhao.ordersystem.entity.Users;
-import tw.syuhao.ordersystem.repository.CartItemRepository;
+import tw.syuhao.ordersystem.repository.CartItemRepository; //特殊+D
 import tw.syuhao.ordersystem.repository.CartRepository;
-import tw.syuhao.ordersystem.repository.ProductRepository; //特殊+D
+import tw.syuhao.ordersystem.repository.ProductRepository;
 import tw.syuhao.ordersystem.repository.UserRepository;
 
 @RestController
@@ -45,7 +46,7 @@ public class CartController {
     // ----------------------------------------------創建購物車
     @PostMapping("/add")
     public ResponseEntity<String> addCart(@RequestBody AddCartDTO cdto, HttpSession session) {
-    
+
         Users user = (Users) session.getAttribute("user");
         if (user == null) {
             // 沒登入就回傳錯誤
@@ -73,6 +74,9 @@ public class CartController {
         if (existingItemOpt.isPresent()) {
             CartItem existingItem = existingItemOpt.get();
             existingItem.setQuantity(existingItem.getQuantity() + 1);
+            //-----新修改
+            BigDecimal totalPrice = product.getPrice().multiply(BigDecimal.valueOf(existingItem.getQuantity()));
+            existingItem.setTotalPrice(totalPrice);
             cartItemRepository.save(existingItem);
         } else {
             CartItem newItem = new CartItem();
@@ -131,12 +135,22 @@ public class CartController {
 
     // -------------------------------------------
     @GetMapping("/count")
-    public long getCartCount(HttpSession session) {
-        Cart cart = (Cart) session.getAttribute("cart");
-        if (cart == null) {
-            return 0;
+    public ResponseEntity<Long> getCartCount(HttpSession session) {
+        Users user = (Users) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.status(401).build(); // 未登入，不回 body
         }
-        return cartItemRepository.countByCart(cart);
+
+        // 找使用者的購物車
+        Optional<Cart> cartOpt = cartRepository.findByUser(user);
+        if (cartOpt.isEmpty()) {
+            return ResponseEntity.ok(0L); // 沒有購物車，數量 = 0
+        }
+
+        Cart cart = cartOpt.get();
+        long count = cartItemRepository.countByCart(cart);
+
+        return ResponseEntity.ok(count);
     }
 
     // ------------------------------------------- 結帳計算
@@ -147,21 +161,34 @@ public class CartController {
             return ResponseEntity.status(401).build(); // 未登入
         }
 
-        // 運送費
-        int deliveryFee = 0;
-        if ("DELIVERY".equalsIgnoreCase(request.getDeliveryMethod())) {
-            deliveryFee = 100; // 假設運送費固定 100 元
+        // 取得使用者購物車
+        Cart cart = cartRepository.findByUser(user)
+                .orElseThrow(() -> new RuntimeException("購物車不存在"));
+
+        BigDecimal productTotal = BigDecimal.ZERO;
+        for (CartItem item : cart.getCartItems()) {
+            BigDecimal itemTotal = item.getProduct().getPrice()
+                    .multiply(BigDecimal.valueOf(item.getQuantity()));
+            productTotal = productTotal.add(itemTotal);
         }
+
+        // 運送費
+        int deliveryFee = "DELIVERY".equalsIgnoreCase(request.getDeliveryMethod()) ? 100 : 0;
 
         // 樓層費
-        int floorFee = 0;
-        if (request.getFloor() > 1) {
-            floorFee = (request.getFloor() - 1) * 50; // 每層加 50 元
-        }
+        int floorFee = request.getFloor() > 1 ? (request.getFloor() - 1) * 50 : 0;
+
+        // 總金額
+        BigDecimal deliveryFeeBD = BigDecimal.valueOf(deliveryFee);
+        BigDecimal floorFeeBD = BigDecimal.valueOf(floorFee);
+
+        BigDecimal finalTotal = productTotal.add(deliveryFeeBD).add(floorFeeBD);
 
         OrderResponse response = new OrderResponse();
+        response.setProductTotal(productTotal);
         response.setDeliveryFee(deliveryFee);
         response.setFloorFee(floorFee);
+        response.setFinalTotal(finalTotal);
 
         return ResponseEntity.ok(response);
     }

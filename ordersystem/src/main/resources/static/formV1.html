@@ -51,9 +51,11 @@
         </header>
         <!-- -------------------------------- -->
         <!-- 填寫資料 -->
-        
-            <section class="container col-md-9">
-                <div class="container">
+
+        <section class="container">
+            <div class="row">
+                <!-- 左邊：收件人資料 -->
+                <div class="col-md-8">
                     <div class="d-flex p-3">
                         <h2>收件人資料填寫</h2>
                         <label class="ms-auto">
@@ -67,13 +69,13 @@
                             <input type="text" v-model="formData.name" required>
                         </div>
                         <div class="row p-3">
-                            <label f>手機號碼 (主聯繫)<span class="required-star">*</span></label>
+                            <label>手機號碼 (主聯繫)<span class="required-star">*</span></label>
                             <div>請保持暢通並留意陌生來電，以免無法送達</div>
                             <input type="tel" v-model="formData.phone" placeholder="請輸入手機號碼 (範例：09XXXXXXXX)" required>
                         </div>
                         <div class="row p-3">
                             <label>E-mail</label>
-                            <input type="email" v-model="formData.email" placeholder="">
+                            <input type="email" v-model="formData.email">
                         </div>
                         <div class="row p-3">
                             <label>收件人地址<span>*</span></label>
@@ -81,21 +83,18 @@
                                 <select class="col-md-5" v-model="selectedCity" @change="onCityChange" required>
                                     <option value="" disabled>請選擇縣市</option>
                                     <option v-for="(districts, city) in addressData" :key="city" :value="city">{{ city
-                                        }}
-                                    </option>
+                                        }}</option>
                                 </select>
                                 <select class="col-md-5" v-model="selectedDistrict" @change="onDistrictChange"
                                     :disabled="!selectedCity" required>
                                     <option value="" disabled>請選擇區</option>
                                     <option v-for="(zip, district) in districts" :key="district" :value="district">{{
-                                        district
-                                        }}</option>
+                                        district }}</option>
                                 </select>
                                 <input class="col-md-2" type="text" v-model="selectedZip" required />
                             </div>
                             <input type="text" v-model="formData.address" placeholder="請輸入詳細地址" required />
                         </div>
-                        <!-- -------------------------------- -->
                         <div class="row p-3">
                             <label>付費方式<span>*</span></label>
                             <select v-model="formData.paymentMethod" required>
@@ -108,8 +107,26 @@
                         <button class="btn btn-success ms-auto" @click="checkout">結帳</button>
                     </div>
                 </div>
-            </section>
-            
+
+                <!-- 右邊：購物車摘要 -->
+                <div class="col-md-4">
+                    <div class="p-3 border rounded bg-light">
+                        <h4>購物車內容</h4>
+                        <ul class="list-group mb-3">
+                            <li class="list-group-item" v-for="item in cartItems" :key="item.id">
+                                {{ item.name }} x {{ item.quantity }}
+                                <span class="float-end">{{ item.price * item.quantity }} 元</span>
+                            </li>
+                        </ul>
+                        <div class="d-flex justify-content-between fw-bold">
+                            <span>總計</span>
+                            <span>{{ finalTotal }} 元</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </div>
     <!-- ------------------------------------------ -->
     <footer>

@@ -50,7 +50,7 @@ createApp({
     };
 
     const addToCart = (product) => {
-      const data = { id: product.id, quantity: 1 };
+      const data = { id: product.id, quantity: 1 }; //-----
       axios
         .post('/cart/add', data, { headers: { 'Content-Type': 'application/json' } })
         .then(() => {
