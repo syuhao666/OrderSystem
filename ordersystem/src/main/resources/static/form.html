@@ -51,74 +51,65 @@
         </header>
         <!-- -------------------------------- -->
         <!-- 填寫資料 -->
-        <section class="container">
-            <div class="container">
-                <div class="d-flex p-3">
-                    <h2>收件人資料填寫</h2>
-                    <label class="ms-auto">
-                        <input type="checkbox">
-                        <span>同訂購人資料</span>
-                    </label>
-                </div>
-                <form action="#" method="post">
-                    <div class="row p-3">
-                        <label class="col-md-12">姓名</label>
-                        <input type="text" v-model="formData.name" required>
+        <div class="d-flex">
+            <section class="container col-md-9">
+                <div class="container">
+                    <div class="d-flex p-3">
+                        <h2>收件人資料填寫</h2>
+                        <label class="ms-auto">
+                            <input type="checkbox">
+                            <span>同訂購人資料</span>
+                        </label>
                     </div>
-                    <div class="row p-3">
-                        <label f>手機號碼 (主聯繫)<span class="required-star">*</span></label>
-                        <div>請保持暢通並留意陌生來電，以免無法送達</div>
-                        <input type="tel" v-model="formData.phone" placeholder="請輸入手機號碼 (範例：09XXXXXXXX)" required>
-                    </div>
-                    <!-- <div class="row p-3" style="background-color: mediumorchid;">
-                    <label>手機號碼 (備存聯繫)</label>
-                    <div>確保送貨時有備用聯繫人可收貨</div>
-                    <input type="tel" placeholder="請輸入手機號碼 (範例：09XXXXXXXX)">
-                    </div> -->
-                    <div class="row p-3">
-                        <label>E-mail</label>
-                        <input type="email" v-model="formData.email" placeholder="">
-                    </div>
-                    <!-- ----------------------- -->
-                    <div class="row p-3">
-                        <label>收件人地址<span>*</span></label>
+                    <form action="#" method="post">
                         <div class="row p-3">
-                            <select class="col-md-5" v-model="selectedCity" @change="onCityChange" required>
-                                <option value="" disabled>請選擇縣市</option>
-                                <option v-for="(districts, city) in addressData" :key="city" :value="city">{{ city }}
-                                </option>
-                            </select>
-                            <select class="col-md-5" v-model="selectedDistrict" @change="onDistrictChange"
-                                :disabled="!selectedCity" required>
-                                <option value="" disabled>請選擇區</option>
-                                <option v-for="(zip, district) in districts" :key="district" :value="district">{{
-                                    district
-                                    }}</option>
-                            </select>
-                            <input class="col-md-2" type="text" v-model="selectedZip" required />
+                            <label class="col-md-12">姓名</label>
+                            <input type="text" v-model="formData.name" required>
                         </div>
-                        <input type="text" v-model="formData.address" placeholder="請輸入詳細地址" required />
+                        <div class="row p-3">
+                            <label f>手機號碼 (主聯繫)<span class="required-star">*</span></label>
+                            <div>請保持暢通並留意陌生來電，以免無法送達</div>
+                            <input type="tel" v-model="formData.phone" placeholder="請輸入手機號碼 (範例：09XXXXXXXX)" required>
+                        </div>
+                        <div class="row p-3">
+                            <label>E-mail</label>
+                            <input type="email" v-model="formData.email" placeholder="">
+                        </div>
+                        <div class="row p-3">
+                            <label>收件人地址<span>*</span></label>
+                            <div class="row p-3">
+                                <select class="col-md-5" v-model="selectedCity" @change="onCityChange" required>
+                                    <option value="" disabled>請選擇縣市</option>
+                                    <option v-for="(districts, city) in addressData" :key="city" :value="city">{{ city
+                                        }}
+                                    </option>
+                                </select>
+                                <select class="col-md-5" v-model="selectedDistrict" @change="onDistrictChange"
+                                    :disabled="!selectedCity" required>
+                                    <option value="" disabled>請選擇區</option>
+                                    <option v-for="(zip, district) in districts" :key="district" :value="district">{{
+                                        district
+                                        }}</option>
+                                </select>
+                                <input class="col-md-2" type="text" v-model="selectedZip" required />
+                            </div>
+                            <input type="text" v-model="formData.address" placeholder="請輸入詳細地址" required />
+                        </div>
+                        <!-- -------------------------------- -->
+                        <div class="row p-3">
+                            <label>付費方式<span>*</span></label>
+                            <select v-model="formData.paymentMethod" required>
+                                <option>信用卡</option>
+                                <option>ATM轉帳</option>
+                            </select>
+                        </div>
+                    </form>
+                    <div class="p-3 d-flex">
+                        <button class="btn btn-success ms-auto" @click="checkout">結帳</button>
                     </div>
-                    <!-- -------------------------------- -->
-                    <div class="row p-3">
-                        <label>付費方式<span>*</span></label>
-                        <select v-model="formData.paymentMethod" required>
-                            <option>信用卡</option>
-                            <option>ATM轉帳</option>
-                        </select>
-                    </div>
-                    <!-- <div class="row p-3" >
-                    <label>有無電梯<span>*</span></label>
-                    <select required>
-                        <option value="電梯大樓或平地一樓">我在電梯大樓或平地一樓</option>
-                    </select>
-                    </div> -->
-                </form>
-                <div class="p-3 d-flex">
-                    <button class="btn btn-success ms-auto" @click="checkout">結帳</button>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
     </div>
     <!-- ------------------------------------------ -->
     <footer>
@@ -145,19 +136,6 @@
         <p>&copy; 2025 簡約家居 版權所有</p>
     </footer>
     <script src="./js/form.js"></script>
-    <script>
-        // 取得會員資料並顯示
-        fetch('/api/currentUser')
-            .then(res => res.json())
-            .then(user => {
-                if (user && user.username) {
-                    document.getElementById('member-center-link').style.display = '';
-                    document.getElementById('member-name').textContent = '會員中心';
-                    document.getElementById('login-link').style.display = 'none';
-                    document.getElementById('logout-link').style.display = '';
-                }
-            });
-    </script>
 
 </body>
 

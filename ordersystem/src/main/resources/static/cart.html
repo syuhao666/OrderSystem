@@ -165,19 +165,7 @@
 
     <script src="./js/cart.js"></script>
 
-    <script>
-        // 取得會員資料並顯示
-        fetch('/api/currentUser')
-            .then(res => res.json())
-            .then(user => {
-                if (user && user.username) {
-                    document.getElementById('member-center-link').style.display = '';
-                    document.getElementById('member-name').textContent = '會員中心';
-                    document.getElementById('login-link').style.display = 'none';
-                    document.getElementById('logout-link').style.display = '';
-                }
-            });
-    </script>
+    
 </body>
 
 </html>
