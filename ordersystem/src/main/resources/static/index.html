@@ -19,43 +19,31 @@
   </style>
 </head>
 <body>
-  <header>
-    <div class="container">
-      <nav>
-        <div class="logo">簡約家居</div>
-        <ul>
-          <li><a href="#home">首頁</a></li>
-          <li><a href="./products.html">商品</a></li>
-          <li><a href="#about">關於我們</a></li>
-          <!-- 左側選單：登入後顯示 -->
-          <li id="member-center-link" style="display:none;">
-            <a href="./memberCenter.html" id="member-name">會員中心</a>
-          </li>
-        </ul>
-        <ul>
-          <li><a href="./cart.html"><img src="./images/shopping.svg" class="icon-cart" alt="購物車"></a></li>
 
-          <!-- 未登入 -->
-          <li id="login-link">
-            <a href="/login"><img src="./images/login.svg" class="icon-cart" alt="登入"></a>
-          </li>
-
-          <!-- 已登入：會員頭像＋名稱（連到會員中心） -->
-          <li id="member-icon" style="display:none;">
-            <a href="./memberCenter.html" class="member-link">
-              <div id="member-avatar" class="member-avatar">會</div>
-              <span id="member-displayname" style="font-weight:bold;"></span>
-            </a>
-          </li>
-
-          <!-- 已登入：登出 -->
-          <li id="real-logout" style="display:none;">
-            <button type="button" class="btn-logout" id="btn-logout">登出</button>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">簡約家居</div>
+                <ul>
+                    <li><a href="#home">首頁</a></li>
+                    <li><a href="./products.html">商品</a></li>
+                    <li><a href="#about">關於我們</a></li>
+                    <li id="member-center-link" style="display:none;">
+                        <a href="./memberCenter.html" id="member-name"></a>
+                    </li>
+                </ul>
+                <ul>
+                    <li><a href="./cart.html"><img src="./images/shopping.svg" class="icon-cart"></a></li>
+                    <li id="login-link"><a href="/login"><img src="./images/login.svg" class="icon-cart"></a></li>
+                    <li id="real-logout" style="display:none;">
+                        <form action="/logout" method="post" style="display:inline;">
+                            <button type="submit" class="btn-logout">登出</button>
+                        </form>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
   <!-- Hero 視覺 -->
   <div class="d-flex justify-content-center">
@@ -65,52 +53,67 @@
     </video>
   </div>
 
-  <!-- 商品區 -->
-  <div id="app">
-    <section id="products">
-      <div class="container">
-        <h2>熱門商品</h2>
-        <div class="products">
-          <div class="product" v-for="product in products" :key="product.id">
-            <a :href="`products_x.html?id=${product.id}`">
-              <img :src="`http://localhost:8080/uploads/${product.imageUrl}`" :alt="product.name" />
-            </a>
-            <h3>{{ product.name }}</h3>
-            <p>{{ product.description }}</p>
-            <div class="price">NT${{ product.price }}</div>
-            <a class="btn" :href="`products_x.html?id=${product.id}`">查看商品詳細</a>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
+    <div id="app">
+        <section id="products">
+            <div class="container">
+                <h2>熱門商品</h2>
+                <div class="products">
+                    <div class="product" v-for="product in products" :key="product.id">
+                        <a :href="`products_x.html?id=${product.id}`">
+                            <img :src="`http://localhost:8080/uploads/${product.imageUrl}`" :alt="product.name" />
+                        </a>
+                        <h3>{{ product.name}}</h3>
+                        <p>{{ product.description}}</p>
+                        <div class="price">NT${{product.price}}</div>
+                        <!-- <button class="btn" @click="addToCart(product)">加入購物車</button> -->
+                        <a class="btn" :href="`products_x.html?id=${product.id}`">查看商品詳細</a>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <!-- Footer -->
-  <footer>
-    <section>
-      <div class="container">
-        <ul>
-          <h2>聯繫我們</h2>
-          <li class="xa">地址 : 台北市信義區松仁路123號</li>
-          <li class="xa">電話 : 02-1234-5678</li>
-        </ul>
-        <div>
-          <a href>
-            <img src="./images/IG.png" alt="IG" class="icon-cart2">
-          </a>
-          <a href>
-            <img src="./images/FB.png" alt="Facebook" class="icon-cart2">
-          </a>
-          <a href>
-            <img src="./images/LINE.png" alt="LINE" class="icon-cart2">
-          </a>
-        </div>
-      </div>
-    </section>
-    <p>&copy; 2025 簡約家居 版權所有</p>
-  </footer>
+    </div>
 
-  <script src="./js/index.js"></script>
-  <script src="./js/nav.js"></script>
+
+
+    <footer>
+        <section>
+            <div class="container">
+
+                <ul>
+                    <h2>聯繫我們</h2>
+                    <li class="xa">地址 : 台北市信義區松仁路123號</li>
+                    <li class="xa">電話 : 02-1234-5678</li>
+
+                </ul>
+                <div>
+                    <a href>
+                        <img src="./images/IG.png" alt="IG" class="icon-cart2">
+                    </a>
+                    <a href>
+                        <img src="./images/FB.png" alt="Facebook" class="icon-cart2">
+                    </a>
+                    <a href>
+                        <img src="./images/LINE.png" alt="LINE" class="icon-cart2">
+                    </a>
+                </div>
+            </div>
+        </section>
+        <p>&copy; 2025 簡約家居 版權所有</p>
+    </footer>
+    <script src="./js/index.js"></script>
+    <script>
+        // 取得會員資料並顯示
+        fetch('/api/currentUser')
+            .then(res => res.json())
+            .then(user => {
+                if (user && user.username) {
+                    document.getElementById('member-center-link').style.display = '';
+                    document.getElementById('member-name').textContent = '會員中心';
+                    document.getElementById('login-link').style.display = 'none';
+                    document.getElementById('logout-link').style.display = '';
+                }
+            });
+    </script>
 </body>
 </html>

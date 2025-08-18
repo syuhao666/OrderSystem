@@ -13,49 +13,55 @@
 </head>
 
 <body>
-
-    <header>
-        <div class="container">
-            <nav>
-                <div class="logo">簡約家居</div>
-                <ul>
-                    <li><a href="./index.html">首頁</a></li>
-                    <li><a href="./products.html">商品</a></li>
-                    <li><a href="#about">關於我們</a></li>
-                    <li id="member-center-link" style="display:none;">
-                        <a href="./memberCenter.html" id="member-name"></a>
-                    </li>
-                </ul>
-                <ul>
-                    <li><a href="./cart.html"><img src="./images/shopping.svg" class="icon-cart"></a></li>
-                    <li id="login-link"><a href="/login"><img src="./images/login.svg" class="icon-cart"></a></li>
-                    <li id="logout-link" style="display:none;">
-                        <form action="/logout" method="post" style="display:inline;">
-                            <button type="submit" style="background:none;border:none;padding:0;">
-                                <img src="./images/login.svg" class="icon-cart" title="登出">
-                            </button>
-                        </form>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </header>
     <div id="app">
-    <section id="product-detail">
-        <div class="container">
-            <div v-if="isLoading">載入中...</div>
-            <div v-else-if="hasError">取得商品資料失敗</div>
-            <div v-else-if="product">
-                <img :src="`http://localhost:8080/uploads/${product.imageUrl}`" :alt="product.name" />
-                <h2>{{ product.name }}</h2>
-                <p>{{ product.description }}</p>
-                <div class="price">NT${{ product.price }}</div>
-                <button class="btn" @click="addToCart(product)">加入購物車</button>
+        <header>
+            <div class="container">
+                <nav>
+                    <div class="logo">簡約家居</div>
+                    <ul>
+                        <li><a href="./index.html">首頁</a></li>
+                        <li><a href="./products.html">商品</a></li>
+                        <li><a href="#about">關於我們</a></li>
+                        <li id="member-center-link" style="display:none;">
+                            <a href="./memberCenter.html" id="member-name"></a>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            <a href="./cart.html" class="cart-link"><img src="./images/shopping.svg" class="icon-cart">
+                                <span v-show="cartCount > 0" class="cart-badge">
+                                    {{ cartCount }}
+                                </span>
+                            </a>
+                        </li>
+                        <li id="login-link"><a href="/login"><img src="./images/login.svg" class="icon-cart"></a></li>
+                        <li id="logout-link" style="display:none;">
+                            <form action="/logout" method="post" style="display:inline;">
+                                <button type="submit" style="background:none;border:none;padding:0;">
+                                    <img src="./images/login.svg" class="icon-cart" title="登出">
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </nav>
             </div>
-            <div v-else>找不到商品資料</div>
-        </div>
-    </section>
-</div>
+        </header>
+
+        <section id="product-detail">
+            <div class="container">
+                <div v-if="isLoading">載入中...</div>
+                <div v-else-if="hasError">取得商品資料失敗</div>
+                <div v-else-if="product">
+                    <img :src="`http://localhost:8080/uploads/${product.imageUrl}`" :alt="product.name" />
+                    <h2>{{ product.name }}</h2>
+                    <p>{{ product.description }}</p>
+                    <div class="price">NT${{ product.price }}</div>
+                    <button class="btn" @click="addToCart(product)">加入購物車</button>
+                </div>
+                <div v-else>找不到商品資料</div>
+            </div>
+        </section>
+    </div>
     <footer>
         <section>
             <div class="container">

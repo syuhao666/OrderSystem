@@ -15,6 +15,7 @@
 
 <body>
     <!-- Header 導覽列 -->
+    <div id="app">
     <header>
         <div class="container">
             <nav>
@@ -29,8 +30,14 @@
                     </li>
                 </ul>
                 <ul>
-                    <li><a href="./cart.html"><img src="./images/shopping.svg" class="icon-cart"></a></li>
-                    <!-- <li><a href="./login.html"><img src="./images/login.svg" class="icon-cart"></a></li> -->
+                    <li>
+                        <a href="./cart.html" class="cart-link"><img src="./images/shopping.svg" class="icon-cart">
+                            <span v-show="cartCount > 0" class="cart-badge">
+                                {{ cartCount }}
+                            </span>
+                        </a>
+                    </li>
+                    
                     <li id="login-link"><a href="/login"><img src="./images/login.svg" class="icon-cart"></a></li>
                     <li id="logout-link" style="display:none;">
                         <form action="/logout" method="post" style="display:inline;">
@@ -45,7 +52,7 @@
     </header>
     <!-- -------------------------------- -->
     <!-- 填寫資料 -->
-    <section id="app" class="container" style="background-color: cadetblue;">
+    <section class="container" style="background-color: cadetblue;">
         <div class="container" style="background-color: cornflowerblue;">
             <div class="d-flex p-3" style="background-color: coral;">
                 <h2>收件人資料填寫</h2>
@@ -114,6 +121,7 @@
             </div>
         </div>
     </section>
+    </div>
     <!-- ------------------------------------------ -->
     <footer>
         <section>
