@@ -74,9 +74,9 @@ public class CartController {
         if (existingItemOpt.isPresent()) {
             CartItem existingItem = existingItemOpt.get();
             existingItem.setQuantity(existingItem.getQuantity() + 1);
-            //-----新修改
-            BigDecimal totalPrice = product.getPrice().multiply(BigDecimal.valueOf(existingItem.getQuantity()));
-            existingItem.setTotalPrice(totalPrice);
+            // //-----新修改
+            // BigDecimal totalPrice = product.getPrice().multiply(BigDecimal.valueOf(existingItem.getQuantity()));
+            // existingItem.setTotalPrice(totalPrice);
             cartItemRepository.save(existingItem);
         } else {
             CartItem newItem = new CartItem();
