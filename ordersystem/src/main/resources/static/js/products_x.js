@@ -8,20 +8,28 @@ createApp({
     const cartCount = ref(0); // 🔴 購物車紅點數量
     const cartItems = ref([]);
 
-
     //----------------
-     // 取得購物車內容
-        function fetchCart() {
-            axios.get('/api/items') // 後端商品資料網址
-                .then(response => {
-                    cartItems.value = response.data
-                    console.log(cartItems.value);
-                    cartCount.value = cartItems.value.reduce((sum, item) => sum + item.quantity, 0); // 🔴 更新紅點
-                })
-                .catch(error => {
-                    console.error('發生錯誤', error)
-                })
-        }
+    // 取得購物車內容
+    function fetchCart() {
+      axios
+        .get("/api/items") // 後端商品資料網址
+        .then((response) => {
+          cartItems.value = response.data;
+          console.log(cartItems.value);
+        })
+        .catch((error) => {
+          console.error("發生錯誤", error);
+        });
+    }
+
+    function fetchCartCount() {
+      axios
+        .get("/cart/count")
+        .then((res) => {
+          cartCount.value = res.data; // 後端算好的總數量
+        })
+        .catch((err) => console.error("無法取得購物車數量", err));
+    }
     //----------------
     const fetchProductDetails = (productId) => {
       if (!productId) {
@@ -50,27 +58,39 @@ createApp({
     };
 
     const addToCart = (product) => {
-      const data = { id: product.id, quantity: 1 };
+      const data = { id: product.id, quantity: 1 }; //-----
       axios
-        .post('/cart/add', data, { headers: { 'Content-Type': 'application/json' } })
+        .post("/cart/add", data, {
+          headers: { "Content-Type": "application/json" },
+        })
         .then(() => {
           alert(`已成功將 ${product.name} 加入購物車！`);
           fetchCart();
+          fetchCartCount();
         })
         .catch((error) => {
           console.error("加入購物車失敗", error);
           alert("加入購物車失敗，請稍後再試。");
         });
-        
     };
 
     onMounted(() => {
       const urlParams = new URLSearchParams(window.location.search);
-      const productId = urlParams.get('id'); // URL 範例: product.html?id=123
+      const productId = urlParams.get("id"); // URL 範例: product.html?id=123
       fetchProductDetails(productId);
       fetchCart();
+      fetchCartCount();
     });
 
-    return { product, addToCart, isLoading, hasError, cartCount, cartItems, fetchCart };
+    return {
+      product,
+      addToCart,
+      isLoading,
+      hasError,
+      cartCount,
+      cartItems,
+      fetchCart,
+      fetchCartCount,
+    };
   },
 }).mount("#app");

@@ -1,5 +1,7 @@
 package tw.syuhao.ordersystem.entity;
 
+import java.math.BigDecimal;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -28,6 +30,8 @@ public class CartItem {
     @Column(name = "quantity")
     private int quantity;
 
+    @Column(name = "total_amount")
+    private BigDecimal totalPrice;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

@@ -1,7 +1,6 @@
 package tw.syuhao.ordersystem.entity;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +38,7 @@ public class Order {
     @Column(name = "total_amount")
     private BigDecimal totalPrice;
 
-    private LocalDateTime createdAt;
+    // private LocalDateTime createdAt;
     // @Column(name = "merchant_trade_no")
     // private String merchanttradeno;
 
