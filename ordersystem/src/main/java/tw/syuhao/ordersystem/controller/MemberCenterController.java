@@ -22,7 +22,7 @@ public class MemberCenterController {
     /** 會員中心 */
 @GetMapping("/member")
 public String member(HttpSession session, Model model) {
-    Users u = (Users) session.getAttribute("currentUser");
+    Users u = (Users) session.getAttribute("user");
     if (u == null) return "redirect:/login";
     model.addAttribute("member", u);
     return "member"; // 對應 templates/member.html 或你的 memberCenter.html(靜態版則用 /memberCenter.html)
@@ -31,7 +31,7 @@ public String member(HttpSession session, Model model) {
     /** 個資頁 */
     @GetMapping("/profile")
     public String profilePage(HttpSession session, Model model) {
-        Users current = (Users) session.getAttribute("currentUser");
+        Users current = (Users) session.getAttribute("user");
         if (current == null) return "redirect:/login";
         Users fresh = userService.loadByPrincipal(
                 current.getEmail() != null ? current.getEmail() : current.getUsername());
@@ -47,12 +47,12 @@ public String member(HttpSession session, Model model) {
                                 @RequestParam String username,
                                 @RequestParam String email,
                                 Model model) {
-        Users current = (Users) session.getAttribute("currentUser");
+        Users current = (Users) session.getAttribute("user");
         if (current == null) return "redirect:/login";
         try {
             Users updated = userService.updateProfile(current.getId(), username, email);
             updated.setPassword(null);
-            session.setAttribute("currentUser", updated); // 同步 Session
+            session.setAttribute("user", updated); // 同步 Session
             return "redirect:/member";
         } catch (IllegalStateException ex) {
             model.addAttribute("error", ex.getMessage());
@@ -64,7 +64,7 @@ public String member(HttpSession session, Model model) {
     /** 修改密碼頁 */
     @GetMapping("/change-password")
     public String changePasswordPage(HttpSession session) {
-        Users current = (Users) session.getAttribute("currentUser");
+        Users current = (Users) session.getAttribute("user");
         if (current == null) return "redirect:/login";
         return "change-password";
     }
@@ -76,7 +76,7 @@ public String member(HttpSession session, Model model) {
                                  @RequestParam String newPassword,
                                  @RequestParam String confirmPassword,
                                  Model model) {
-        Users current = (Users) session.getAttribute("currentUser");
+        Users current = (Users) session.getAttribute("user");
         if (current == null) return "redirect:/login";
 
         if (!newPassword.equals(confirmPassword)) {
@@ -96,7 +96,7 @@ public String member(HttpSession session, Model model) {
     /** 訂單頁（示範資料，之後串你的資料） */
     @GetMapping("/orders")
     public String ordersPage(HttpSession session, Model model) {
-        if (session.getAttribute("currentUser") == null) return "redirect:/login";
+        if (session.getAttribute("user") == null) return "redirect:/login";
         record Row(String no, String date, String status, int amount) {}
         List<Row> rows = List.of(
             new Row("A20250813-001","2025-08-13","已出貨",1280),
@@ -109,7 +109,7 @@ public String member(HttpSession session, Model model) {
     /** 優惠與積分頁（示範資料） */
     @GetMapping("/coupons")
     public String couponsPage(HttpSession session, Model model) {
-        Users current = (Users) session.getAttribute("currentUser");
+        Users current = (Users) session.getAttribute("user");
         if (current == null) return "redirect:/login";
         Users fresh = userService.loadByPrincipal(
                 current.getEmail() != null ? current.getEmail() : current.getUsername());

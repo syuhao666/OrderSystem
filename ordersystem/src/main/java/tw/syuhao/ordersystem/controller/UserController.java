@@ -39,7 +39,7 @@ public class UserController {
     // 目前登入的使用者（給前端 JS 用）
     @GetMapping("/currentUser")
     public Users getCurrentUser(HttpSession session) {
-        Users user = (Users) session.getAttribute("currentUser"); // ★ 統一用 currentUser
+        Users user = (Users) session.getAttribute("user"); // ★ 統一用 currentUser
         if (user != null) {
             user.setPassword(null);
         }
@@ -54,7 +54,7 @@ public class UserController {
         Users user = service.login(email, password);
         if (user != null) {
             user.setPassword(null);
-            session.setAttribute("currentUser", user);
+            session.setAttribute("user", user);
         }
         return user;
     }
@@ -71,7 +71,7 @@ public class UserController {
 
     @GetMapping("/currentUser")
     public Users getCurrentUser(HttpSession session) {
-        Users user = (Users) session.getAttribute("currentUser"); // ★ 與登入一致
+        Users user = (Users) session.getAttribute("user"); // ★ 與登入一致
         if (user != null) {
             user.setPassword(null);
         }

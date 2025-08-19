@@ -10,7 +10,7 @@ import tw.syuhao.ordersystem.entity.Users;
 public class GlobalMemberModel {
     @ModelAttribute("member")
     public Users exposeMember(HttpSession session) {
-        Users u = (Users) session.getAttribute("currentUser");
+        Users u = (Users) session.getAttribute("user");
         if (u != null) u.setPassword(null);
         return u;
     }
