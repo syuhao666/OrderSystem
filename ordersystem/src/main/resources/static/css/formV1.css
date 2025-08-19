@@ -280,3 +280,35 @@ select:focus {
     font-weight: bold;
     border-radius: 50%;
 }
+/* --小白-- */ 
+/* 導覽列會員頭像小樣式（不影響 index.css） */
+        .member-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .member-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #5c3c11;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            overflow: hidden;
+        }
+
+        .btn-logout {
+            background: #5c3c11;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 10px;
+            cursor: pointer;
+        }
