@@ -15,7 +15,7 @@ createApp({
       deliveryFee: 0,
       floorFee: 0,
       finalTotal: 0,
-      imageUrl: ""
+      
     });
 
     const formData = reactive({
