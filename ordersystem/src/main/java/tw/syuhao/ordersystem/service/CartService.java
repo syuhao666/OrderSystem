@@ -1,12 +1,15 @@
 package tw.syuhao.ordersystem.service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tw.syuhao.ordersystem.Ddto.AddCartDTO;
+import tw.syuhao.ordersystem.Ddto.CartItemDTO;
 import tw.syuhao.ordersystem.Ddto.CheckoutRequest;
 import tw.syuhao.ordersystem.Ddto.OrderResponse;
 import tw.syuhao.ordersystem.entity.Cart;
@@ -29,8 +32,7 @@ public class CartService {
     @Autowired
     private CartItemRepository cartItemRepository;
 
-
-    //建立購物車
+    // 建立購物車
     public void addCart(Users user, AddCartDTO cdto) {
 
         // 找出或建立使用者的購物車
@@ -106,7 +108,7 @@ public class CartService {
         cartItemRepository.delete(item);
     }
 
-    //-購物車內容數量
+    // -購物車內容數量
     public long getCartCount(Users user) {
         Optional<Cart> cartOpt = cartRepository.findByUser(user);
         if (cartOpt.isEmpty()) {
@@ -115,18 +117,25 @@ public class CartService {
         return cartItemRepository.sumQuantityByCart(cartOpt.get());
     }
 
-
-    
     public OrderResponse checkout(Users user, CheckoutRequest request) {
         // 取得使用者購物車
         Cart cart = cartRepository.findByUser(user)
                 .orElseThrow(() -> new RuntimeException("購物車不存在"));
 
         BigDecimal productTotal = BigDecimal.ZERO;
+        List<CartItemDTO> items = new ArrayList<>();
+
         for (CartItem item : cart.getCartItems()) {
             BigDecimal itemTotal = item.getProduct().getPrice()
                     .multiply(BigDecimal.valueOf(item.getQuantity()));
             productTotal = productTotal.add(itemTotal);
+
+            CartItemDTO dto = new CartItemDTO();
+            dto.setProductId(item.getProduct().getId());
+            dto.setName(item.getProduct().getName());
+            dto.setPrice(item.getProduct().getPrice());
+            dto.setQuantity(item.getQuantity());
+            items.add(dto);
         }
 
         // 運送費
@@ -140,13 +149,12 @@ public class CartService {
                 .add(BigDecimal.valueOf(deliveryFee))
                 .add(BigDecimal.valueOf(floorFee));
 
-        
-
         OrderResponse response = new OrderResponse();
         response.setProductTotal(productTotal);
         response.setDeliveryFee(deliveryFee);
         response.setFloorFee(floorFee);
         response.setFinalTotal(finalTotal);
+        response.setItems(items); // ✅ 把購物車明細放進 response
 
         return response;
     }

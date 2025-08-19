@@ -9,6 +9,13 @@ createApp({
     const selectedZip = ref("");
 
     const cartCount = ref(0); // 🔴 購物車紅點數量
+    const checkoutData = ref({
+      items: [],
+      productTotal: 0,
+      deliveryFee: 0,
+      floorFee: 0,
+      finalTotal: 0
+    });
 
     const formData = reactive({
       name: "hwgtwet",
@@ -45,6 +52,17 @@ createApp({
         });
     }
 
+    function fetchCartItem() {
+      axios
+        .get("/cart/xa/data")
+        .then((res) => {
+          checkoutData.value = res.data; // 這裡就是 OrderResponse
+          console.log("結帳資料", checkoutData.value);
+        })
+        .catch((err) => console.error("無法取得購物車明細", err));
+    }
+
+
     function fetchCartCount() {
       axios
         .get("/cart/count")
@@ -57,6 +75,7 @@ createApp({
     onMounted(() => {
       fetchCart(); // 載入購物車
       fetchCartCount();
+      fetchCartItem();
       axios
         .get("./address.json")
         .then((res) => {
@@ -111,9 +130,9 @@ createApp({
         )
         .then((res) => {
           // 後端回傳的會是綠界付款表單 HTML
-        //   document.open();
-        //   document.write(res.data);
-        //   document.close();
+          //   document.open();
+          //   document.write(res.data);
+          //   document.close();
           document.body.innerHTML = res.data; // 把表單放進去
           document.getElementById("ecpayForm").submit();
         })
@@ -123,12 +142,7 @@ createApp({
     }
     //------------------------------------------------------------
 
-    const totalPrice = computed(() => {
-      return cartItems.value.reduce(
-        (sum, item) => sum + item.price * item.quantity,
-        0,
-      );
-    });
+    
 
     return {
       addressData,
@@ -142,9 +156,11 @@ createApp({
       formData,
       cartItems,
       fullAddress,
-      totalPrice,
+      
       cartCount,
-      fetchCartCount
+      fetchCartCount,
+      fetchCartItem,
+      checkoutData
     };
   },
 }).mount("#app");

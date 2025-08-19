@@ -74,6 +74,18 @@ public class CartController {
             return ResponseEntity.status(401).build(); // 未登入
         }
         OrderResponse response = cartService.checkout(user, request);
+
+        session.setAttribute("checkoutData", response);
+        
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/xa/data")
+    public ResponseEntity<OrderResponse> getCheckoutData(HttpSession session) {
+        OrderResponse response = (OrderResponse) session.getAttribute("checkoutData");
+        if (response == null) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok(response);
     }
 }

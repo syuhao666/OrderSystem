@@ -3,8 +3,8 @@ const { createApp, ref, onMounted, computed } = Vue;
 createApp({
   setup() {
     const cartItems = ref([]);
-    const cartCount = ref(0); // 🔴 購物車紅點數量
-    const selectedShippingMethod = ref(null);
+    const cartCount = ref(0);
+    const selectedDelivery = ref(""); // 預設空字串
     const selectedFloor = ref(""); // 樓層選擇
 
     const productTotal = ref(0);
@@ -12,41 +12,33 @@ createApp({
     const floorFee = ref(0);
     const finalTotal = ref(0);
 
+    const showDeliveryWarning = ref(false);
+    const showFloorWarning = ref(false);
+
     // 取得購物車內容
     function fetchCart() {
       axios
-        .get("/api/items") // 後端商品資料網址
+        .get("/api/items")
         .then((response) => {
           cartItems.value = response.data;
           console.log(cartItems.value);
         })
-        .catch((error) => {
-          console.error("發生錯誤", error);
-        });
+        .catch((error) => console.error("發生錯誤", error));
     }
 
     function fetchCartCount() {
       axios
         .get("/cart/count")
         .then((res) => {
-          cartCount.value = res.data; // 後端算好的總數量
+          cartCount.value = res.data;
         })
         .catch((err) => console.error("無法取得購物車數量", err));
     }
 
-    // 增加數量
     function increaseQuantity(cartItemId) {
-      console.log("你要增加的 cartItemId 是：", cartItemId);
       axios
-        .post(
-          "/cart/increase",
-          { cartItemId },
-          {
-            headers: { "Content-Type": "application/json" },
-          },
-        )
+        .post("/cart/increase", { cartItemId }, { headers: { "Content-Type": "application/json" } })
         .then(() => {
-          console.log("數量增加");
           fetchCart();
           shippingMethod();
           fetchCartCount();
@@ -54,18 +46,10 @@ createApp({
         .catch((err) => console.error("增加失敗", err));
     }
 
-    // 減少數量（選用）
     function decreaseQuantity(cartItemId) {
       axios
-        .post(
-          "/cart/decrease",
-          { cartItemId },
-          {
-            headers: { "Content-Type": "application/json" },
-          },
-        )
+        .post("/cart/decrease", { cartItemId }, { headers: { "Content-Type": "application/json" } })
         .then(() => {
-          console.log("數量減少");
           fetchCart();
           shippingMethod();
           fetchCartCount();
@@ -73,29 +57,22 @@ createApp({
         .catch((err) => console.error("減少失敗", err));
     }
 
-    //刪除
     function removeItem(cartItemId) {
       axios
-        .delete("/cart/remove", {
-          params: { cartItemId },
-          headers: { "Content-Type": "application/json" },
-        })
+        .delete("/cart/remove", { params: { cartItemId }, headers: { "Content-Type": "application/json" } })
         .then(() => {
-          console.log("刪除成功");
           fetchCart();
           shippingMethod();
           fetchCartCount();
-          // 更新購物車畫面
         })
-        .catch((err) => {
-          console.error("刪除失敗", err);
-        });
+        .catch((err) => console.error("刪除失敗", err));
     }
 
+    // 計算運費、樓層費與總額
     function shippingMethod() {
       axios
         .post("/cart/xa", {
-          deliveryMethod: selectedShippingMethod.value || "PICKUP",
+          deliveryMethod: selectedDelivery.value || "PICKUP",
           floor: Number(selectedFloor.value) || 1,
         })
         .then((res) => {
@@ -106,15 +83,30 @@ createApp({
         });
     }
 
-    // ----------------前往填寫資料頁面
+    // 驗證運送方式與樓層
+    function validateSelection() {
+      showDeliveryWarning.value = !selectedDelivery.value;
+      showFloorWarning.value = !selectedFloor.value;
+      shippingMethod();
+  
+    }
+
+    // 判斷是否可以進入下一步
+    const canProceed = computed(() => !!selectedDelivery.value && !!selectedFloor.value);
+
+    // 下一步按鈕
     function goToForm() {
-      window.location.href = "formV1.html";
+      validateSelection();
+      if (canProceed.value) {
+        window.location.href = "formV1.html";
+      }
     }
 
     onMounted(() => {
       fetchCart();
       shippingMethod();
       fetchCartCount();
+      validateSelection();
     });
 
     return {
@@ -125,13 +117,17 @@ createApp({
       cartItems,
       cartCount,
       shippingMethod,
-      selectedShippingMethod,
+      selectedDelivery,
       selectedFloor,
       floorFee,
       deliveryFee,
       productTotal,
       finalTotal,
-      fetchCartCount
+      fetchCartCount,
+      canProceed,
+      validateSelection,
+      showDeliveryWarning,
+      showFloorWarning
     };
   },
 }).mount("#app");

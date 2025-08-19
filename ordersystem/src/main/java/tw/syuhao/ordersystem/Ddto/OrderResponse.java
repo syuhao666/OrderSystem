@@ -1,6 +1,7 @@
 package tw.syuhao.ordersystem.Ddto;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import lombok.Data;
 
@@ -10,4 +11,5 @@ public class OrderResponse {
     private int floorFee;
     private BigDecimal finalTotal;
     private BigDecimal productTotal;
+    private List<CartItemDTO> items; // 購物車明細
 }

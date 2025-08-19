@@ -58,10 +58,10 @@
                 <div class="col-md-8">
                     <div class="d-flex p-3">
                         <h2>收件人資料填寫</h2>
-                        <label class="ms-auto">
+                        <!-- <label class="ms-auto">
                             <input type="checkbox">
                             <span>同訂購人資料</span>
-                        </label>
+                        </label> -->
                     </div>
                     <form action="#" method="post">
                         <div class="row p-3">
@@ -113,14 +113,32 @@
                     <div class="p-3 border rounded bg-light">
                         <h4>購物車內容</h4>
                         <ul class="list-group mb-3">
-                            <li class="list-group-item" v-for="item in cartItems" :key="item.id">
+                            <li class="list-group-item" v-for="item in checkoutData.items" :key="item.productId">
                                 {{ item.name }} x {{ item.quantity }}
-                                <span class="float-end">{{ item.price * item.quantity }} 元</span>
+                                
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>商品小計</span>
+                                <span>{{ checkoutData.productTotal }} 元</span>
+                            </li>
+
+                            <!-- 運費 -->
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>運費</span>
+                                <span>{{ checkoutData.deliveryFee }} 元</span>
+                            </li>
+
+                            <!-- 樓層費 -->
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>樓層費</span>
+                                <span>{{ checkoutData.floorFee }} 元</span>
                             </li>
                         </ul>
+                        </ul>
+
                         <div class="d-flex justify-content-between fw-bold">
                             <span>總計</span>
-                            <span>{{ finalTotal }} 元</span>
+                            <span>{{ checkoutData.finalTotal }} 元</span>
                         </div>
                     </div>
                 </div>
