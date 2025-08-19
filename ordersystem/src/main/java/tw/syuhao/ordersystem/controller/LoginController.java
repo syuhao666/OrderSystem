@@ -32,9 +32,9 @@ public class LoginController {
         }
         u.setPassword(null);
         // ★ 統一使用這個 key
-        session.setAttribute("currentUser", u);
+        session.setAttribute("user", u);
 
-        // ★ 登入後回首頁（你的 index.html 會自動 fetch /api/currentUser 來切 UI）
+        // ★ 登入後回首頁（你的 index.html 會自動 fetch /api/user 來切 UI）
         return "redirect:/index.html";
     }
 
