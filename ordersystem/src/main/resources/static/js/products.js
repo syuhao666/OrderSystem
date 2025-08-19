@@ -8,18 +8,26 @@ createApp({
 
     //-----------------------------
     // 取得購物車內容
-        function fetchCart() {
-            axios.get('/api/items') // 後端商品資料網址
-                .then(response => {
-                    cartItems.value = response.data
-                    console.log(cartItems.value);
-                    cartCount.value = cartItems.value.reduce((sum, item) => sum + item.quantity, 0); // 🔴 更新紅點
-                })
-                .catch(error => {
-                    console.error('發生錯誤', error)
-                })
-        }
+    function fetchCart() {
+      axios
+        .get("/api/items") // 後端商品資料網址
+        .then((response) => {
+          cartItems.value = response.data;
+          console.log(cartItems.value);
+        })
+        .catch((error) => {
+          console.error("發生錯誤", error);
+        });
+    }
     //-----------------------------
+    function fetchCartCount() {
+      axios
+        .get("/cart/count")
+        .then((res) => {
+          cartCount.value = res.data; // 後端算好的總數量
+        })
+        .catch((err) => console.error("無法取得購物車數量", err));
+    }
 
     // 預設抓全部商品
     const fetchProducts = (category = "") => {
@@ -30,7 +38,6 @@ createApp({
         .then((response) => {
           products.value = response.data.content || response.data; // 支援 Page<Product> 或 List<Product>
           console.log(products.value);
-          
         })
         .catch((error) => {
           console.error("發生錯誤", error);
@@ -45,6 +52,7 @@ createApp({
     onMounted(() => {
       fetchProducts(); // 預設抓全部或第一個分類
       fetchCart();
+      fetchCartCount();
     });
 
     function addToCart(product) {
@@ -66,6 +74,14 @@ createApp({
           console.error("加入購物車失敗", error);
         });
     }
-    return { products, addToCart, filterByCategory, cartCount, fetchCart, cartItems };
+    return {
+      products,
+      addToCart,
+      filterByCategory,
+      cartCount,
+      fetchCart,
+      cartItems,
+      fetchCartCount,
+    };
   },
 }).mount("#app");
