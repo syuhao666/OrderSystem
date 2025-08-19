@@ -1,7 +1,5 @@
 package tw.syuhao.ordersystem.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import tw.syuhao.ordersystem.entity.Order;
-import tw.syuhao.ordersystem.entity.Product;
 import tw.syuhao.ordersystem.service.OrderService;
 
 @Controller
@@ -26,15 +23,22 @@ public class OrderController {
 
     @GetMapping
     public String listOrders(Model model,
-            @RequestParam(defaultValue = "0") int page, // 第幾頁（0 起算）
-            @RequestParam(defaultValue = "10") int size // 每頁顯示幾筆
+            @RequestParam(defaultValue = "1") int page, // 第幾頁（1 起算）
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String phone,
+            @RequestParam(required = false) String status
     ) {
-        // List<Order> orders = orderService.findAll();
-
-        Page<Order> orderPage = orderService.getOrders(page, size);
+        int pageIndex = page - 1;
+        Page<Order> orderPage = orderService.searchOrders(name, phone, status, pageIndex, size);
         model.addAttribute("orderPage", orderPage);
-        // model.addAttribute("orders", orders);
-
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", orderPage.getTotalPages());
+        model.addAttribute("totalItems", orderPage.getTotalElements());
+        model.addAttribute("name", name);
+        model.addAttribute("phone", phone);
+        model.addAttribute("status", status);
+        model.addAttribute("size", size);
         model.addAttribute("activePage", "order");
         return "adminOrder";
     }
