@@ -20,7 +20,7 @@ public class MemberCenterController {
     private final UserService userService;
 
     /** 會員中心 */
-@GetMapping("/member")
+@GetMapping("/member1")
 public String member(HttpSession session, Model model) {
     Users u = (Users) session.getAttribute("currentUser");
     if (u == null) return "redirect:/login";
