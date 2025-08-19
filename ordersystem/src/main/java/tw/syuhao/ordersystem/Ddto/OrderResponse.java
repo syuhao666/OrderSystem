@@ -12,4 +12,6 @@ public class OrderResponse {
     private BigDecimal finalTotal;
     private BigDecimal productTotal;
     private List<CartItemDTO> items; // 購物車明細
+    
+    private String imageUrl;
 }

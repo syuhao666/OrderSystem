@@ -56,11 +56,15 @@ public class CartService {
         if (existingItemOpt.isPresent()) {
             CartItem existingItem = existingItemOpt.get();
             existingItem.setQuantity(existingItem.getQuantity() + cdto.getQuantity());
+            int newQty = existingItem.getQuantity();
+            BigDecimal total = existingItem.getProduct().getPrice().multiply(BigDecimal.valueOf(newQty));
+            existingItem.setTotalPrice(total);
             cartItemRepository.save(existingItem);
         } else {
             CartItem newItem = new CartItem();
             newItem.setProduct(product);
             newItem.setQuantity(cdto.getQuantity());
+            newItem.setTotalPrice(product.getPrice());
             newItem.setCart(cart);
             cartItemRepository.save(newItem);
         }
@@ -122,6 +126,9 @@ public class CartService {
         Cart cart = cartRepository.findByUser(user)
                 .orElseThrow(() -> new RuntimeException("購物車不存在"));
 
+        // Product product = productRepository.findById()
+        //         .orElseThrow(() -> new RuntimeException("找不到商品"));
+
         BigDecimal productTotal = BigDecimal.ZERO;
         List<CartItemDTO> items = new ArrayList<>();
 
@@ -154,6 +161,7 @@ public class CartService {
         response.setDeliveryFee(deliveryFee);
         response.setFloorFee(floorFee);
         response.setFinalTotal(finalTotal);
+        // response.setImageUrl(product.getImageUrl());
         response.setItems(items); // ✅ 把購物車明細放進 response
 
         return response;
