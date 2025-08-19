@@ -1,8 +1,7 @@
 package tw.syuhao.ordersystem.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import tw.syuhao.ordersystem.entity.Order;
 import tw.syuhao.ordersystem.service.OrderService;
@@ -22,9 +22,23 @@ public class OrderController {
     private OrderService orderService;
 
     @GetMapping
-    public String listOrders(Model model) {
-        List<Order> orders = orderService.findAll();
-        model.addAttribute("orders", orders);
+    public String listOrders(Model model,
+            @RequestParam(defaultValue = "1") int page, // 第幾頁（1 起算）
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String phone,
+            @RequestParam(required = false) String status
+    ) {
+        int pageIndex = page - 1;
+        Page<Order> orderPage = orderService.searchOrders(name, phone, status, pageIndex, size);
+        model.addAttribute("orderPage", orderPage);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", orderPage.getTotalPages());
+        model.addAttribute("totalItems", orderPage.getTotalElements());
+        model.addAttribute("name", name);
+        model.addAttribute("phone", phone);
+        model.addAttribute("status", status);
+        model.addAttribute("size", size);
         model.addAttribute("activePage", "order");
         return "adminOrder";
     }
@@ -54,4 +68,3 @@ public class OrderController {
         return "redirect:/admin/orders";
     }
 }
-

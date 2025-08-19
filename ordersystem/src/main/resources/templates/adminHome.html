@@ -51,29 +51,35 @@
     <div class="container-fluid">
         <div class="row g-0">
             <!-- 側邊欄 -->
-            <nav class="col-md-3 col-lg-2 sidebar">
-                <h4 class="text-white text-center py-3">簡約家居後台</h4>
-                <li class="nav-item">
-                    <a class="nav-link [[${activePage} == 'admin' ? 'active' : '']]" href="/admin/">
-                        <i class="bi bi-person-circle"></i>會員中心
-                    </a>
-                </li>
-                <!-- <a href="/admin/"><i class="bi bi-person-circle"></i>會員中心</a> -->
-                <li class="nav-item">
-                    <a class="nav-link [[${activePage} == 'order' ? 'active' : '']]" href="/admin/orders">
-                        <i class="bi bi-bag-check"></i>訂單管理
-                    </a>
-                </li>
-                <!-- <a href="/admin/orders"><i class="bi bi-bag-check"></i>訂單管理</a> -->
-                 <li class="nav-item">
-                    <a class="nav-link [[${activePage} == 'product' ? 'active' : '']]" href="/admin/products">
-                        <i class="bi bi-box-arrow-right"></i>商品管理
-                    </a>
-                </li>
-                <!-- <a href="/admin/products"><i class="bi bi-box-seam"></i>商品管理</a> -->
-                <a href="/logout"><i class="bi bi-box-arrow-right"></i>登出</a>
-            </nav>
+            <!-- <nav class="col-md-3 col-lg-2 sidebar">
+                <ul>
+                    <h4 class="text-white text-center py-3">簡約家居後台</h4>
+                    <li class="nav-item">
+                        <a class="nav-link [[${activePage} == 'admin' ? 'active' : '']]" href="/admin/">
+                            <i class="bi bi-person-circle"></i>會員中心
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link [[${activePage} == 'customer' ? 'active' : '']]" href="/admin/customers">
+                            <i class="bi bi-file-earmark-person"></i>會員管理
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link [[${activePage} == 'order' ? 'active' : '']]" href="/admin/orders">
+                            <i class="bi bi-bag-check"></i>訂單管理
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link [[${activePage} == 'product' ? 'active' : '']]" href="/admin/products">
+                            <i class="bi bi-box-arrow-right"></i>商品管理
+                        </a>
+                    </li>
+                    <a href="/logout"><i class="bi bi-box-arrow-right"></i>登出</a>
+                </ul>
+            </nav> -->
 
+
+            <div th:replace="fragments/sidebar :: sidebar"></div>
 
             <!-- 主內容 -->
             <main class="col-md-9 col-lg-10">

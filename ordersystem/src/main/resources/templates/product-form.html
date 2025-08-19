@@ -21,24 +21,36 @@
                 <input type="number" th:field="*{price}" class="form-control" required />
             </div>
             <div class="mb-3">
+                <label class="form-label">類別</label>
+                <input type="text" th:field="*{category}" class="form-control" required />
+            </div>
+            <div class="mb-3">
                 <label class="form-label">庫存</label>
                 <input type="number" th:field="*{stock}" class="form-control" required />
             </div>
             <div class="mb-3">
                 <label class="form-label">上傳圖片</label>
                 <input type="file" name="imageFile" />
+                <div th:if="${product.imageUrl != null}">
+                    <img th:src="@{'/uploads/' + ${product.imageUrl}}" alt="商品圖片" style="max-width:150px;max-height:150px;">
+                    <div class="text-muted">如不更換圖片可不選擇檔案</div>
+                </div>
             </div>
             <div>
                 <label for="description">商品描述</label><br>
                 <textarea id="description" name="description" rows="5" cols="50"
                     th:text="${product.description}"></textarea>
             </div>
-            <div class="mb-3 form-check">
+            <div class="mb-3 form-check d-inline-block">
                 <input type="checkbox" th:field="*{enabled}" class="form-check-input" />
                 <label class="form-check-label">上架</label>
             </div>
+            <br>
             <button type="submit" class="btn btn-primary">儲存</button>
         </form>
+        <!-- <form th:if="${product.id != null and product.enabled}" th:action="@{/admin/product/off/{id}(id=${product.id})}" method="post" style="display:inline;">
+            <button type="submit" class="btn btn-outline-danger ms-2">下架</button>
+        </form> -->
     </div>
 </body>
 

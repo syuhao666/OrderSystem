@@ -1,14 +1,15 @@
 package tw.syuhao.ordersystem.controller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,10 +37,27 @@ public class AdminController {
     }
 
     @GetMapping("/products")
-    public String listProducts(Model model) {
-        List<Product> products = service.getAllProducts();
-        model.addAttribute("activePage", "product");
-        model.addAttribute("products", products);
+    public String listProducts(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) BigDecimal minPrice,
+            @RequestParam(required = false) BigDecimal maxPrice,
+            Model model) {
+
+        int pageSize = 10;
+
+        Page<Product> productPage = service.findProducts(name, category, page, pageSize, minPrice, maxPrice);
+
+        model.addAttribute("productPage", productPage);
+        model.addAttribute("currentPage", productPage.getNumber() + 1); // 修正頁碼
+        model.addAttribute("totalPages", productPage.getTotalPages());
+        model.addAttribute("totalItems", productPage.getTotalElements());
+        model.addAttribute("name", name);
+        model.addAttribute("category", category);
+        model.addAttribute("minPrice", minPrice);
+        model.addAttribute("maxPrice", maxPrice);
+        model.addAttribute("activePage", "product"); // 補上 activePage
         return "adminProduct";
     }
 
@@ -53,9 +71,14 @@ public class AdminController {
     public String saveProduct(@ModelAttribute Product product,
             @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) throws IOException {
 
-        // 如果有上傳圖片
-        if (!imageFile.isEmpty()) {
+        // 取得原商品（編輯時才有id）
+        Product original = null;
+        if (product.getId() != null) {
+            original = service.findById(product.getId());
+        }
 
+        // 如果有上傳圖片
+        if (imageFile != null && !imageFile.isEmpty()) {
             String fileName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
             Path uploadPath = Paths.get(System.getProperty("user.dir"), "uploads");
 
@@ -66,13 +89,18 @@ public class AdminController {
             Path filePath = uploadPath.resolve(fileName);
             Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-            System.out.println("File saved to: " + filePath.toAbsolutePath());
-
-            // 將圖片路徑存到 product，例如 "/uploads/abc.jpg"
             product.setImageUrl(fileName);
+        } else if (original != null) {
+            // 沒有上傳新圖片，保留原圖片
+            product.setImageUrl(original.getImageUrl());
         }
 
-        // 儲存商品
+        if (product.getEnabled() == true) {
+            product.setStatus("上架");
+        } else {
+            product.setStatus("未上架");
+        }
+
         service.save(product);
         return "redirect:/admin/products";
     }
@@ -113,4 +141,14 @@ public class AdminController {
         return "redirect:/admin/products";
     }
 
+    @GetMapping("/product/off/{id}")
+    public String offProduct(@PathVariable Long id) {
+        Product product = service.findById(id);
+        if (product != null) {
+            product.setEnabled(false);
+            product.setStatus("下架");
+            service.save(product);
+        }
+        return "redirect:/admin/products";
+    }
 }

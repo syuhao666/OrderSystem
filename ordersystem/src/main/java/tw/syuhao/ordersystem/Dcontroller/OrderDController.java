@@ -67,7 +67,6 @@ public class OrderDController {
         order.setAddress(dto.getAddress());
         order.setPaymentMethod(dto.getPaymentMethod());
         order.setTotalPrice(dto.getTotalPrice());
-        // order.setUser(user);
         userRepository.findById(user.getId()).ifPresent(order::setUser);
         System.out.println(order);
         // 2. 建立訂單項目資料
@@ -111,11 +110,8 @@ public class OrderDController {
                     org.springframework.http.HttpMethod.POST,
                     requestEntity,
                     String.class);
-
-            // System.out.println("HTTP Status: " + response.getStatusCode());
-            // System.out.println("Response body: " + response.getBody());
+                    
             ecpayHtml = response.getBody();
-            // System.out.println("n8n 回傳 HTML:\n" + ecpayHtml);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body("呼叫付款流程失敗: " + e.getMessage());

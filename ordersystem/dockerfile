@@ -1,4 +1,41 @@
+# ----------------------------
+# 第一階段：Build
+# 使用 Maven 官方映像來編譯專案
+# ----------------------------
+FROM maven:3.9.5-eclipse-temurin-21 AS build
+
+# 設定工作目錄
+WORKDIR /app
+
+# 先複製 pom.xml，方便利用 Docker cache 避免每次都重新下載依賴
+COPY pom.xml .
+
+# 下載依賴（只要 pom.xml 沒變，這層就不會重建）
+RUN mvn dependency:go-offline
+
+# 複製整個專案
+COPY src ./src
+
+# 打包成 jar
+RUN mvn clean package -DskipTests
+
+# ----------------------------
+# 第二階段：Runtime
+# 使用輕量 JDK 運行 jar
+# ----------------------------
 FROM eclipse-temurin:21-jdk-alpine
+
+# 設定工作目錄
+WORKDIR /app
+
+# 掛載 tmp（Spring Boot 需要）
 VOLUME /tmp
-COPY target/ordersystem-0.0.1-SNAPSHOT.jar app.jar
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+
+# 複製第一階段打包好的 jar
+COPY --from=build /app/target/ordersystem-0.0.1-SNAPSHOT.jar app.jar
+
+# 暴露端口
+EXPOSE 8080
+
+# 啟動 Spring Boot
+ENTRYPOINT ["java", "-jar", "app.jar"]

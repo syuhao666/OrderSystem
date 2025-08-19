@@ -14,6 +14,7 @@ public class CartItemResponseDTO {
     private String name;     // 商品名稱
     private BigDecimal price;// 商品價格
     private int quantity;    // 數量
+    private String imageUrl;
 
     public CartItemResponseDTO(CartItem item) {
         this.cartItemId = item.getId(); // ✅ 這才是要傳給後端的 ID
@@ -21,5 +22,6 @@ public class CartItemResponseDTO {
         this.name = item.getProduct().getName();
         this.price = item.getProduct().getPrice();
         this.quantity = item.getQuantity();
+        this.imageUrl = item.getProduct().getImageUrl();
     }
 }

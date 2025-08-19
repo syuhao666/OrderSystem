@@ -1,151 +1,199 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>會員中心 - 簡約家居</title>
-    <link rel="stylesheet" href="./css/login.css" />
-    <style>
-        .profile-container {
-            max-width: 600px;
-            margin: 40px auto;
-            padding: 30px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background-color: #fafafa;
-        }
-
-        .profile-container h2 {
-            margin-bottom: 25px;
-            text-align: center;
-        }
-
-        .profile-item {
-            margin-bottom: 15px;
-            font-size: 18px;
-        }
-
-        .profile-label {
-            font-weight: bold;
-            margin-right: 10px;
-        }
-
-        .btn-group {
-            text-align: center;
-            margin-top: 35px;
-        }
-
-        .btn-group button,
-        .btn-group a {
-            display: inline-block;
-            padding: 10px 25px;
-            margin: 0 10px;
-            border: none;
-            background-color: #4CAF50;
-            color: white;
-            font-size: 16px;
-            border-radius: 4px;
-            text-decoration: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-group button:hover,
-        .btn-group a:hover {
-            background-color: #45a049;
-        }
-
-        /* 調整導覽列的會員中心標示 */
-        nav ul li a.active {
-            color: #4CAF50;
-            font-weight: bold;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>會員中心 - 簡約家居</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="./css/index.css" />
+  <style>
+    /* 會員中心頁內樣式（不影響 index.css） */
+    .mc-wrap { padding: 40px 0; }
+    .mc-hero {
+      display:flex; align-items:center; gap:20px; background:#fff; border:1px solid #eee;
+      border-radius:12px; padding:20px; box-shadow:0 8px 24px rgba(0,0,0,.06);
+    }
+    .mc-avatar {
+      width:64px; height:64px; border-radius:50%; background:#5c3c11; color:#fff;
+      display:flex; align-items:center; justify-content:center; font-weight:700; font-size:24px;
+    }
+    .mc-hello { margin:0 0 6px; font-size:24px }
+    .mc-chip { display:inline-block; background:#f4f4f4; border:1px solid #eee; border-radius:999px; padding:6px 10px; font-size:13px; margin-right:8px; margin-top:6px }
+    .mc-actions .btn { margin-right:8px; }
+    .mc-grid { display:grid; grid-template-columns:1.3fr .9fr; gap:24px; margin-top:24px }
+    @media(max-width:960px){ .mc-grid{ grid-template-columns:1fr } }
+    .mc-card { background:#fff; border:1px solid #eee; border-radius:12px; padding:20px; box-shadow:0 8px 24px rgba(0,0,0,.06) }
+    .mc-quick { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px }
+    @media(max-width:600px){ .mc-quick{ grid-template-columns:1fr } }
+    .mc-quick a {
+      display:flex; gap:12px; align-items:center; padding:12px; border:1px solid #eee; border-radius:12px;
+      text-decoration:none; color:#222; background:#fff; transition:transform .1s ease, box-shadow .2s ease
+    }
+    .mc-quick a:hover { transform:translateY(-2px); box-shadow:0 10px 20px rgba(0,0,0,.06) }
+    .mc-ico { width:40px; height:40px; border-radius:10px; background:#f5f5f5; display:flex; align-items:center; justify-content:center }
+    .mc-kpis { display:grid; grid-template-columns:repeat(3,1fr); gap:10px }
+    .mc-kpi { padding:12px; border:1px solid #eee; border-radius:12px; text-align:center; background:#fff }
+    .mc-kpi .num { font-size:24px; font-weight:800 }
+    .mc-kpi .lbl { color:#666; font-size:13px }
+    .btn-brown { background:#5c3c11; color:#fff; }
+    /* 導覽列會員頭像 */
+    .member-link { display:flex; align-items:center; gap:6px; text-decoration:none; color:#333; }
+    .member-avatar {
+      width:30px; height:30px; border-radius:50%; background:#5c3c11; color:#fff;
+      display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:14px; overflow:hidden;
+    }
+    .btn-logout { background:#5c3c11; color:#fff; border:none; border-radius:4px; padding:6px 10px; cursor:pointer; }
+  </style>
 </head>
-
 <body>
-    <!-- Header 導覽列 -->
-    <header>
-        <div class="container">
-            <nav>
-                <div class="logo">簡約家居</div>
-                <ul>
-                    <li><a href="/index.html">首頁</a></li>
-                    <li><a href="./products.html">商品</a></li>
-                    <li><a href="#about">關於我們</a></li>
-                    <li><a href="#contact">聯繫我們</a></li>
-                    <li><a href="#" class="active">會員中心</a></li>
-                </ul>
-                <ul>
-                    <li><a href="./cart.html"><img src="./images/shopping.svg" class="icon-cart" /></a></li>
-                    <li>
-                        <form action="/logout" method="post" style="display:inline;">
-                            <button type="submit" style="background:none;border:none;padding:0;">
-                                <img src="./images/login.svg" class="icon-cart" title="登出">
-                            </button>
-                        </form>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </header>
 
-    <!-- 會員中心內容 -->
-    <section>
-        <div class="container profile-container" id="profile-container">
-            <h2>會員中心</h2>
-            <div class="profile-item">
-                <span class="profile-label">用戶名：</span>
-                <span id="profile-username">載入中...</span>
-            </div>
-            <div class="profile-item">
-                <span class="profile-label">電子郵件：</span>
-                <span id="profile-email">載入中...</span>
-            </div>
-            <div class="btn-group">
-                <a href="/change-password">修改密碼</a>
-                <form action="/logout" method="post" style="display:inline;">
-                    <button type="submit">登出</button>
-                </form>
-            </div>
-        </div>
-    </section>
+  <!-- Header（與首頁一致） -->
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">簡約家居</div>
+        <ul>
+          <li><a href="./index.html#home">首頁</a></li>
+          <li><a href="./products.html">商品</a></li>
+          <li><a href="./index.html#about">關於我們</a></li>
+          <li><a href="./index.html#contact">聯繫我們</a></li>
+          <li id="member-center-link" style="display:none;">
+            <a href="./memberCenter.html" id="member-name">會員中心</a>
+          </li>
+        </ul>
+        <ul>
+          <li><a href="./cart.html"><img src="./images/shopping.svg" class="icon-cart" alt="購物車"></a></li>
 
-    <!-- Footer 頁尾 -->
-    <footer>
-        <section>
-            <div class="container">
-                <ul>
-                    <h2>聯繫我們</h2>
-                    <li class="xa">地址 : 台北市信義區松仁路123號</li>
-                    <li class="xa">電話 : 02-1234-5678</li>
-                </ul>
+          <!-- 未登入 -->
+          <li id="login-link">
+            <a href="/login"><img src="./images/login.svg" class="icon-cart" alt="登入"></a>
+          </li>
+
+          <!-- 已登入：會員頭像＋名稱 -->
+          <li id="member-icon" style="display:none;">
+            <a href="./memberCenter.html" class="member-link">
+              <div id="member-avatar" class="member-avatar">會</div>
+              <span id="member-displayname" style="font-weight:bold;"></span>
+            </a>
+          </li>
+
+          <!-- 已登入：登出 -->
+          <li id="real-logout" style="display:none;">
+            <button type="button" class="btn-logout" id="btn-logout">登出</button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 會員中心內容 -->
+  <section class="mc-wrap">
+    <div class="container">
+
+      <!-- 上方個人資訊卡 -->
+      <div class="mc-hero">
+        <div class="mc-avatar" id="mcAvatar">用</div>
+        <div style="flex:1">
+          <h1 class="mc-hello">哈囉，<span id="mcUsername">會員</span>！</h1>
+          <div>
+            <span class="mc-chip">Email：<strong id="mcEmail"></strong></span>
+            <span class="mc-chip">加入：<strong id="mcJoinDate"></strong></span>
+            <span class="mc-chip">積分：<strong id="mcPoints">0</strong></span>
+          </div>
+        </div>
+        <div class="mc-actions">
+          <a class="btn btn-brown" href="./orders.html">查看訂單</a>
+          <a class="btn" href="./profile.html">編輯資料</a>
+        </div>
+      </div>
+
+      <!-- 兩欄：左快捷、右摘要 -->
+      <div class="mc-grid">
+        <div>
+          <div class="mc-card">
+            <h2 style="margin-bottom:12px">快捷操作</h2>
+            <div class="mc-quick">
+              <a href="./orders.html">
+                <div class="mc-ico">📦</div>
                 <div>
-                    <a href="#"><img src="./images/IG.png" alt="IG" class="icon-cart2" /></a>
-                    <a href="#"><img src="./images/FB.png" alt="Facebook" class="icon-cart2" /></a>
-                    <a href="#"><img src="./images/LINE.png" alt="LINE" class="icon-cart2" /></a>
+                  <div style="font-weight:700">我的訂單</div>
+                  <div style="color:#777;font-size:13px">查詢出貨與歷史訂單</div>
                 </div>
+              </a>
+              <a href="./coupons.html">
+                <div class="mc-ico">🎟️</div>
+                <div>
+                  <div style="font-weight:700">優惠與積分</div>
+                  <div style="color:#777;font-size:13px">目前積分與可用優惠</div>
+                </div>
+              </a>
+              <a href="./profile.html">
+                <div class="mc-ico">🧾</div>
+                <div>
+                  <div style="font-weight:700">個人資料</div>
+                  <div style="color:#777;font-size:13px">修改基本資料</div>
+                </div>
+              </a>
+              <a href="./change-password.html">
+                <div class="mc-ico">🔒</div>
+                <div>
+                  <div style="font-weight:700">變更密碼</div>
+                  <div style="color:#777;font-size:13px">提升帳號安全性</div>
+                </div>
+              </a>
             </div>
-        </section>
-        <p>&copy; 2025 簡約家居 版權所有</p>
-    </footer>
-    <script>
-        // 取得會員資料並顯示
-        fetch('/api/currentUser')
-            .then(res => res.json())
-            .then(user => {
-                if (user && user.username) {
-                    document.getElementById('profile-username').textContent = user.username;
-                    document.getElementById('profile-email').textContent = user.email;
-                } else {
-                    document.getElementById('profile-container').innerHTML = '<h2>請先登入會員</h2>';
-                }
-            })
-            .catch(() => {
-                document.getElementById('profile-container').innerHTML = '<h2>請先登入會員</h2>';
-            });
-    </script>
-</body>
+          </div>
+        </div>
 
+        <aside>
+          <div class="mc-card">
+            <h2 style="margin-bottom:12px">摘要</h2>
+            <div class="mc-kpis">
+              <div class="mc-kpi">
+                <div class="num" id="kpiPoints">0</div>
+                <div class="lbl">目前積分</div>
+              </div>
+              <div class="mc-kpi">
+                <div class="num" id="kpiPending">0</div>
+                <div class="lbl">待出貨訂單</div>
+              </div>
+              <div class="mc-kpi">
+                <div class="num" id="kpiCoupons">0</div>
+                <div class="lbl">可用優惠券</div>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <section>
+      <div class="container">
+        <ul>
+          <h2>聯繫我們</h2>
+          <li class="xa">地址 : 台北市信義區松仁路123號</li>
+          <li class="xa">電話 : 02-1234-5678</li>
+        </ul>
+        <div>
+          <a href>
+            <img src="./images/IG.png" alt="IG" class="icon-cart2">
+          </a>
+          <a href>
+            <img src="./images/FB.png" alt="Facebook" class="icon-cart2">
+          </a>
+          <a href>
+            <img src="./images/LINE.png" alt="LINE" class="icon-cart2">
+          </a>
+        </div>
+      </div>
+    </section>
+    <p>&copy; 2025 簡約家居 版權所有</p>
+  </footer>
+
+  <script src="./js/nav.js"></script>
+</body>
 </html>

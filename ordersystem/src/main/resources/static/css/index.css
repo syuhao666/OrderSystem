@@ -54,6 +54,7 @@ nav {
     /* 左右兩端對齊 */
     align-items: center;
     /* 垂直置中 */
+    
 }
 
 /* 網站 Logo 樣式 */
@@ -91,30 +92,23 @@ nav a {
 
 /* 首頁上方的大圖區塊（Hero Banner） */
 .hero {
-    background: url('https://placehold.co/1200x500') center/cover;
-    /* 設定背景圖置中並填滿 */
-    height: 400px;
-    /* 區塊高度 */
-    display: flex;
-    /* 使用 Flex 排版 */
-    align-items: center;
-    /* 垂直置中 */
-    text-align: center;
-    /* 文字置中 */
-    color: white;
-    /* 白色文字 */
-    margin-bottom: 40px;
-    /* 與下方區塊的間距 */
+  
+  overflow: hidden; /* 隱藏超出容器的部分 */
+  padding-bottom: 41.67%; /* 維持影片長寬比 */
+  height: 0; /* 讓padding撐開高度 */
+  background: none;
+  margin-bottom: 40px;
 }
 
-/* Hero 區塊中的內容樣式 */
 .hero-content {
-    background: rgba(0, 0, 0, 0.5);
-    /* 黑色透明背景，讓文字更清楚 */
-    padding: 30px;
-    /* 內邊距 */
-    width: 100%;
-    /* 內容寬度占滿 */
+  position: absolute; /* 絕對定位，會覆蓋在影片上方 */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* 將內容水平垂直置中 */
+  text-align: center;
+  color: white; /* 文字顏色 */
+  width: 100%;
+  z-index: 2; /* 確保內容在影片上方 */
 }
 
 /* 按鈕樣式 */
@@ -268,3 +262,61 @@ footer {
     list-style: none;
 
 }
+
+video {
+  
+  pointer-events: none;
+}
+
+.cart-link {
+    position: relative;
+    display: inline-block;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 50%;
+}
+/* --小白-- */ 
+/* 導覽列會員頭像小樣式（不影響 index.css） */
+        .member-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .member-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #5c3c11;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            overflow: hidden;
+        }
+
+        .btn-logout {
+            background: #5c3c11;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 10px;
+            cursor: pointer;
+        }

@@ -1,0 +1,334 @@
+/* 對所有元素重置樣式，設置 box-sizing 和字型 */
+* {
+    margin: 0;
+    /* 清除預設外邊距 */
+    padding: 0;
+    /* 清除預設內邊距 */
+    box-sizing: border-box;
+    /* 包括 padding 和 border 在內的總寬高計算方式 */
+    font-family: 'Microsoft JhengHei', sans-serif;
+    /* 使用微軟正黑體字型 */
+}
+
+/* 設定 body 的文字行距與顏色 */
+body {
+    
+    line-height: 1.6;
+    /* 行高設為 1.6 倍字高，讓文字較易閱讀 */
+    color: #333;
+    /* 深灰色文字 */
+    background-color: #f9f9f9;
+    padding-top: 80px;
+}
+
+/* 頁首區塊樣式 */
+header {
+    position: fixed;           /* 固定定位，會脫離正常文流，位置由 top/left 控制 */
+    top: 0;                    /* 距離瀏覽器上方 0px，即貼齊最上方 */
+    left: 0;                   /* 距離左側 0px，貼齊左側 */
+    width: 100%;  
+     
+    background: #f8f8f8;
+    /* 淺灰色背景 */
+    padding: 20px 0;
+    /* 上下 20px 內邊距，左右 0 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* 添加底部陰影，提高立體感 */
+}
+
+/* 設定一個最大寬度並置中的容器 */
+.container {
+    width: 90%;
+    /* 寬度為視窗的 90% */
+    max-width: 1200px;
+    /* 最大寬度不超過 1200px */
+    margin: 0 auto;
+    /* 左右自動置中 */
+}
+
+/* 導覽列 nav 基本排版設定 */
+nav {
+    display: flex;
+    /* 使用 Flex 排版 */
+    justify-content: space-between;
+    /* 左右兩端對齊 */
+    align-items: center;
+    /* 垂直置中 */
+    
+}
+
+/* 網站 Logo 樣式 */
+.logo {
+    font-size: 24px;
+    /* 字體大小 */
+    font-weight: bold;
+    /* 粗體 */
+    color: #5c3c11;
+    /* 棕色系字體顏色 */
+}
+
+/* 導覽列清單 ul 的排版 */
+nav ul {
+    display: flex;
+    /* 橫向排列 */
+    list-style: none;
+    /* 移除項目前的點點 */
+}
+
+
+/* 清單項目的間距 */
+nav ul li {
+    margin-left: 20px;
+    /* 每個選項左邊間隔 20px */
+}
+
+/* 導覽列中的超連結樣式 */
+nav a {
+    text-decoration: none;
+    /* 移除底線 */
+    color: #333;
+    /* 字體顏色為深灰色 */
+}
+
+/* 首頁上方的大圖區塊（Hero Banner） */
+.hero {
+  
+  overflow: hidden; /* 隱藏超出容器的部分 */
+  padding-bottom: 41.67%; /* 維持影片長寬比 */
+  height: 0; /* 讓padding撐開高度 */
+  background: none;
+  margin-bottom: 40px;
+}
+
+.hero-content {
+  position: absolute; /* 絕對定位，會覆蓋在影片上方 */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* 將內容水平垂直置中 */
+  text-align: center;
+  color: white; /* 文字顏色 */
+  width: 100%;
+  z-index: 2; /* 確保內容在影片上方 */
+}
+
+/* 按鈕樣式 */
+.btn {
+    display: inline-block;
+    /* 行內區塊元素 */
+    background: #5c3c11;
+    /* 背景棕色 */
+    color: white;
+    /* 白色文字 */
+    padding: 10px 20px;
+    /* 上下 10px，左右 20px 內邊距 */
+    margin-top: 20px;
+    /* 與上方元素間距 */
+    border-radius: 4px;
+    /* 圓角 */
+    text-decoration: none;
+    /* 移除超連結底線 */
+}
+ /*----------------------- */
+.btn-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  padding: 0;             /* 去掉預設內距 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-circle.large { width: 80px; height: 80px; font-size: 32px; }
+ /*----------------------- */
+/* 每個區塊 section 的內邊距 */
+section {
+    padding: 40px 0;
+    /* 上下各 40px */
+}
+
+/* 標題樣式 */
+h2 {
+    text-align: center;
+    /* 標題置中 */
+    margin-bottom: 30px;
+    /* 與下方元素間距 */
+    font-size: 28px;
+    /* 字體大小 */
+}
+
+/* 產品區容器的排版設定（使用網格 Grid） */
+.products {
+    display: grid;
+    /* 使用 Grid 排版 */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    /* 自動填滿欄位，寬度至少 250px */
+    gap: 30px;
+    /* 欄與欄的間距 */
+}
+
+/* 單一商品卡片樣式 */
+.product {
+    border: 1px solid #ddd;
+    /* 淺灰色邊框 */
+    padding: 15px;
+    /* 內邊距 */
+    border-radius: 5px;
+    /* 圓角 */
+}
+
+/* 商品圖片樣式 */
+.product img {
+    width: 100%;
+    /* 寬度占滿容器 */
+    height: 200px;
+    /* 固定高度 */
+    object-fit: cover;
+    /* 圖片填滿但保持比例 */
+    margin-bottom: 15px;
+    /* 與下方元素的間距 */
+}
+
+/* 商品名稱樣式 */
+.product h3 {
+    margin-bottom: 10px;
+    /* 與下方價格的間距 */
+}
+
+/* 價格樣式 */
+.price {
+    color: #5c3c11;
+    /* 棕色 */
+    font-weight: bold;
+    /* 粗體 */
+    margin: 10px 0;
+    /* 上下間距 */
+}
+
+/* 聯絡資訊區塊使用 Grid 排版 */
+.contact-info {
+    display: grid;
+    /* 使用 Grid */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    /* 自動調整欄數，至少 300px */
+    gap: 30px;
+    /* 欄位間距 */
+}
+
+/* 頁尾樣式 */
+footer {
+    background: #333;
+    /* 深灰底色 */
+    color: white;
+    /* 白色文字 */
+    text-align: center;
+    /* 文字置中 */
+    padding: 20px 0;
+    /* 上下 20px 內邊距 */
+    margin-top: 40px;
+    /* 與上方區塊間距 */
+}
+
+/* 響應式設計：螢幕寬度小於 768px 時生效 */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        /* 導覽列垂直排列 */
+    }
+
+    nav ul {
+        margin-top: 15px;
+        /* 上方間距 */
+    }
+
+    nav ul li {
+        margin: 0 10px;
+        /* 左右間距縮小 */
+    }
+
+    .hero {
+        height: 300px;
+        /* Hero 區高度縮小 */
+    }
+}
+
+/* 購物車圖示的樣式 */
+.icon-cart {
+    width: 24px;
+    /* 圖示寬度 */
+    height: 24px;
+    /* 圖示高度 */
+    vertical-align: middle;
+    /* 與文字垂直置中對齊 */
+}
+
+.icon-cart2 {
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+    /* 讓圖片跟文字垂直置中對齊 */
+}
+
+.xa {
+
+    list-style: none;
+
+}
+
+video {
+  
+  pointer-events: none;
+}
+
+.cart-link {
+    position: relative;
+    display: inline-block;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 50%;
+}
+/* --小白-- */ 
+/* 導覽列會員頭像小樣式（不影響 index.css） */
+        .member-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .member-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #5c3c11;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            overflow: hidden;
+        }
+
+        .btn-logout {
+            background: #5c3c11;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 10px;
+            cursor: pointer;
+        }
