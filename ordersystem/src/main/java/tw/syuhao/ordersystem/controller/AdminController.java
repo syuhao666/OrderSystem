@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.servlet.http.HttpSession;
 import tw.syuhao.ordersystem.entity.Product;
 import tw.syuhao.ordersystem.service.ProductService;
 
@@ -31,8 +32,13 @@ public class AdminController {
     private ProductService service;
 
     @GetMapping("/")
-    public String adminHome(Model model) {
+    public String adminHome(Model model, HttpSession session) {
         model.addAttribute("activePage", "admin");
+        // 取得目前登入的管理員帳號
+        Object userObj = session.getAttribute("user");
+        if (userObj instanceof tw.syuhao.ordersystem.entity.Users user) {
+            model.addAttribute("admin", user);
+        }
         return "adminHome";
     }
 
