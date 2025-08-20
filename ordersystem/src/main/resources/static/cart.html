@@ -57,29 +57,43 @@
                 <!-- 購物車清單 -->
                 <div class="col-md-8" id="cart">
                     <h3 class="mb-3">購物車</h3>
-                    <div class="cart-item d-flex">
-                        <div class="col-md-4">商品</div>
-                        <div class="col-md-3 ms-1">售價</div>
-                        <div class="col-md-3">小計</div>
-                        <div class="col-md-2 ms-2">數量</div>
+
+                    <!-- 標題列 -->
+                    <div class="row fw-bold border-bottom py-2">
+                        <div class="col-4 col-md-4">商品</div>
+                        <div class="col-2 col-md-2">售價</div>
+                        <div class="col-2 col-md-2">小計</div>
+                        <div class="col-4 col-md-4 text-center">數量</div>
                     </div>
-                    <div class="cart-item" v-for="item in cartItems" :key="item.id">
-                        <img :src="`http://localhost:8080/uploads/${item.imageUrl}`" alt="商品圖片"
-                            style="width: 60px; height: 60px; object-fit: cover;">
-                        <div class="info d-flex">
-                            <div class="col-md-4">{{ item.name }} </div>
-                            <div class="col-md-4">NT{{ item.price }} </div>
-                            <div class="col-md-4">NT{{ productTotal }} </div>
-                            <!-- {{ item.name }} 單價 {{ item.price }} 小計{{ item.price * item.quantity }} 元 -->
+
+                    <!-- 購物車項目 -->
+                    <div class="row align-items-center border-bottom py-2" v-for="item in cartItems" :key="item.id">
+                        <!-- 商品圖 + 名稱 -->
+                        <div class="col-12 col-md-4 d-flex align-items-center">
+                            <img :src="`http://localhost:8080/uploads/${item.imageUrl}`" alt="商品圖片" class="me-2 rounded"
+                                style="width: 60px; height: 60px; object-fit: cover;">
+                            <span>{{ item.name }}</span>
                         </div>
-                        <div class="actions">
-                            <button class="btn-sm btn-primary" @click="decreaseQuantity(item.cartItemId)">－</button>
+
+                        <!-- 售價 -->
+                        <div class="col-4 col-md-2">NT{{ item.price }}</div>
+
+                        <!-- 小計 -->
+                        <div class="col-4 col-md-2">NT{{ item.price * item.quantity }}</div>
+
+                        <!-- 數量與操作 -->
+                        <div class="col-4 col-md-4 d-flex justify-content-center align-items-center">
+                            <button class="btn btn-sm btn-outline-primary me-1"
+                                @click="decreaseQuantity(item.cartItemId)">－</button>
                             <span>{{ item.quantity }}</span>
-                            <button class="btn-sm btn-primary" @click="increaseQuantity(item.cartItemId)">＋</button>
-                            <button class="btn-sm btn-danger" @click="removeItem(item.cartItemId)">刪除</button>
+                            <button class="btn btn-sm btn-outline-primary ms-1"
+                                @click="increaseQuantity(item.cartItemId)">＋</button>
+                            <button class="btn btn-sm btn-outline-danger ms-3"
+                                @click="removeItem(item.cartItemId)">刪除</button>
                         </div>
                     </div>
                 </div>
+
                 <!-- 運送方式與金額 -->
                 <div class="col-md-4">
                     <!-- 運送方式與樓層選擇 -->
