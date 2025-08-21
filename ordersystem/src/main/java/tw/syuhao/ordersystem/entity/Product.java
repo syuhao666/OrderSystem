@@ -6,13 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.ToString;
@@ -28,7 +31,7 @@ public class Product {
 
     private String name;
 
-    private BigDecimal price;  // Integer  改  BigDecimal 08091926  家綸
+    private BigDecimal price; // Integer 改 BigDecimal 08091926 家綸
 
     private Integer stock;
 
@@ -49,4 +52,18 @@ public class Product {
     @JsonBackReference
     @ToString.Exclude
     private List<CartItem> cartItems = new ArrayList<>();
+
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private ProductSpecification specification;
+
+    public void setSpecification(ProductSpecification specification) {
+        this.specification = specification;
+        specification.setProduct(this); // 綁定雙向關聯
+    }
+
+    public ProductSpecification getSpecification() {
+        return specification;
+    }
+
 }

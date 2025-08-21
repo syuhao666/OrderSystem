@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpSession;
 import tw.syuhao.ordersystem.entity.Product;
+import tw.syuhao.ordersystem.entity.ProductSpecification;
 import tw.syuhao.ordersystem.service.ProductService;
 
 @Controller
@@ -69,7 +70,10 @@ public class AdminController {
 
     @GetMapping("/product/new")
     public String addProductForm(Model model) {
-        model.addAttribute("product", new Product());
+        Product product = new Product();
+        // 初始化規格
+        product.setSpecification(new ProductSpecification());
+        model.addAttribute("product", product);
         return "product-form";
     }
 
@@ -107,6 +111,11 @@ public class AdminController {
             product.setStatus("未上架");
         }
 
+        // 保證雙向關聯
+        if (product.getSpecification() != null) {
+            product.getSpecification().setProduct(product);
+        }
+
         service.save(product);
         return "redirect:/admin/products";
     }
@@ -114,6 +123,7 @@ public class AdminController {
     @GetMapping("/product/edit/{id}")
     public String editProductForm(@PathVariable Long id, Model model) {
         Product product = service.findById(id);
+        // 不要 new 新的 ProductSpecification，直接用原本的
         model.addAttribute("product", product);
         return "product-form";
     }
@@ -157,4 +167,6 @@ public class AdminController {
         }
         return "redirect:/admin/products";
     }
+
+    
 }
