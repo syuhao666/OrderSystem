@@ -49,24 +49,26 @@
             <div class="mb-3">
                 <label class="form-label">商品規格</label>
                 <div class="row">
+                    <!-- 新增這行，隱藏欄位帶回規格id -->
+                    <input type="hidden" th:field="*{specification.id}" />
                     <div class="col">
                         <input type="number" step="0.01" th:field="*{specification.length}" class="form-control"
-                            placeholder="長 (cm)" />
+                            placeholder="長 (cm)" required />
                     </div>
                     <div class="col">
                         <input type="number" step="0.01" th:field="*{specification.width}" class="form-control"
-                            placeholder="寬 (cm)" />
+                            placeholder="寬 (cm)" required />
                     </div>
                     <div class="col">
                         <input type="number" step="0.01" th:field="*{specification.height}" class="form-control"
-                            placeholder="高 (cm)" />
+                            placeholder="高 (cm)" required />
                     </div>
                     <div class="col">
                         <input type="number" step="0.01" th:field="*{specification.weight}" class="form-control"
-                            placeholder="重量 (kg)" />
+                            placeholder="重量 (kg)" required />
                     </div>
                     <div class="col">
-                        <input type="text" th:field="*{specification.origin}" class="form-control" placeholder="產地" />
+                        <input type="text" th:field="*{specification.origin}" class="form-control" placeholder="產地" required />
                     </div>
                 </div>
             </div>

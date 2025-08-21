@@ -123,10 +123,7 @@ public class AdminController {
     @GetMapping("/product/edit/{id}")
     public String editProductForm(@PathVariable Long id, Model model) {
         Product product = service.findById(id);
-        // 若無規格則初始化
-        if (product.getSpecification() == null) {
-            product.setSpecification(new ProductSpecification());
-        }
+        // 不要 new 新的 ProductSpecification，直接用原本的
         model.addAttribute("product", product);
         return "product-form";
     }
