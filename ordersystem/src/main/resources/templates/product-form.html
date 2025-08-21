@@ -46,6 +46,30 @@
                 <label class="form-check-label">上架</label>
             </div>
             <br>
+            <div class="mb-3">
+                <label class="form-label">商品規格</label>
+                <div class="row">
+                    <div class="col">
+                        <input type="number" step="0.01" th:field="*{specification.length}" class="form-control"
+                            placeholder="長 (cm)" />
+                    </div>
+                    <div class="col">
+                        <input type="number" step="0.01" th:field="*{specification.width}" class="form-control"
+                            placeholder="寬 (cm)" />
+                    </div>
+                    <div class="col">
+                        <input type="number" step="0.01" th:field="*{specification.height}" class="form-control"
+                            placeholder="高 (cm)" />
+                    </div>
+                    <div class="col">
+                        <input type="number" step="0.01" th:field="*{specification.weight}" class="form-control"
+                            placeholder="重量 (kg)" />
+                    </div>
+                    <div class="col">
+                        <input type="text" th:field="*{specification.origin}" class="form-control" placeholder="產地" />
+                    </div>
+                </div>
+            </div>
             <button type="submit" class="btn btn-primary">儲存</button>
         </form>
         <!-- <form th:if="${product.id != null and product.enabled}" th:action="@{/admin/product/off/{id}(id=${product.id})}" method="post" style="display:inline;">
