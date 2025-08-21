@@ -56,8 +56,8 @@
                 <div v-if="isLoading">載入中...</div>
                 <div v-else-if="hasError">取得商品資料失敗</div>
                 <div v-else-if="product">
-                    <img :src="`http://localhost:8080/uploads/${product.imageUrl}`" :alt="product.name" />
                     <h2>{{ product.name }}</h2>
+                    <div><img :src="`http://localhost:8080/uploads/${product.imageUrl}`" :alt="product.name" style="width: 50%; height: 50%; object-fit: cover;"/></div>
                     <p>{{ product.description }}</p>
                     <div class="price">NT${{ product.price }}</div>
                     <!-- 商品規格區塊 -->
