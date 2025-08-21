@@ -2,30 +2,52 @@
 <html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
 
 <body>
-  <!-- Sidebar Fragment (root element IS the grid column) -->
-  <nav th:fragment="sidebar" class="col-12 col-md-3 col-lg-2 sidebar min-vh-100">
+  <!-- Sidebar Fragment -->
+  <nav th:fragment="sidebar" class="col-12 col-md-3 col-lg-2 sidebar min-vh-100 bg-dark">
     <ul class="nav flex-column">
       <h4 class="text-white text-center py-3">簡約家居後台</h4>
+
       <li class="nav-item">
         <a class="nav-link [[${activePage} == 'admin' ? 'active' : '']]" href="/admin/">
           <i class="bi bi-person-circle"></i>會員中心
         </a>
       </li>
+
       <li class="nav-item">
         <a class="nav-link [[${activePage} == 'customer' ? 'active' : '']]" href="/admin/customers">
           <i class="bi bi-people"></i>會員管理
         </a>
       </li>
+
       <li class="nav-item">
         <a class="nav-link [[${activePage} == 'order' ? 'active' : '']]" href="/admin/orders">
           <i class="bi bi-bag-check"></i>訂單管理
         </a>
       </li>
+
+      <!-- 商品管理 (可展開選單) -->
       <li class="nav-item">
-        <a class="nav-link [[${activePage} == 'product' ? 'active' : '']]" href="/admin/products">
-          <i class="bi bi-box-seam"></i>商品管理
+        <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
+          href="#productMenu" role="button" aria-expanded="false" aria-controls="productMenu">
+          <span><i class="bi bi-box-seam"></i> 商品管理</span>
+          <i class="bi bi-caret-down-fill small"></i>
         </a>
+        <div class="collapse ps-3" id="productMenu">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link [[${activePage} == 'product-list' ? 'active' : '']]" href="/admin/products">
+                商品列表
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link [[${activePage} == 'stock' ? 'active' : '']]" href="/admin/stock">
+                庫存管理
+              </a>
+            </li>
+          </ul>
+        </div>
       </li>
+
       <li class="nav-item mt-2">
         <a class="nav-link" href="/logout">
           <i class="bi bi-box-arrow-right"></i>登出
