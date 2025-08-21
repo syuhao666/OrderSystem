@@ -1,9 +1,11 @@
 package tw.syuhao.ordersystem.repository;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import tw.syuhao.ordersystem.entity.Product;
@@ -27,7 +29,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product> findByPriceBetween(
             BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
 
-    
-
-  
+    @Override
+    @EntityGraph(attributePaths = {"specification"})
+    List<Product> findAll();
 }

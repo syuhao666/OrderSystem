@@ -60,6 +60,17 @@
                     <h2>{{ product.name }}</h2>
                     <p>{{ product.description }}</p>
                     <div class="price">NT${{ product.price }}</div>
+                    <!-- 商品規格區塊 -->
+                    <div v-if="product.specification" class="mt-3">
+                        <h5>商品規格</h5>
+                        <ul class="list-group">
+                            <li class="list-group-item" v-if="product.specification.length !== null">長：{{ product.specification.length }} cm</li>
+                            <li class="list-group-item" v-if="product.specification.width !== null">寬：{{ product.specification.width }} cm</li>
+                            <li class="list-group-item" v-if="product.specification.height !== null">高：{{ product.specification.height }} cm</li>
+                            <li class="list-group-item" v-if="product.specification.weight !== null">重量：{{ product.specification.weight }} kg</li>
+                            <li class="list-group-item" v-if="product.specification.origin">產地：{{ product.specification.origin }}</li>
+                        </ul>
+                    </div>
                     <button class="btn" @click="addToCart(product)">加入購物車</button>
                 </div>
                 <div v-else>找不到商品資料</div>
