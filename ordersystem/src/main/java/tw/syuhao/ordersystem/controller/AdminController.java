@@ -23,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 import jakarta.servlet.http.HttpSession;
 import tw.syuhao.ordersystem.entity.Product;
 import tw.syuhao.ordersystem.entity.ProductSpecification;
+import tw.syuhao.ordersystem.entity.StockMovement;
+import tw.syuhao.ordersystem.repository.StockMovementRepository;
 import tw.syuhao.ordersystem.service.ProductService;
 
 @Controller
@@ -31,6 +33,9 @@ public class AdminController {
 
     @Autowired
     private ProductService service;
+
+    @Autowired
+    private StockMovementRepository stockMovementRepository;
 
     @GetMapping("/")
     public String adminHome(Model model, HttpSession session) {
@@ -111,12 +116,26 @@ public class AdminController {
             product.setStatus("未上架");
         }
 
+        boolean isNew = (product.getId() == null);
+
         // 保證雙向關聯
         if (product.getSpecification() != null) {
             product.getSpecification().setProduct(product);
         }
 
         service.save(product);
+
+        // 新增商品時，寫入一筆入庫紀錄
+        if (isNew) {
+            StockMovement movement = new StockMovement();
+            movement.setProduct(product);
+            movement.setChangeType("IN");
+            movement.setQuantity(product.getStock() != null ? product.getStock() : 0);
+            movement.setNote("新增商品入庫");
+            stockMovementRepository.save(movement);
+            
+        }
+
         return "redirect:/admin/products";
     }
 

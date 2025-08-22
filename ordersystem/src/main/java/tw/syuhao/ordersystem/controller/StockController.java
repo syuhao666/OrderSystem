@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import tw.syuhao.ordersystem.entity.Product;
 import tw.syuhao.ordersystem.repository.ProductRepository;
 import tw.syuhao.ordersystem.service.ProductService;
 import tw.syuhao.ordersystem.service.StockService;
@@ -36,10 +35,10 @@ public class StockController {
 
     @GetMapping("/{id}")
     public String stockPage(@PathVariable Long id, Model model) {
-        Product product = productRepository.findById(id).orElseThrow();
+        var product = productService.findById(id);
         model.addAttribute("product", product);
         model.addAttribute("movements", stockService.getMovements(id));
-        return "admin/stock";
+        return "stockChange";
     }
 
     @PostMapping("/adjust")
