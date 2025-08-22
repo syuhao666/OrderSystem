@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.Where;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -23,6 +25,7 @@ import lombok.ToString;
 @Entity
 @Data
 @Table(name = "product")
+@Where(clause = "deleted = false")
 public class Product {
 
     @Id
@@ -45,6 +48,9 @@ public class Product {
     private String status;
 
     private String category;
+
+    @Column(nullable = false)
+    private boolean deleted = false;
 
     private LocalDateTime createdAt;
 

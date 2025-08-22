@@ -55,21 +55,26 @@ public class AdminController {
             @RequestParam(required = false) String category,
             @RequestParam(required = false) BigDecimal minPrice,
             @RequestParam(required = false) BigDecimal maxPrice,
+            @RequestParam(required = false) String status,
             Model model) {
 
         int pageSize = 10;
 
-        Page<Product> productPage = service.findProducts(name, category, page, pageSize, minPrice, maxPrice);
+        Page<Product> productPage = service.findProducts(name, category, page, pageSize, minPrice, maxPrice, status);
 
         model.addAttribute("productPage", productPage);
         model.addAttribute("currentPage", productPage.getNumber() + 1); // 修正頁碼
         model.addAttribute("totalPages", productPage.getTotalPages());
         model.addAttribute("totalItems", productPage.getTotalElements());
+
         model.addAttribute("name", name);
         model.addAttribute("category", category);
         model.addAttribute("minPrice", minPrice);
         model.addAttribute("maxPrice", maxPrice);
+        model.addAttribute("status", status);
+
         model.addAttribute("activePage", "product"); // 補上 activePage
+        
         return "adminProduct";
     }
 
@@ -133,7 +138,7 @@ public class AdminController {
             movement.setQuantity(product.getStock() != null ? product.getStock() : 0);
             movement.setNote("新增商品入庫");
             stockMovementRepository.save(movement);
-            
+
         }
 
         return "redirect:/admin/products";
@@ -146,6 +151,36 @@ public class AdminController {
         model.addAttribute("product", product);
         return "product-form";
     }
+
+    // @GetMapping("/product/delete/{id}")
+    // public String deleteProduct(@PathVariable Long id) {
+    // Product product = service.findById(id);
+    // if (product != null) {
+    // // 刪圖片
+    // if (product.getImageUrl() != null && !product.getImageUrl().isEmpty()) {
+    // Path imagePath = Paths.get(System.getProperty("user.dir"), "uploads",
+    // product.getImageUrl());
+    // System.out.println("Deleting image: " + imagePath.toAbsolutePath());
+
+    // try {
+    // if (Files.exists(imagePath)) {
+    // Files.delete(imagePath);
+    // System.out.println("Image deleted.");
+    // } else {
+    // System.out.println("Image not found.");
+    // }
+    // } catch (IOException e) {
+    // System.err.println("Failed to delete image:");
+    // e.printStackTrace();
+    // }
+    // }
+
+    // // 刪商品
+    // service.deleteById(id);
+    // }
+
+    // return "redirect:/admin/products";
+    // }
 
     @GetMapping("/product/delete/{id}")
     public String deleteProduct(@PathVariable Long id) {
@@ -169,8 +204,8 @@ public class AdminController {
                 }
             }
 
-            // 刪商品
-            service.deleteById(id);
+            // 軟刪除商品
+            service.softDeleteProduct(id);
         }
 
         return "redirect:/admin/products";
@@ -187,5 +222,4 @@ public class AdminController {
         return "redirect:/admin/products";
     }
 
-    
 }
