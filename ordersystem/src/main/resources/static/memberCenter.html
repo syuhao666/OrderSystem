@@ -81,63 +81,57 @@
       </div>
 
       <!-- 兩欄：左快捷、右摘要 -->
-      <div class="mc-grid">
-        <div>
-          <div class="mc-card">
-            <h2 style="margin-bottom:12px">快捷操作</h2>
-            <div class="mc-quick">
-              <a href="/front/orders.html">
-                <div class="mc-ico">📦</div>
-                <div>
-                  <div style="font-weight:700">我的訂單</div>
-                  <div style="color:#777;font-size:13px">查詢出貨與歷史訂單</div>
-                </div>
-              </a>
-              <a href="./coupons.html">
-                <div class="mc-ico">🎟️</div>
-                <div>
-                  <div style="font-weight:700">優惠與積分</div>
-                  <div style="color:#777;font-size:13px">目前積分與可用優惠</div>
-                </div>
-              </a>
-              <a href="./profile.html">
-                <div class="mc-ico">🧾</div>
-                <div>
-                  <div style="font-weight:700">個人資料</div>
-                  <div style="color:#777;font-size:13px">修改基本資料</div>
-                </div>
-              </a>
-              <a href="./change-password.html">
-                <div class="mc-ico">🔒</div>
-                <div>
-                  <div style="font-weight:700">變更密碼</div>
-                  <div style="color:#777;font-size:13px">提升帳號安全性</div>
-                </div>
-              </a>
+      <div class="mc-quick">
+        <a href="/front/orders.html">
+          <div class="mc-ico">📦</div>
+          <div>
+            <div style="font-weight:700">我的訂單</div>
+            <div style="color:#777;font-size:13px">查詢出貨與歷史訂單</div>
+          </div>
+        </a>
+        <a href="/coupons.html">
+          <div class="mc-ico">🎟️</div>
+          <div>
+            <div style="font-weight:700">優惠與積分</div>
+            <div style="color:#777;font-size:13px">目前積分與可用優惠</div>
+          </div>
+        </a>
+        <a href="/profile.html">
+          <div class="mc-ico">🧾</div>
+          <div>
+            <div style="font-weight:700">個人資料</div>
+            <div style="color:#777;font-size:13px">修改基本資料</div>
+          </div>
+        </a>
+        <a href="/change-password.html">
+          <div class="mc-ico">🔒</div>
+          <div>
+            <div style="font-weight:700">變更密碼</div>
+            <div style="color:#777;font-size:13px">提升帳號安全性</div>
+          </div>
+        </a>
+      </div>
+
+      <aside>
+        <div class="mc-card">
+          <h2 style="margin-bottom:12px">摘要</h2>
+          <div class="mc-kpis">
+            <div class="mc-kpi">
+              <div class="num" id="kpiPoints">0</div>
+              <div class="lbl">目前積分</div>
+            </div>
+            <div class="mc-kpi">
+              <div class="num" id="kpiPending">0</div>
+              <div class="lbl">待出貨訂單</div>
+            </div>
+            <div class="mc-kpi">
+              <div class="num" id="kpiCoupons">0</div>
+              <div class="lbl">可用優惠券</div>
             </div>
           </div>
         </div>
-
-        <aside>
-          <div class="mc-card">
-            <h2 style="margin-bottom:12px">摘要</h2>
-            <div class="mc-kpis">
-              <div class="mc-kpi">
-                <div class="num" id="kpiPoints">0</div>
-                <div class="lbl">目前積分</div>
-              </div>
-              <div class="mc-kpi">
-                <div class="num" id="kpiPending">0</div>
-                <div class="lbl">待出貨訂單</div>
-              </div>
-              <div class="mc-kpi">
-                <div class="num" id="kpiCoupons">0</div>
-                <div class="lbl">可用優惠券</div>
-              </div>
-            </div>
-          </div>
-        </aside>
-      </div>
+      </aside>
+    </div>
 
     </div>
   </section>
