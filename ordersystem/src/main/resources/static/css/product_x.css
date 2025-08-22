@@ -45,6 +45,15 @@ header {
     margin: 0 auto;
     /* 左右自動置中 */
 }
+/* 設定一個最大寬度並置中的容器 */
+.containerV1 {
+    width: 90%;
+    /* 寬度為視窗的 90% */
+    max-width: 1800px;
+    /* 最大寬度不超過 1200px */
+    margin: 0 auto;
+    /* 左右自動置中 */
+}
 
 /* 導覽列 nav 基本排版設定 */
 nav {
