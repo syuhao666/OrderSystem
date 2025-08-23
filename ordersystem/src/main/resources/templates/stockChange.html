@@ -84,7 +84,7 @@
                                     <span th:text="${h.changeType == 'IN' ? '+' : '-'} + ${h.quantity}"></span>
                                 </td>
                                 <td th:text="${h.note}">管理員</td>
-                                <td th:text="${#dates.format(h.createdAt, 'yyyy-MM-dd HH:mm')}">2025-08-20 12:00</td>
+                                <td th:text="${#temporals.format(product.createdAt, 'yyyy-MM-dd HH:mm')}">2025-08-20 12:00</td>
                             </tr>
                             <tr th:if="${#lists.isEmpty(movements)}">
                                 <td colspan="5" class="text-center">尚無庫存異動紀錄</td>

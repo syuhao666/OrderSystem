@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
 import tw.syuhao.ordersystem.entity.Product;
 import tw.syuhao.ordersystem.repository.ProductRepository;
@@ -40,6 +41,11 @@ public class ProductService {
 
     public Product findById(Long id) {
         return repo.findById(id).orElse(null);
+    }
+
+    public Product getProductById(Long id) {
+        return repo.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("找不到商品 id=" + id));
     }
 
     public Page<Product> searchProducts(String keyword, int page, int size) {
