@@ -10,6 +10,9 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -74,7 +77,7 @@ public class AdminController {
         model.addAttribute("status", status);
 
         model.addAttribute("activePage", "product"); // 補上 activePage
-        
+
         return "adminProduct";
     }
 
@@ -222,4 +225,27 @@ public class AdminController {
         return "redirect:/admin/products";
     }
 
+    @GetMapping("/products/recycle")
+    public String recycleBin(@RequestParam(defaultValue = "0") int page, Model model) {
+        Pageable pageable = PageRequest.of(page, 10, Sort.by("id").descending());
+        Page<Product> deletedProducts = service.findDeletedProducts(pageable);
+
+        model.addAttribute("deletedProducts", deletedProducts);
+        model.addAttribute("activePage", "recycle"); // 添加activePage屬性
+        return "recycle"; // 對應 recycle.html
+    }
+
+    // 還原商品
+    @GetMapping("/product/restore/{id}")
+    public String restoreProduct(@PathVariable Long id) {
+        service.restore(id);
+        return "redirect:/admin/products/recycle";
+    }
+
+    // 永久刪除
+    @GetMapping("/product/hard-delete/{id}")
+    public String hardDeleteProduct(@PathVariable Long id) {
+        service.hardDelete(id);
+        return "redirect:/admin/products/recycle";
+    }
 }

@@ -43,5 +43,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> , JpaSpe
         @Query("SELECT p FROM Product p")
         List<Product> findAllIncludingDeleted();
 
-        
+        Page<Product> findByDeletedTrue(Pageable pageable);
 }

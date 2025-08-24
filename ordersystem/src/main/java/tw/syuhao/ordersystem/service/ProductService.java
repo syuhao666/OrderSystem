@@ -137,4 +137,28 @@ public class ProductService {
     public List<Product> getAllActiveProducts() {
         return repo.findAllIncludingDeleted();
     }
+
+    public void softDelete(Long id) {
+        Product product = repo.findById(id).orElse(null);
+        if (product != null) {
+            product.setDeleted(true);
+            repo.save(product);
+        }
+    }
+
+    public void restore(Long id) {
+        Product product = repo.findById(id).orElse(null);
+        if (product != null) {
+            product.setDeleted(false);
+            repo.save(product);
+        }
+    }
+
+    public void hardDelete(Long id) {
+        repo.deleteById(id);
+    }
+
+    public Page<Product> findDeletedProducts(Pageable pageable) {
+        return repo.findByDeletedTrue(pageable);
+    }
 }
