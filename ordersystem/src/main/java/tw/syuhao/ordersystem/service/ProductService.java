@@ -54,17 +54,17 @@ public class ProductService {
         repo.deleteById(id);
     }
 
+    // public Product findById(Long id) {
+    // return repo.findById(id).orElse(null);
+    // }
+
     public Product findById(Long id) {
-        Product product = repo.findById(id).orElse(null);
-        if (product != null) {
-            product.setStock(computeCurrentStock(product.getId()));
-        }
-        return product;
+        return repo.findById(id).orElse(null);
     }
 
     public Product getProductById(Long id) {
         return repo.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("找不到商品 id=" + id));
+                .orElseThrow(() -> new EntityNotFoundException("找不到商品 id=" + id));
     }
 
     public Page<Product> searchProducts(String keyword, int page, int size) {
@@ -112,7 +112,7 @@ public class ProductService {
     // }
 
     public Page<Product> findProducts(String name, String category, Integer page, Integer size,
-                                      BigDecimal minPrice, BigDecimal maxPrice, String status) {
+            BigDecimal minPrice, BigDecimal maxPrice, String status) {
         Pageable pageable = PageRequest.of(page - 1, size, Sort.by("id").descending());
 
         Specification<Product> spec = (root, query, cb) -> {
@@ -146,7 +146,7 @@ public class ProductService {
         }
         return pageResult;
     }
-    
+
     public Page<Product> getProducts(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         return repo.findAll(pageable);
