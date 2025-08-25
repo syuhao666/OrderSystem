@@ -2,6 +2,9 @@ package tw.syuhao.ordersystem.entity;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,6 +26,7 @@ public class StockMovement {
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
+    @NotFound(action = NotFoundAction.IGNORE)
     private Product product;
 
     private String changeType; // IN / OUT
