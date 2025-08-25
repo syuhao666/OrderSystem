@@ -35,8 +35,15 @@ public class LoginController {
         // ★ 統一使用這個 key
         session.setAttribute("user", u);
 
+         // 根據角色導向不同頁面
+        if ("ADMIN".equalsIgnoreCase(u.getRole())) {
+            session.setAttribute("admin", u); // 若 adminHome.html 需用 admin 變數
+            return "redirect:/admin/";
+        } else {
+            return "redirect:/index.html";
+        }
+
         // ★ 登入後回首頁（你的 index.html 會自動 fetch /api/user 來切 UI）
-        return "redirect:/index.html";
     }
 
     @PostMapping("/logout")
