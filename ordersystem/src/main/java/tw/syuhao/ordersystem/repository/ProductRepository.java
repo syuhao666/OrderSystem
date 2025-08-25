@@ -2,6 +2,7 @@ package tw.syuhao.ordersystem.repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +10,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import tw.syuhao.ordersystem.entity.Product;
 
@@ -43,5 +45,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> , JpaSpe
         @Query("SELECT p FROM Product p")
         List<Product> findAllIncludingDeleted();
 
+        @Query("SELECT p FROM Product p WHERE p.deleted = true")
         Page<Product> findByDeletedTrue(Pageable pageable);
+
+        @Query("SELECT p FROM Product p WHERE p.id = :id")
+        Optional<Product> findByIdIncludingDeleted(@Param("id") Long id);
 }

@@ -14,7 +14,6 @@ import tw.syuhao.ordersystem.entity.Order;
 import tw.syuhao.ordersystem.entity.OrderItem;
 import tw.syuhao.ordersystem.entity.Product;
 import tw.syuhao.ordersystem.repository.OrderRepository;
-import tw.syuhao.ordersystem.repository.ProductRepository;
 
 @Service
 public class OrderService {
@@ -22,7 +21,7 @@ public class OrderService {
     private OrderRepository orderRepository;
 
     @Autowired
-    private ProductRepository productRepository;
+    private StockService stockService;
 
     public List<Order> findAll() {
         return orderRepository.findAll();
@@ -34,11 +33,11 @@ public class OrderService {
         if ("已出貨".equals(order.getStatus()) || "已付款".equals(order.getStatus())) {
             for (OrderItem item : order.getItems()) {
                 Product product = item.getProduct();
-                if (product.getStock() < item.getQuantity()) {
+                int current = stockService.getCurrentStock(product.getId());
+                if (current < item.getQuantity()) {
                     throw new IllegalArgumentException("商品 [" + product.getName() + "] 庫存不足");
                 }
-                product.setStock(product.getStock() - item.getQuantity());
-                productRepository.save(product);
+                stockService.adjustStock(product.getId(), item.getQuantity(), "OUT", "訂單扣庫存");
             }
         }
         orderRepository.save(order);
