@@ -82,11 +82,18 @@
                     <span>衣櫃</span>
                 </div>
             </div>
+
+            <!-- 🔹 單張分類圖片顯示區 -->
+            <div class="category-image mt-3 d-flex justify-content-center">
+                <img v-if="firstImage" :src="`http://localhost:8080/uploads/${firstImage}`" alt="分類圖片"
+                    class="img-fluid rounded" style="max-height:300px;">
+            </div>
+
         </section>
 
         <section id="products">
             <div class="container">
-                <h2>熱門商品</h2>
+                <h2>商品</h2>
                 <div class="products">
                     <div class="product" v-for="product in products" :key="product.id">
                         <a :href="`products_x.html?id=${product.id}`">
