@@ -33,7 +33,13 @@ public class StockService {
             if (current < quantity) {
                 throw new IllegalArgumentException("庫存不足！");
             }
+            product.setStock(product.getStock() - quantity);
+        }else if ("IN".equals(changeType)) {
+            product.setStock(product.getStock() + quantity);
+        }else {
+            throw new IllegalArgumentException("未知的庫存異動類型: " + changeType);
         }
+        productRepository.save(product);
 
         // 紀錄變動
         StockMovement movement = new StockMovement();

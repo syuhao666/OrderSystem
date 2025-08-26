@@ -60,7 +60,7 @@ public class StockController {
             @RequestParam(required = false) String note) {
         stockService.adjustStock(productId, quantity, changeType, note);
 
-        productService.adjustStock(productId, changeType, quantity);
+        // productService.adjustStock(productId, changeType, quantity);
 
         return "redirect:/admin/stock/" + productId;
     }

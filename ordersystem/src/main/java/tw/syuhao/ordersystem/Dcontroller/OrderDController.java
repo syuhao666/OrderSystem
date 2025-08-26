@@ -29,7 +29,8 @@ import tw.syuhao.ordersystem.repository.CartItemRepository;
 import tw.syuhao.ordersystem.repository.CartRepository;
 import tw.syuhao.ordersystem.repository.OrderRepository;
 import tw.syuhao.ordersystem.repository.ProductRepository;
-import tw.syuhao.ordersystem.repository.UserRepository; //特殊+D
+import tw.syuhao.ordersystem.repository.UserRepository;
+import tw.syuhao.ordersystem.service.StockService; //特殊+D
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -44,6 +45,9 @@ public class OrderDController {
 
     @Autowired
     private CartItemRepository cartItemRepository;
+
+    @Autowired
+    private StockService stockService;
 
     @Autowired
     private UserRepository userRepository;
@@ -87,6 +91,12 @@ public class OrderDController {
             // 扣庫存
             product.setStock(product.getStock() - itemDTO.getQuantity());
             productRepository.save(product); // 立即更新
+            stockService.adjustStock(
+                    itemDTO.getProductId(),
+                    itemDTO.getQuantity(),
+                    "OUT",
+                    "訂單扣庫存 (訂單編號: " + order.getId() + ")");
+
             // ----------
             OrderItem item = new OrderItem();
             productRepository.findById(itemDTO.getProductId()).ifPresent(item::setProduct);
