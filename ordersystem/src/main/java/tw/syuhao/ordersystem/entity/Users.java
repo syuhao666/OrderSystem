@@ -55,6 +55,7 @@ public class Users {
 
     // 一對一：User <-> Address
     @OneToOne(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Address address;
 
     @PrePersist
