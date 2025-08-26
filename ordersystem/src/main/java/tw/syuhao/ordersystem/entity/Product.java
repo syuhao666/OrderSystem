@@ -19,7 +19,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import lombok.Data;
 import lombok.ToString;
 
@@ -37,7 +36,7 @@ public class Product {
 
     private BigDecimal price; // Integer 改 BigDecimal 08091926 家綸
 
-    @Transient
+    @Column(nullable = false)
     private Integer stock;
 
     @Column(name = "image_url")
@@ -47,6 +46,7 @@ public class Product {
 
     private Boolean enabled;
 
+    @Column(nullable = false)
     private String status;
 
     private String category;
