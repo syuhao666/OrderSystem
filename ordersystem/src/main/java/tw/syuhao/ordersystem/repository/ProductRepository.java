@@ -9,12 +9,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import jakarta.persistence.LockModeType;
 import tw.syuhao.ordersystem.entity.Product;
 
-public interface ProductRepository extends JpaRepository<Product, Long> , JpaSpecificationExecutor<Product> {
+public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
         Page<Product> findByNameContaining(String name, Pageable pageable);
 
         Page<Product> findByCategoryContaining(String category, Pageable pageable);
@@ -34,8 +36,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> , JpaSpe
                         BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
 
         Page<Product> findByNameContainingAndCategoryContainingAndPriceBetweenAndStatus(
-        String name, String category, BigDecimal minPrice, BigDecimal maxPrice,
-        String status, Pageable pageable);
+                        String name, String category, BigDecimal minPrice, BigDecimal maxPrice,
+                        String status, Pageable pageable);
 
         @Override
         @EntityGraph(attributePaths = { "specification" })
@@ -50,4 +52,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> , JpaSpe
 
         @Query("SELECT p FROM Product p WHERE p.id = :id")
         Optional<Product> findByIdIncludingDeleted(@Param("id") Long id);
+
+        @Lock(LockModeType.PESSIMISTIC_WRITE)
+        @Query("SELECT p FROM Product p WHERE p.id = :id")
+        Optional<Product> findByIdForUpdate(@Param("id") Long id);
 }

@@ -1,5 +1,6 @@
 package tw.syuhao.ordersystem.Dcontroller;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +23,7 @@ import tw.syuhao.ordersystem.Ddto.OrderRequestDTO;
 import tw.syuhao.ordersystem.entity.Cart;
 import tw.syuhao.ordersystem.entity.Order;
 import tw.syuhao.ordersystem.entity.OrderItem;
+import tw.syuhao.ordersystem.entity.Product;
 import tw.syuhao.ordersystem.entity.Users;
 import tw.syuhao.ordersystem.repository.CartItemRepository;
 import tw.syuhao.ordersystem.repository.CartRepository;
@@ -71,6 +73,21 @@ public class OrderDController {
         System.out.println(order);
         // 2. 建立訂單項目資料
         for (CartItemDTO itemDTO : dto.getCart()) {
+            // ----------
+            // 取得商品並鎖住
+            Product product = productRepository.findByIdForUpdate(itemDTO.getProductId())
+                    .orElseThrow(() -> new RuntimeException("找不到商品"));
+
+            // 檢查庫存
+            if (product.getStock() < itemDTO.getQuantity()) {
+                return ResponseEntity.status(400)
+                        .body("商品「" + product.getName() + "」庫存不足");
+            }
+
+            // 扣庫存
+            product.setStock(product.getStock() - itemDTO.getQuantity());
+            productRepository.save(product); // 立即更新
+            // ----------
             OrderItem item = new OrderItem();
             productRepository.findById(itemDTO.getProductId()).ifPresent(item::setProduct);
             item.setName(itemDTO.getName());
@@ -78,6 +95,7 @@ public class OrderDController {
             item.setQuantity(itemDTO.getQuantity());
             item.setOrder(order);
             order.getItems().add(item);
+            order.setCreatedAt(LocalDateTime.now());
         }
 
         // 3. 儲存訂單
@@ -110,7 +128,7 @@ public class OrderDController {
                     org.springframework.http.HttpMethod.POST,
                     requestEntity,
                     String.class);
-                    
+
             ecpayHtml = response.getBody();
         } catch (Exception e) {
             e.printStackTrace();
@@ -125,4 +143,3 @@ public class OrderDController {
     }
 
 }
-
