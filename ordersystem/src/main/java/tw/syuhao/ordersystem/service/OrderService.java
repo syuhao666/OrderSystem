@@ -8,8 +8,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import tw.syuhao.ordersystem.entity.Order;
+import tw.syuhao.ordersystem.entity.OrderItem;
+import tw.syuhao.ordersystem.entity.Product;
 import tw.syuhao.ordersystem.repository.OrderRepository;
 
 @Service
@@ -17,11 +20,26 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private StockService stockService;
+
     public List<Order> findAll() {
         return orderRepository.findAll();
     }
 
+    @Transactional
     public void save(Order order) {
+        // 若訂單狀態為"已出貨"或"已成立"，則扣庫存
+        if ("已出貨".equals(order.getStatus()) || "已付款".equals(order.getStatus())) {
+            for (OrderItem item : order.getItems()) {
+                Product product = item.getProduct();
+                int current = stockService.getCurrentStock(product.getId());
+                if (current < item.getQuantity()) {
+                    throw new IllegalArgumentException("商品 [" + product.getName() + "] 庫存不足");
+                }
+                stockService.adjustStock(product.getId(), item.getQuantity(), "OUT", "訂單扣庫存");
+            }
+        }
         orderRepository.save(order);
     }
 

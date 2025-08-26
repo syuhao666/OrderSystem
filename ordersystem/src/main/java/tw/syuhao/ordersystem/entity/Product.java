@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.Where;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -17,12 +19,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Data;
 import lombok.ToString;
 
 @Entity
 @Data
 @Table(name = "product")
+@Where(clause = "deleted = false")
 public class Product {
 
     @Id
@@ -33,6 +37,7 @@ public class Product {
 
     private BigDecimal price; // Integer 改 BigDecimal 08091926 家綸
 
+    @Transient
     private Integer stock;
 
     @Column(name = "image_url")
@@ -45,6 +50,9 @@ public class Product {
     private String status;
 
     private String category;
+
+    @Column(nullable = false)
+    private boolean deleted = false;
 
     private LocalDateTime createdAt;
 
