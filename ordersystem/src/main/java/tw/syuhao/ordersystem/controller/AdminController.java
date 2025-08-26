@@ -152,7 +152,7 @@ public class AdminController {
         Product product = service.findById(id);
         // 不要 new 新的 ProductSpecification，直接用原本的
         model.addAttribute("product", product);
-        return "product-form";
+        return "productEditForm";
     }
 
     // @GetMapping("/product/delete/{id}")
