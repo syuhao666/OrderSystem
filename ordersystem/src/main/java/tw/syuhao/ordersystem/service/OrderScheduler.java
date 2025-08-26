@@ -23,10 +23,10 @@ public class OrderScheduler {
     @Autowired
     private ProductRepository productRepository;
 
-    @Scheduled(fixedRate = 30 * 60 * 1000)
+    @Scheduled(fixedRate = 1 * 5 * 1000)
     @Transactional
     public void releaseExpiredOrders() {
-        LocalDateTime expireTime = LocalDateTime.now().minusMinutes(30);
+        LocalDateTime expireTime = LocalDateTime.now().minusMinutes(1);
         List<Order> expiredOrders = orderRepository.findByStatusAndCreatedAtBefore("PENDING", expireTime);
 
         for (Order order : expiredOrders) {
