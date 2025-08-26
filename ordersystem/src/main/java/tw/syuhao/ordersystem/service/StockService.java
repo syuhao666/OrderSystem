@@ -19,19 +19,21 @@ public class StockService {
     @Autowired
     private StockMovementRepository stockMovementRepository;
 
+    public int getCurrentStock(Long productId) {
+        Integer current = stockMovementRepository.getCurrentStock(productId);
+        return current != null ? current : 0;
+    }
+
     public void adjustStock(Long productId, int quantity, String changeType, String note) {
         Product product = productRepository.findById(productId).orElseThrow();
 
-        // 更新商品庫存
-        if (changeType.equals("IN")) {
-            product.setStock(product.getStock() + quantity);
-        } else if (changeType.equals("OUT")) {
-            if (product.getStock() < quantity) {
+        // 以移動紀錄為真實庫存來源
+        if ("OUT".equals(changeType)) {
+            int current = getCurrentStock(productId);
+            if (current < quantity) {
                 throw new IllegalArgumentException("庫存不足！");
             }
-            product.setStock(product.getStock() - quantity);
         }
-        productRepository.save(product);
 
         // 紀錄變動
         StockMovement movement = new StockMovement();

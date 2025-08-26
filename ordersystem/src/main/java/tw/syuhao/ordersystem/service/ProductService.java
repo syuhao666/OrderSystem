@@ -17,6 +17,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
 import tw.syuhao.ordersystem.entity.Product;
 import tw.syuhao.ordersystem.repository.ProductRepository;
+import tw.syuhao.ordersystem.repository.StockMovementRepository;
 
 @Service
 public class ProductService {
@@ -24,8 +25,22 @@ public class ProductService {
     @Autowired
     private ProductRepository repo;
 
+    @Autowired
+    private StockMovementRepository stockMovementRepository;
+
+    private int computeCurrentStock(Long productId) {
+        Integer current = stockMovementRepository.getCurrentStock(productId);
+        return current != null ? current : 0;
+    }
+
     public List<Product> getAllProducts() {
-        return repo.findAll();
+        List<Product> products = repo.findAll();
+        for (Product product : products) {
+            if (product.getId() != null) {
+                product.setStock(computeCurrentStock(product.getId()));
+            }
+        }
+        return products;
     }
 
     public void save(Product product) {
@@ -44,8 +59,7 @@ public class ProductService {
     // }
 
     public Product findById(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("找不到商品 ID=" + id));
+        return repo.findById(id).orElse(null);
     }
 
     public Product getProductById(Long id) {
@@ -124,7 +138,13 @@ public class ProductService {
             return cb.and(predicates.toArray(new Predicate[0]));
         };
 
-        return repo.findAll(spec, pageable);
+        Page<Product> pageResult = repo.findAll(spec, pageable);
+        for (Product product : pageResult.getContent()) {
+            if (product.getId() != null) {
+                product.setStock(computeCurrentStock(product.getId()));
+            }
+        }
+        return pageResult;
     }
 
     public Page<Product> getProducts(int page, int size) {
@@ -144,7 +164,7 @@ public class ProductService {
     }
 
     public void softDelete(Long id) {
-        Product product = repo.findById(id).orElse(null);
+        Product product = repo.findByIdIncludingDeleted(id).orElse(null);
         if (product != null) {
             product.setDeleted(true);
             repo.save(product);
@@ -152,7 +172,7 @@ public class ProductService {
     }
 
     public void restore(Long id) {
-        Product product = repo.findById(id).orElse(null);
+        Product product = repo.findByIdIncludingDeleted(id).orElse(null);
         if (product != null) {
             product.setDeleted(false);
             repo.save(product);
