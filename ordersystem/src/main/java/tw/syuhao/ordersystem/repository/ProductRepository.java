@@ -32,4 +32,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Override
     @EntityGraph(attributePaths = {"specification"})
     List<Product> findAll();
+
+    List<Product> findByCategoryContaining(String category);
+
 }

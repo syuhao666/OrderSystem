@@ -98,4 +98,14 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/products/image")
+    public ResponseEntity<String> getFirstProductImageByCategory(@RequestParam String category) {
+        List<Product> products = productRepository.findByCategoryContaining(category);
+        if (products.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        String imageUrl = products.get(0).getImageUrl(); // 取第一個
+        return ResponseEntity.ok(imageUrl);
+    }
 }

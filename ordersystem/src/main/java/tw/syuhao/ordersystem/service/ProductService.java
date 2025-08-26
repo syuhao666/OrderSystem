@@ -38,7 +38,7 @@ public class ProductService {
     public Product findById(Long id) {
         return repo.findById(id).orElse(null);
     }
-    
+
     public Page<Product> searchProducts(String keyword, int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size, Sort.by("id").descending());
 
@@ -50,7 +50,7 @@ public class ProductService {
     }
 
     public Page<Product> findProducts(String name, String category, Integer page, Integer size,
-                                      BigDecimal minPrice, BigDecimal maxPrice) {
+            BigDecimal minPrice, BigDecimal maxPrice) {
         Pageable pageable = PageRequest.of(page - 1, size, Sort.by("id").descending());
 
         boolean hasName = name != null && !name.isEmpty();
@@ -59,7 +59,8 @@ public class ProductService {
         boolean hasMax = maxPrice != null;
 
         if (hasName && hasCategory && hasMin && hasMax) {
-            return repo.findByNameContainingAndCategoryContainingAndPriceBetween(name, category, minPrice, maxPrice, pageable);
+            return repo.findByNameContainingAndCategoryContainingAndPriceBetween(name, category, minPrice, maxPrice,
+                    pageable);
         } else if (hasName && hasMin && hasMax) {
             return repo.findByNameContainingAndPriceBetween(name, minPrice, maxPrice, pageable);
         } else if (hasCategory && hasMin && hasMax) {
@@ -80,5 +81,12 @@ public class ProductService {
     public Page<Product> getProducts(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         return repo.findAll(pageable);
+    }
+
+    public List<Product> getProductsByCategory(String category) {
+        if (category == null || category.isEmpty()) {
+            return repo.findAll();
+        }
+        return repo.findByCategoryContaining(category);
     }
 }
