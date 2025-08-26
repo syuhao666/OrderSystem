@@ -72,6 +72,17 @@
                         </div> -->
                     </div>
 
+                    <!-- 查詢區 -->
+                    <form class="row g-3 mb-3" method="get" th:action="@{/admin/stock}">
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" name="name" placeholder="商品名稱" th:value="${name}">
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-primary">查詢</button>
+                            <a th:href="@{/admin/stock}" class="btn btn-secondary ms-2">重置</a>
+                        </div>
+                    </form>
+
                     <!-- Tabs -->
                     <ul class="nav nav-tabs" id="stockTab" role="tablist">
                         <li class="nav-item" role="presentation">
@@ -116,10 +127,6 @@
                                             <span th:if="${p.stock == 0}" class="badge bg-danger">缺貨</span>
                                         </td>
                                         <td>
-                                            <!-- <a th:href="@{/admin/stock/{id}(id=${p.id})}?tab=history"
-                                                class="btn btn-sm btn-outline-primary">
-                                                <i class="bi bi-pencil-square"></i> 編輯
-                                            </a> -->
                                             <a th:href="@{/admin/stock/{id}(id=${p.id}, tab='history')}" class="btn btn-sm btn-outline-secondary">
                                                 <i class="bi bi-clock-history"></i> 紀錄
                                             </a>
@@ -127,35 +134,37 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <!-- 分頁 -->
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    共有 <span th:text="${totalItems}"></span> 筆資料
+                                </div>
+                                <nav>
+                                    <ul class="pagination mb-0">
+                                        <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                                            <a class="page-link"
+                                               th:href="@{/admin/stock(page=${currentPage - 1}, name=${name})}">上一頁</a>
+                                        </li>
+                                        <li class="page-item" th:each="pageNum : ${#numbers.sequence(1, totalPages)}"
+                                            th:classappend="${pageNum == currentPage} ? 'active'">
+                                            <a class="page-link"
+                                               th:href="@{/admin/stock(page=${pageNum}, name=${name})}"
+                                               th:text="${pageNum}"></a>
+                                        </li>
+                                        <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                                            <a class="page-link"
+                                               th:href="@{/admin/stock(page=${currentPage + 1}, name=${name})}">下一頁</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                                <form class="d-flex" method="get" th:action="@{/admin/stock}">
+                                    <input type="number" name="page" min="1" th:max="${totalPages}"
+                                           class="form-control page-input me-2" placeholder="頁碼">
+                                    <input type="hidden" name="name" th:value="${name}">
+                                    <button class="btn btn-outline-primary">跳轉</button>
+                                </form>
+                            </div>
                         </div>
-
-                        <!-- 庫存變動紀錄 -->
-                        <!-- <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
-                            <table class="table table-hover align-middle">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>紀錄編號</th>
-                                        <th>商品名稱</th>
-                                        <th>變動數量</th>
-                                        <th>操作人</th>
-                                        <th>時間</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr th:each="h : ${stockChanges}">
-                                        <td th:text="${h.id}">101</td>
-                                        <td th:text="${h.product.name}">範例商品</td>
-                                        <td>
-                                            <span th:text="${h.quantity}">+10</span>
-                                        </td>
-                                        <td th:text="${h.note}">管理員</td>
-                                        <td th:text="${#dates.format(h.createdAt, 'yyyy-MM-dd HH:mm')}">2025-08-20 12:00
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div> -->
-
                     </div>
                 </div>
             </main>

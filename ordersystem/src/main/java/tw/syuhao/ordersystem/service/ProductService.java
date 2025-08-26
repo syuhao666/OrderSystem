@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -185,5 +186,18 @@ public class ProductService {
 
     public Page<Product> findDeletedProducts(Pageable pageable) {
         return repo.findByDeletedTrue(pageable);
+    }
+
+    public void adjustStock(Long id, String changeType, int quantity) {
+        Optional<Product> product = repo.findById(id);
+        Product p = product.get();
+        int stock = p.getStock();
+        if(changeType.equals("IN")) {
+            stock = stock + quantity;
+        }else if (changeType.equals("OUT")){
+            stock = stock - quantity;
+        }
+        p.setStock(stock);
+        repo.save(p);
     }
 }
