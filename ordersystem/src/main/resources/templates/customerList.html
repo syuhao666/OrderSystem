@@ -48,7 +48,7 @@
                 <td th:text="${u.username}"></td>
                 <td th:text="${u.email}"></td>
                 <td th:text="${u.address != null ? u.address.address : '—'}"></td>
-                <td th:text="${#strings.substringAfter(u.role, 'ROLE_')}"></td>
+                <td th:text="${u.role}"></td>
                 <td th:text="${u.remark != null ? u.remark : '—'}"></td> <!-- 新增 -->
                 <td th:text="${#temporals.format(u.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
                 <td>
