@@ -1,81 +1,90 @@
-// src/main/java/tw/syuhao/ordersystem/service/ProfileService.java
 package tw.syuhao.ordersystem.service;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import lombok.RequiredArgsConstructor;
-import tw.syuhao.ordersystem.Ddto.ChangePasswordRequest;
+import lombok.extern.slf4j.Slf4j;
+import tw.syuhao.ordersystem.Ddto.ProfileDTO;
 import tw.syuhao.ordersystem.Ddto.UpdateProfileRequest;
+import tw.syuhao.ordersystem.entity.Address;
 import tw.syuhao.ordersystem.entity.Users;
 import tw.syuhao.ordersystem.repository.UserRepository;
-import tw.syuhao.ordersystem.utils.BCrypt;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProfileService {
 
     private final UserRepository userRepository;
 
-    /** 一定從 DB 讀取最新使用者，再更新（避免只依賴 session 裡的快照） */
     @Transactional(readOnly = true)
-    public Users findFreshById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("找不到使用者"));
+    public ProfileDTO getMyProfile(Users user) {
+        // 進交易範圍內取 LAZY 欄位，避免 LazyInitializationException
+        Address addr = user.getAddress(); // 可能為 null
+        return new ProfileDTO(
+            user.getId(),
+            safe(user.getUsername()),
+            safe(user.getEmail()),
+            safe(user.getRemark()),
+            addr != null ? safe(addr.getPhone()) : null,
+            addr != null ? safe(addr.getAddress()) : null
+        );
     }
 
-    /** 更新基本資料（也會 hit DB） */
     @Transactional
-    public Users updateProfile(Users sessionUser, UpdateProfileRequest req) {
-        if (sessionUser == null) throw new IllegalArgumentException("未登入");
+    public void updateMyProfile(Long userId, UpdateProfileRequest req) {
+        Users u = userRepository.findById(userId).orElseThrow();
 
-        if (!StringUtils.hasText(req.getUsername())) throw new IllegalArgumentException("使用者名稱不可為空");
-        if (!StringUtils.hasText(req.getEmail()))    throw new IllegalArgumentException("Email 不可為空");
-
-        // 從 DB 取最新使用者
-        Users dbUser = findFreshById(sessionUser.getId());
-
-        // Email 唯一性（排除自己）
-        if (userRepository.existsByEmailAndIdNot(req.getEmail(), dbUser.getId())) {
-            throw new IllegalArgumentException("Email 已被使用");
+        // email 檢查（若有變更）
+        if (notBlank(req.getEmail())) {
+            String newEmail = req.getEmail().trim().toLowerCase();
+            if (userRepository.existsByEmailIgnoreCaseAndIdNot(newEmail, userId)) {
+                throw new IllegalStateException("Email 已被使用");
+            }
+            u.setEmail(newEmail);
         }
 
-        dbUser.setUsername(req.getUsername().trim());
-        dbUser.setEmail(req.getEmail().trim());
-        dbUser.setRemark(req.getRemark() == null ? null : req.getRemark().trim());
+        if (notBlank(req.getUsername())) {
+            u.setUsername(req.getUsername().trim());
+        }
+        if (req.getRemark() != null) {
+            u.setRemark(req.getRemark().trim());
+        }
 
-        return userRepository.save(dbUser); // ← 真正寫回 DB
+        // Address：允許 phone/address 為空；若兩者皆空但已有 Address，保留 row 但清空欄位（避免 FK/唯一鍵問題）
+        boolean hasPhone = notBlank(req.getPhone());
+        boolean hasAddr  = notBlank(req.getAddress());
+
+        Address addr = u.getAddress();
+        if (addr == null) {
+            // 若尚未建立 Address，但有任一欄需要寫入，就新建
+            if (hasPhone || hasAddr) {
+                addr = new Address();
+                addr.setUsers(u);   // 維護雙向關係（Users <-> Address）
+                u.setAddress(addr);
+            }
+        }
+
+        if (addr != null) {
+            addr.setPhone(hasPhone ? req.getPhone().trim() : null);
+            addr.setAddress(hasAddr ? req.getAddress().trim() : null);
+        }
+
+        try {
+            // 交由 Users 端 CascadeType.ALL 保存 Address
+            userRepository.saveAndFlush(u);
+        } catch (DataIntegrityViolationException ex) {
+            log.warn("資料庫限制違反", ex);
+            throw new IllegalStateException("更新失敗：資料庫限制違反");
+        } catch (RuntimeException ex) {
+            // 把其他未預期錯誤收束成可讀訊息，避免回 500
+            log.error("更新個資發生未預期錯誤", ex);
+            throw new IllegalStateException("更新失敗：系統錯誤");
+        }
     }
 
-    /** 變更密碼（hit DB 取得 hash，驗證舊密碼、產生新 hash、save） */
-    @Transactional
-    public void changePassword(Users sessionUser, ChangePasswordRequest req) {
-        if (sessionUser == null) throw new IllegalArgumentException("未登入");
-
-        if (!StringUtils.hasText(req.getCurrentPassword())
-                || !StringUtils.hasText(req.getNewPassword())
-                || !StringUtils.hasText(req.getConfirmPassword())) {
-            throw new IllegalArgumentException("請完整填寫舊密碼 / 新密碼 / 確認密碼");
-        }
-        if (!req.getNewPassword().equals(req.getConfirmPassword())) {
-            throw new IllegalArgumentException("新密碼與確認密碼不一致");
-        }
-        if (req.getNewPassword().length() < 6) {
-            throw new IllegalArgumentException("新密碼長度至少 6 碼");
-        }
-
-        // 一定從 DB 取得最新的 hash
-        Users dbUser = findFreshById(sessionUser.getId());
-
-        // 用 DB 中的 hash 驗證舊密碼
-        if (!BCrypt.checkpw(req.getCurrentPassword(), dbUser.getPassword())) {
-            throw new IllegalArgumentException("舊密碼不正確");
-        }
-
-        // 產生新 hash、寫回 DB
-        String newHash = BCrypt.hashpw(req.getNewPassword(), BCrypt.gensalt());
-        dbUser.setPassword(newHash);
-        userRepository.save(dbUser);
-    }
+    private static boolean notBlank(String s) { return s != null && !s.trim().isEmpty(); }
+    private static String safe(String s) { return s == null ? "" : s; }
 }

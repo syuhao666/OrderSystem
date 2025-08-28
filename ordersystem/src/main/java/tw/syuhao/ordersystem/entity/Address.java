@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,11 +28,16 @@ public class Address {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable=false, length=255)
+    // phone 建議可為 null（表單可留白）
+    @Column(name = "phone", length = 50, nullable = true)
+    private String phone;
+
+    // address 建議也允許為 null（表單可留白）
+    @Column(name = "address", length = 255, nullable = true)
     private String address;
 
-    // 外鍵在這裡（user_id），欄位名「user」要和 Users.mappedBy 對上
-    @OneToOne
+    // 與 Users 的 mappedBy="users" 對上（名稱必須是 users）
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     @JsonBackReference
     private Users users;

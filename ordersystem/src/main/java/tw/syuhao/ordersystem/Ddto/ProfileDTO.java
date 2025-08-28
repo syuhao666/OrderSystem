@@ -1,15 +1,15 @@
-// src/main/java/tw/syuhao/ordersystem/dto/ProfileDTO.java
 package tw.syuhao.ordersystem.Ddto;
 
-import java.time.LocalDateTime;
-
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Data
+@Data @NoArgsConstructor @AllArgsConstructor
 public class ProfileDTO {
     private Long id;
     private String username;
     private String email;
-    private String remark;       // 備註
-    private LocalDateTime createdAt;
+    private String remark;
+    private String phone;
+    private String address;
 }
