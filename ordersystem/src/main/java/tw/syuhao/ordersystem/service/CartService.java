@@ -56,11 +56,15 @@ public class CartService {
         if (existingItemOpt.isPresent()) {
             CartItem existingItem = existingItemOpt.get();
             existingItem.setQuantity(existingItem.getQuantity() + cdto.getQuantity());
+            int newQty = existingItem.getQuantity();
+            BigDecimal total = existingItem.getProduct().getPrice().multiply(BigDecimal.valueOf(newQty));
+            existingItem.setTotalPrice(total);
             cartItemRepository.save(existingItem);
         } else {
             CartItem newItem = new CartItem();
             newItem.setProduct(product);
             newItem.setQuantity(cdto.getQuantity());
+            newItem.setTotalPrice(product.getPrice());
             newItem.setCart(cart);
             cartItemRepository.save(newItem);
         }
@@ -124,6 +128,7 @@ public class CartService {
 
         BigDecimal productTotal = BigDecimal.ZERO;
         List<CartItemDTO> items = new ArrayList<>();
+        
 
         for (CartItem item : cart.getCartItems()) {
             BigDecimal itemTotal = item.getProduct().getPrice()
@@ -136,6 +141,7 @@ public class CartService {
             dto.setPrice(item.getProduct().getPrice());
             dto.setQuantity(item.getQuantity());
             items.add(dto);
+            dto.setImageUrl(item.getProduct().getImageUrl());
         }
 
         // 運送費

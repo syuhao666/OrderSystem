@@ -8,20 +8,50 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import tw.syuhao.ordersystem.entity.Order;
+import tw.syuhao.ordersystem.entity.OrderItem;
+import tw.syuhao.ordersystem.entity.Product;
+import tw.syuhao.ordersystem.entity.StockMovement;
 import tw.syuhao.ordersystem.repository.OrderRepository;
+import tw.syuhao.ordersystem.repository.StockMovementRepository;
 
 @Service
 public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private StockService stockService;
+
+    @Autowired
+    private StockMovementRepository stockMovementRepository;
+
     public List<Order> findAll() {
         return orderRepository.findAll();
     }
 
+    @Transactional
     public void save(Order order) {
+        boolean isNew = (order.getId() == null);
+        // 新增訂單且狀態為已付款或已出貨才扣庫存
+        if (isNew && ("已出貨".equals(order.getStatus()) || "已付款".equals(order.getStatus()))) {
+            for (OrderItem item : order.getItems()) {
+                Product product = item.getProduct();
+                int current = stockService.getCurrentStock(product.getId());
+                if (current < item.getQuantity()) {
+                    throw new IllegalArgumentException("商品 [" + product.getName() + "] 庫存不足");
+                }
+                // 寫入庫存異動
+                StockMovement movement = new StockMovement();
+                movement.setProduct(product);
+                movement.setChangeType("OUT");
+                movement.setQuantity(item.getQuantity());
+                movement.setNote("訂單扣庫存");
+                stockMovementRepository.save(movement);
+            }
+        }
         orderRepository.save(order);
     }
 

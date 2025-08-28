@@ -51,7 +51,7 @@ public class OrderController {
 
     @PostMapping("/save")
     public String saveOrder(@ModelAttribute Order order) {
-        orderService.save(order);
+        orderService.save(order); // 這裡會自動扣庫存
         return "redirect:/admin/orders";
     }
 

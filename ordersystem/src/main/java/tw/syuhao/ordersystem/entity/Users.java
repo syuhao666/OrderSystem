@@ -28,6 +28,7 @@ import lombok.ToString;
 @Table(name = "users")
 @NoArgsConstructor @AllArgsConstructor @Builder
 public class Users {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,35 +37,33 @@ public class Users {
     private String password;
     private String email;
     private String role;
-    private String remark; //客戶備註
+    private String remark; // 客戶備註
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
     @ToString.Exclude
     private Cart cart;
 
-
-
+    // ★ 這裡改用 Order1；mappedBy = "user" 對應 Order1 裡的欄位名稱
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     @ToString.Exclude
-    private List<Order> order;
-    @Column(name="created_at", nullable=false)
+    private List<Order1> order;
+
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
-    
-     // 一對一：User <-> Address
+
+    // 一對一：User <-> Address
     @OneToOne(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Address address;
 
-    // @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    // @JsonManagedReference
-    // @ToString.Exclude
-    // private Cart cart;
-
     @PrePersist
-    void prePersist() { if (createdAt == null) createdAt = LocalDateTime.now(); }
+    void prePersist() {
+        if (createdAt == null) createdAt = LocalDateTime.now();
+    }
 
-     // 工具方法（可選）：維護雙向關聯一致性
+    // 工具方法（可選）：維護雙向關聯一致性
     public void attachAddress(Address addr) {
         this.address = addr;
         if (addr != null) addr.setUsers(this);

@@ -10,6 +10,9 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +23,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.servlet.http.HttpSession;
 import tw.syuhao.ordersystem.entity.Product;
+import tw.syuhao.ordersystem.entity.ProductSpecification;
+import tw.syuhao.ordersystem.entity.StockMovement;
+import tw.syuhao.ordersystem.repository.StockMovementRepository;
 import tw.syuhao.ordersystem.service.ProductService;
 
 @Controller
@@ -30,9 +37,17 @@ public class AdminController {
     @Autowired
     private ProductService service;
 
+    @Autowired
+    private StockMovementRepository stockMovementRepository;
+
     @GetMapping("/")
-    public String adminHome(Model model) {
+    public String adminHome(Model model, HttpSession session) {
         model.addAttribute("activePage", "admin");
+        // 取得目前登入的管理員帳號
+        Object userObj = session.getAttribute("user");
+        if (userObj instanceof tw.syuhao.ordersystem.entity.Users user) {
+            model.addAttribute("admin", user);
+        }
         return "adminHome";
     }
 
@@ -43,27 +58,35 @@ public class AdminController {
             @RequestParam(required = false) String category,
             @RequestParam(required = false) BigDecimal minPrice,
             @RequestParam(required = false) BigDecimal maxPrice,
+            @RequestParam(required = false) String status,
             Model model) {
 
         int pageSize = 10;
 
-        Page<Product> productPage = service.findProducts(name, category, page, pageSize, minPrice, maxPrice);
+        Page<Product> productPage = service.findProducts(name, category, page, pageSize, minPrice, maxPrice, status);
 
         model.addAttribute("productPage", productPage);
         model.addAttribute("currentPage", productPage.getNumber() + 1); // 修正頁碼
         model.addAttribute("totalPages", productPage.getTotalPages());
         model.addAttribute("totalItems", productPage.getTotalElements());
+
         model.addAttribute("name", name);
         model.addAttribute("category", category);
         model.addAttribute("minPrice", minPrice);
         model.addAttribute("maxPrice", maxPrice);
+        model.addAttribute("status", status);
+
         model.addAttribute("activePage", "product"); // 補上 activePage
+
         return "adminProduct";
     }
 
     @GetMapping("/product/new")
     public String addProductForm(Model model) {
-        model.addAttribute("product", new Product());
+        Product product = new Product();
+        // 初始化規格
+        product.setSpecification(new ProductSpecification());
+        model.addAttribute("product", product);
         return "product-form";
     }
 
@@ -101,16 +124,66 @@ public class AdminController {
             product.setStatus("未上架");
         }
 
+        boolean isNew = (product.getId() == null);
+
+        // 保證雙向關聯
+        if (product.getSpecification() != null) {
+            product.getSpecification().setProduct(product);
+        }
+
         service.save(product);
+
+        // 新增商品時，寫入一筆入庫紀錄
+        if (isNew) {
+            StockMovement movement = new StockMovement();
+            movement.setProduct(product);
+            movement.setChangeType("IN");
+            movement.setQuantity(product.getStock() != null ? product.getStock() : 0);
+            movement.setNote("新增商品入庫");
+            stockMovementRepository.save(movement);
+
+        }
+
         return "redirect:/admin/products";
     }
 
     @GetMapping("/product/edit/{id}")
     public String editProductForm(@PathVariable Long id, Model model) {
         Product product = service.findById(id);
+        // 不要 new 新的 ProductSpecification，直接用原本的
         model.addAttribute("product", product);
-        return "product-form";
+        return "productEditForm";
     }
+
+    // @GetMapping("/product/delete/{id}")
+    // public String deleteProduct(@PathVariable Long id) {
+    // Product product = service.findById(id);
+    // if (product != null) {
+    // // 刪圖片
+    // if (product.getImageUrl() != null && !product.getImageUrl().isEmpty()) {
+    // Path imagePath = Paths.get(System.getProperty("user.dir"), "uploads",
+    // product.getImageUrl());
+    // System.out.println("Deleting image: " + imagePath.toAbsolutePath());
+
+    // try {
+    // if (Files.exists(imagePath)) {
+    // Files.delete(imagePath);
+    // System.out.println("Image deleted.");
+    // } else {
+    // System.out.println("Image not found.");
+    // }
+    // } catch (IOException e) {
+    // System.err.println("Failed to delete image:");
+    // e.printStackTrace();
+    // }
+    // }
+
+    // // 刪商品
+    // service.deleteById(id);
+    // }
+
+    // return "redirect:/admin/products";
+    // }
 
     @GetMapping("/product/delete/{id}")
     public String deleteProduct(@PathVariable Long id) {
@@ -134,8 +207,8 @@ public class AdminController {
                 }
             }
 
-            // 刪商品
-            service.deleteById(id);
+            // 軟刪除商品
+            service.softDeleteProduct(id);
         }
 
         return "redirect:/admin/products";
@@ -150,5 +223,29 @@ public class AdminController {
             service.save(product);
         }
         return "redirect:/admin/products";
+    }
+
+    @GetMapping("/products/recycle")
+    public String recycleBin(@RequestParam(defaultValue = "0") int page, Model model) {
+        Pageable pageable = PageRequest.of(page, 10, Sort.by("id").descending());
+        Page<Product> deletedProducts = service.findDeletedProducts(pageable);
+
+        model.addAttribute("deletedProducts", deletedProducts);
+        model.addAttribute("activePage", "recycle"); // 添加activePage屬性
+        return "recycle"; // 對應 recycle.html
+    }
+
+    // 還原商品
+    @GetMapping("/product/restore/{id}")
+    public String restoreProduct(@PathVariable Long id) {
+        service.restore(id);
+        return "redirect:/admin/products/recycle";
+    }
+
+    // 永久刪除
+    @GetMapping("/product/hard-delete/{id}")
+    public String hardDeleteProduct(@PathVariable Long id) {
+        service.hardDelete(id);
+        return "redirect:/admin/products/recycle";
     }
 }

@@ -10,5 +10,5 @@ public class CartItemDTO {
     private String name;     // 商品名稱
     private BigDecimal price;// 商品價格
     private int quantity;    // 數量
-      
+    private String imageUrl;  
 }

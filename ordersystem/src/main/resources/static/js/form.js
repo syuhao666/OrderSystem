@@ -14,7 +14,8 @@ createApp({
       productTotal: 0,
       deliveryFee: 0,
       floorFee: 0,
-      finalTotal: 0
+      finalTotal: 0,
+      
     });
 
     const formData = reactive({
@@ -122,7 +123,7 @@ createApp({
             email: formData.email,
             address: fullAddress.value,
             paymentMethod: formData.paymentMethod,
-            totalPrice: totalPrice.value,
+            totalPrice: checkoutData.value.finalTotal
           },
           {
             headers: { "Content-Type": "application/json" },
@@ -165,18 +166,4 @@ createApp({
   },
 }).mount("#app");
 
-//---------------測試用的資料結構----------------
-// const postData = {
-//     cart: JSON.parse(localStorage.getItem('cart') || '[]'),
-//     name: formData.name,
-//     phone: formData.phone,
-//     email: formData.email,
-//     // city: formData.city,
-//     // district: formData.district,
-//     // zip: formData.zip,
-//     address: fullAddress.value,
-//     paymentMethod: formData.paymentMethod
-// };
 
-// console.log('準備送出的資料:', postData);
-//-------------------------------------------------------

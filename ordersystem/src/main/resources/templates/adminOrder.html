@@ -129,11 +129,41 @@
                                         <a class="page-link"
                                             th:href="@{/admin/orders(page=${currentPage - 1}, name=${name}, phone=${phone}, status=${status}, size=${size})}">上一頁</a>
                                     </li>
-                                    <li class="page-item" th:each="pageNum : ${#numbers.sequence(1, totalPages)}"
+                                    <!-- <li class="page-item" th:each="pageNum : ${#numbers.sequence(1, totalPages)}"
                                         th:classappend="${pageNum == currentPage} ? 'active'">
                                         <a class="page-link"
                                             th:href="@{/admin/orders(page=${pageNum}, name=${name}, phone=${phone}, status=${status}, size=${size})}"
                                             th:text="${pageNum}"></a>
+                                    </li> -->
+                                    <li class="page-item" th:if="${currentPage > 3}">
+                                        <a class="page-link"
+                                            th:href="@{/admin/orders(page=1, name=${name}, phone=${phone}, status=${status}, size=${size})}">
+                                            1
+                                        </a>
+                                    </li>
+                                    <li class="page-item disabled" th:if="${currentPage > 4}">
+                                        <a class="page-link">...</a>
+                                    </li>
+
+                                    <!-- 中間動態頁碼 (顯示當前頁前後 2 頁) -->
+                                    <li class="page-item"
+                                        th:each="pageNum : ${#numbers.sequence((currentPage-2 > 1 ? currentPage-2 : 1), (currentPage+2 < totalPages ? currentPage+2 : totalPages))}"
+                                        th:classappend="${pageNum == currentPage} ? 'active'">
+                                        <a class="page-link"
+                                            th:href="@{/admin/orders(page=${pageNum}, name=${name}, phone=${phone}, status=${status}, size=${size})}"
+                                            th:text="${pageNum}">
+                                        </a>
+                                    </li>
+
+                                    <!-- 如果後面還有頁碼 -->
+                                    <li class="page-item disabled" th:if="${currentPage < totalPages - 3}">
+                                        <a class="page-link">...</a>
+                                    </li>
+                                    <li class="page-item" th:if="${currentPage < totalPages - 2}">
+                                        <a class="page-link"
+                                            th:href="@{/admin/orders(page=${totalPages}, name=${name}, phone=${phone}, status=${status}, size=${size})}"
+                                            th:text="${totalPages}">
+                                        </a>
                                     </li>
                                     <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
                                         <a class="page-link"

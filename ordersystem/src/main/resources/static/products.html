@@ -54,39 +54,60 @@
         <section class="container">
             <div class="d-flex justify-content-between flex-wrap">
                 <div class="d-flex flex-column align-items-center">
-                    <button class="btn btn-circle large" @click="filterByCategory('')"></button>
+                    <button class="btn btn-circle large" @click="filterByCategory('')">
+
+                    </button>
                     <span>全部產品</span>
                 </div>
                 <div class="d-flex flex-column align-items-center">
-                    <button class="btn btn-circle large" @click="filterByCategory('桌子')"></button>
+                    <button class="btn btn-circle large" @click="filterByCategory('桌子')">
+                        <img src="./images/桌子.jpg" alt="桌子" class="category-icon">
+                    </button>
                     <span>桌子</span>
                 </div>
                 <div class="d-flex flex-column align-items-center">
-                    <button class="btn btn-circle large" @click="filterByCategory('椅子')"></button>
+                    <button class="btn btn-circle large" @click="filterByCategory('椅子')">
+                        <img src="./images/椅子.jpg" alt="椅子" class="category-icon">
+                    </button>
                     <span>椅子</span>
                 </div>
                 <div class="d-flex flex-column align-items-center">
-                    <button class="btn btn-circle large" @click="filterByCategory('書架')"></button>
+                    <button class="btn btn-circle large" @click="filterByCategory('書架')">
+                        <img src="./images/書架.jpg" alt="書架" class="category-icon">
+                    </button>
                     <span>書架</span>
                 </div>
                 <div class="d-flex flex-column align-items-center">
-                    <button class="btn btn-circle large" @click="filterByCategory('鞋架')"></button>
+                    <button class="btn btn-circle large" @click="filterByCategory('鞋架')">
+                        <img src="./images/鞋架.jpg" alt="鞋架" class="category-icon">
+                    </button>
                     <span>鞋架</span>
                 </div>
                 <div class="d-flex flex-column align-items-center">
-                    <button class="btn btn-circle large" @click="filterByCategory('床墊')"></button>
+                    <button class="btn btn-circle large" @click="filterByCategory('床墊')">
+                        <img src="./images/床墊.jpg" alt="床墊" class="category-icon">
+                    </button>  
                     <span>床墊</span>
                 </div>
                 <div class="d-flex flex-column align-items-center">
-                    <button class="btn btn-circle large" @click="filterByCategory('衣櫃')"></button>
+                    <button class="btn btn-circle large" @click="filterByCategory('衣櫃')">
+                        <img src="./images/衣櫃.jpg" alt="衣櫃" class="category-icon">
+                    </button>
                     <span>衣櫃</span>
                 </div>
             </div>
+
+            <!-- 🔹 單張分類圖片顯示區 -->
+            <div class="category-image mt-3 d-flex justify-content-center">
+                <img v-if="firstImage" :src="`http://localhost:8080/uploads/${firstImage}`" alt="分類圖片"
+                    class="img-fluid rounded" style="max-height:300px;">
+            </div>
+
         </section>
 
         <section id="products">
             <div class="container">
-                <h2>熱門商品</h2>
+                <h2>商品</h2>
                 <div class="products">
                     <div class="product" v-for="product in products" :key="product.id">
                         <a :href="`products_x.html?id=${product.id}`">

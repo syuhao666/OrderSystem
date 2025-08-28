@@ -1,5 +1,7 @@
 package tw.syuhao.ordersystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,5 +33,6 @@ public class Address {
     // 外鍵在這裡（user_id），欄位名「user」要和 Users.mappedBy 對上
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
+    @JsonBackReference
     private Users users;
 }

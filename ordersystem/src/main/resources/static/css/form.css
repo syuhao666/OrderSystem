@@ -1,179 +1,450 @@
 /* 通用設定 */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Microsoft JhengHei', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Microsoft JhengHei", sans-serif;
 }
 
 body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    /* 最小高度為視窗高度 */
-    line-height: 1.6;
-    color: #333;
-    background-color: #f9f9f9;
-    padding-top: 80px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f9f9f9;
+  padding-top: 80px;
 }
 
 /* 容器設計 */
 .container {
-    width: 90%;
-    max-width: 1200px;
-    margin:  0 auto;
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
+/* 容器設計
+.containerV1 {
+  width: 90%;
+  max-width: 1800px;
+  margin: 0 auto;
+} */
 
-/* 導覽列樣式 */
+/* 導覽列樣式 (不更動) */
 header {
-    position: fixed;           /* 固定定位，會脫離正常文流，位置由 top/left 控制 */
-    top: 0;                    /* 距離瀏覽器上方 0px，即貼齊最上方 */
-    left: 0;                   /* 距離左側 0px，貼齊左側 */
-    width: 100%;
-    
-    background: #f8f8f8;
-    padding: 20px 0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #f8f8f8;
+  padding: 20px 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
 }
 
 nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: #5c3c11;
+  font-size: 24px;
+  font-weight: bold;
+  color: #5c3c11;
 }
 
 nav ul {
-    display: flex;
-    list-style: none;
+  display: flex;
+  list-style: none;
 }
 
 nav ul li {
-    margin-left: 20px;
+  margin-left: 20px;
 }
 
 nav a {
-    text-decoration: none;
-    color: #333;
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: #5c3c11;
 }
 
 /* 按鈕樣式 */
 .btn {
-    display: inline-block;
-    background: #5c3c11;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    text-decoration: none;
-    cursor: pointer;
+  display: inline-block;
+  background: #5c3c11;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn:hover {
+  background: #7a5d3e;
+}
+
+.btn-success {
+  background-color: #5c3c11;
+  color: white;
+  border-color: #5c3c11;
+}
+
+.btn-success:hover {
+  background-color: #7a5d3e;
+  border-color: #7a5d3e;
 }
 
 /* icon 圖示 */
 .icon-cart {
-    width: 24px;
-    height: 24px;
-    vertical-align: middle;
-    
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+}
+
+.icon-cart2 {
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
+  transition: transform 0.3s ease;
+}
+
+.icon-cart2:hover {
+  transform: scale(1.1);
 }
 
 /* section 區塊 */
 section {
-    padding: 40px 0;
+  padding: 40px 0;
 }
 
 /* 標題 */
 h2 {
-    text-align: center;
-    margin-bottom: 30px;
-    font-size: 28px;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 28px;
+  color: #5c3c11;
+  border-bottom: 2px solid #5c3c11;
+  padding-bottom: 10px;
 }
 
-/* 頁尾 */
+/* 頁尾 (不更動) */
 footer {
-    background: #333;
-    color: white;
-    text-align: center;
-    padding: 20px 0;
-    margin-top: 40px;
+  background: #333;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+  margin-top: auto; /* 讓 footer 貼緊頁面底部 */
 }
 
-
-
-/* RWD 響應式 */
-@media (max-width: 768px) {
-    nav {
-        flex-direction: column;
-    }
-
-    nav ul {
-        margin-top: 15px;
-    }
-
-    nav ul li {
-        margin: 0 10px;
-    }
-     .hero {
-        height: 300px;
-        /* Hero 區高度縮小 */
-    }
-}
-
-.icon-cart {
-    width: 24px;
-    /* 圖示寬度 */
-    height: 24px;
-    /* 圖示高度 */
-    vertical-align: middle;
-    /* 與文字垂直置中對齊 */
-}
-.icon-cart2 {
-    width: 30px;
-    height: 30px;
-    vertical-align: middle;
-    /* 讓圖片跟文字垂直置中對齊 */
+footer h2 {
+  color: white;
+  border-bottom-color: white;
 }
 
 .xa {
-
-    list-style: none;
-
+  list-style: none;
+  padding: 5px 0;
 }
-/* --------------------- */
-/* --小白-- */ 
+
+/* 填寫資料表單樣式 */
+#app {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 1500px;
+  margin: 40px auto;
+}
+
+#app .d-flex {
+  background-color: transparent;
+  padding: 0;
+}
+
+#app .row {
+  background-color: transparent;
+  padding: 10px 0;
+  margin-bottom: 15px;
+}
+
+#app .row:not(:last-of-type) {
+  border-bottom: 1px dashed #ddd;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  margin-top: 5px;
+  transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="tel"]:focus,
+input[type="email"]:focus,
+select:focus {
+  border-color: #5c3c11;
+  outline: none;
+}
+
+.required-star {
+  color: red;
+  margin-left: 4px;
+}
+
+/* 地址選擇器 */
+.row.p-3.address-select {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.row.p-3.address-select select,
+.row.p-3.address-select input {
+  flex: 1;
+}
+
+.row.p-3.address-select select {
+  width: 30%;
+}
+
+.row.p-3.address-select input[type="text"] {
+  width: 20%;
+}
+
+/* 按鈕容器 */
+.p-3.d-flex {
+  padding-top: 20px !important;
+}
+
+/* RWD 響應式 */
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column;
+  }
+
+  nav ul {
+    margin-top: 15px;
+  }
+
+  nav ul li {
+    margin: 0 10px;
+  }
+
+  #app {
+    padding: 20px;
+    margin: 20px auto;
+  }
+
+  .row.p-3.address-select {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .row.p-3.address-select select,
+  .row.p-3.address-select input {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  /* 表單卡片外觀 */
+  #app {
+    background: #fff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    max-width: 1200px;
+    margin: 40px auto;
+    border: 1px solid #eee;
+  }
+
+  /* 標題列 */
+  #app .d-flex {
+    background: #f5f0eb;
+    border-radius: 8px;
+    padding: 15px 20px;
+    margin-bottom: 25px;
+    align-items: center;
+  }
+
+  #app .d-flex h2 {
+    margin: 0;
+    font-size: 22px;
+    color: #5c3c11;
+    border: none;
+  }
+
+  #app .d-flex label {
+    font-size: 14px;
+    font-weight: normal;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  /* 欄位區塊 */
+  #app .row {
+    padding: 15px 0;
+    border-bottom: 1px dashed #ddd;
+  }
+
+  #app .row:last-of-type {
+    border-bottom: none;
+  }
+
+  /* 標籤 */
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 6px;
+    color: #444;
+  }
+
+  /* 輸入欄位與選單 */
+  input[type="text"],
+  input[type="tel"],
+  input[type="email"],
+  select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    margin-top: 3px;
+    transition: all 0.25s ease;
+    background: #fff;
+  }
+
+  input:focus,
+  select:focus {
+    border-color: #5c3c11;
+    box-shadow: 0 0 0 3px rgba(92, 60, 17, 0.15);
+    outline: none;
+  }
+
+  /* 區域與郵遞區號排列 */
+  .address-select {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .address-select select {
+    flex: 1;
+  }
+
+  .address-select input {
+    width: 100px;
+  }
+
+  /* 提示文字 */
+  #app .row div {
+    font-size: 13px;
+    color: #777;
+    margin-bottom: 5px;
+  }
+
+  /* 必填星號 */
+  .required-star {
+    color: red;
+  }
+
+  /* 結帳按鈕 */
+  .btn-success {
+    background-color: #2c7542;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-success:hover {
+    background-color: #7a5d3e;
+    transform: translateY(-1px);
+  }
+
+  /* RWD */
+  @media (max-width: 768px) {
+    #app {
+      padding: 20px;
+    }
+
+    .address-select {
+      flex-direction: column;
+    }
+
+    .address-select input {
+      width: 100%;
+    }
+  }
+}
+
+.cart-link {
+  position: relative;
+  display: inline-block;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: red;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 50%;
+}
+/* --小白-- */
 /* 導覽列會員頭像小樣式（不影響 index.css） */
-        .member-link {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            text-decoration: none;
-            color: #333;
-        }
+.member-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: #333;
+}
 
-        .member-avatar {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: #5c3c11;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 14px;
-            overflow: hidden;
-        }
+.member-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #5c3c11;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+  overflow: hidden;
+}
 
-        .btn-logout {
-            background: #5c3c11;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            padding: 6px 10px;
-            cursor: pointer;
-        }
+.btn-logout {
+  background: #5c3c11;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 10px;
+  cursor: pointer;
+}

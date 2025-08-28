@@ -98,7 +98,7 @@ createApp({
     function goToForm() {
       validateSelection();
       if (canProceed.value) {
-        window.location.href = "formV1.html";
+        window.location.href = "form.html";
       }
     }
 
