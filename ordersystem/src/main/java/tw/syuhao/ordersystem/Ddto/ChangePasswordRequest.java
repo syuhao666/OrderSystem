@@ -1,10 +1,14 @@
+// src/main/java/tw/syuhao/ordersystem/Ddto/ChangePasswordRequest.java
 package tw.syuhao.ordersystem.Ddto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
 public class ChangePasswordRequest {
-    private String currentPassword;
+    @NotBlank
+    private String oldPassword;
+
+    @NotBlank
     private String newPassword;
-    private String confirmPassword;
 }

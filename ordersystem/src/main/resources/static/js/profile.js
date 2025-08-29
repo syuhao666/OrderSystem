@@ -1,57 +1,63 @@
 // /js/profile.js
-const API_GET_USER    = '/api/user';
-const API_PUT_PROFILE = '/api/user/profile';
-
 (function () {
-  const $ = (id) => document.getElementById(id);
+  const $ = (sel) => document.querySelector(sel);
 
-  async function fetchJSON(url, options = {}) {
+  async function fetchJSON(url, init = {}) {
     const res = await fetch(url, {
-      credentials: 'include',
-      ...options,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        ...(options.headers || {})
-      }
+      credentials: "include",
+      headers: { "Accept": "application/json", ...(init.headers || {}) },
+      ...init,
     });
-    if (res.status === 401) { location.href = '/login'; return null; }
-    if (!res.ok) throw new Error(await res.text());
-    return res.json().catch(() => ({}));
-  }
-
-  async function loadProfile() {
-    const u = await fetchJSON(API_GET_USER);
-    if (!u) return;
-    $('pf-username').value = u.username || '';
-    $('pf-email').value    = u.email || '';
-    $('pf-remark').value   = u.remark || '';
-    $('pf-phone').value    = u.phone || '';
-    $('pf-address').value  = u.address || '';
-  }
-
-  async function submitProfile(e) {
-    e.preventDefault();
-    const payload = {
-      username: $('pf-username').value.trim(),
-      email:    $('pf-email').value.trim(),
-      remark:   $('pf-remark').value.trim(),
-      phone:    $('pf-phone').value.trim(),
-      address:  $('pf-address').value.trim()
-    };
-    if (!payload.username || !payload.email) {
-      alert('請填寫暱稱與 Email');
-      return;
+    if (res.status === 401) throw new Error("401");
+    if (!res.ok) {
+      const message = (await res.text()) || `HTTP ${res.status}`;
+      throw new Error(message);
     }
-    await fetchJSON(API_PUT_PROFILE, { method: 'PUT', body: JSON.stringify(payload) });
-    const msg = document.getElementById('pf-msg');
-    msg.style.display = '';
-    msg.textContent = '已更新。';
-    setTimeout(() => msg.style.display = 'none', 2000);
+    // 204 無 body
+    return res.status === 204 ? null : res.json();
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    loadProfile();
-    document.getElementById('profile-form').addEventListener('submit', submitProfile);
+  async function loadMe() {
+    try {
+      const me = await fetchJSON("/api/profile/me");
+      $("#pf-username").value = me.username || "";
+      $("#pf-email").value = me.email || "";
+      $("#pf-remark").value = me.remark || "";
+      $("#pf-phone").value = me.phone || "";
+      $("#pf-address").value = me.address || "";
+    } catch (e) {
+      if (e.message === "401") { location.href = "/login"; return; }
+      alert("載入個資失敗：" + e.message);
+    }
+  }
+
+  async function saveProfile(ev) {
+    ev.preventDefault();
+    const payload = {
+      username: $("#pf-username").value?.trim(),
+      email: $("#pf-email").value?.trim(),
+      remark: $("#pf-remark").value?.trim(),
+      phone: $("#pf-phone").value?.trim(),
+      address: $("#pf-address").value?.trim(),
+    };
+    try {
+      await fetchJSON("/api/profile/me", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const tip = $("#pf-msg");
+      tip.style.display = "";
+      tip.textContent = "已更新。";
+      setTimeout(() => (tip.style.display = "none"), 2500);
+    } catch (e) {
+      if (e.message === "401") { location.href = "/login"; return; }
+      alert("更新失敗：" + e.message);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    $("#profile-form").addEventListener("submit", saveProfile);
+    loadMe();
   });
 })();

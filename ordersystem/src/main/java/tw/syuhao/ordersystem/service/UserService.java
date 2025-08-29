@@ -59,7 +59,7 @@ public class UserService {
     }
 
     /** 修改密碼（需驗證舊密碼） */
-    @Transactional
+     @Transactional
     public void changePassword(Long userId, String oldPassword, String newPassword) {
         Users u = repo.findById(userId).orElseThrow();
         if (!BCrypt.checkpw(oldPassword, u.getPassword())) {

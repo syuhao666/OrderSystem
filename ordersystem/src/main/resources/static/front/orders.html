@@ -66,27 +66,7 @@
         <h2 class="mb-3">我的訂單</h2>
 
         <!-- 篩選（純前端） -->
-        <div class="row g-2 mb-3">
-          <div class="col-sm-6 col-md-3">
-            <select class="form-select" id="filter-status">
-              <option value="">全部狀態</option>
-              <option value="CREATED">待付款</option>
-              <option value="PAID">已付款</option>
-              <option value="SHIPPED">已出貨</option>
-              <option value="COMPLETED">已完成</option>
-              <option value="CANCELLED">已取消</option>
-            </select>
-          </div>
-          <div class="col-sm-6 col-md-3">
-            <input type="date" class="form-control" id="filter-from" placeholder="起始日">
-          </div>
-          <div class="col-sm-6 col-md-3">
-            <input type="date" class="form-control" id="filter-to" placeholder="結束日">
-          </div>
-          <div class="col-sm-6 col-md-3 d-grid">
-            <button class="btn btn-brown" id="btn-apply-filter">套用篩選</button>
-          </div>
-        </div>
+        
 
         <div class="table-responsive">
           <table class="table table-hover align-middle" id="tbl-orders">
@@ -160,11 +140,13 @@
     <p>&copy; 2025 簡約家居 版權所有</p>
   </footer>
 
-  <script src="/js/nav.js"></script>
-  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="/js/index.js"></script>
-  <script src="/js/front-orders.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="/js/nav.js"></script>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="/js/index.js"></script>
+<script src="/js/front-orders.js"></script>
 </body>
 
 </html>
