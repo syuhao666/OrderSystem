@@ -39,9 +39,9 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
                         String name, String category, BigDecimal minPrice, BigDecimal maxPrice,
                         String status, Pageable pageable);
 
-        // @Override
+        @Override
         @EntityGraph(attributePaths = { "specification" })
-        // List<Product> findAll();
+        List<Product> findAll();
 
         // ✅ 特殊方法：查詢所有商品（包含 deleted = true 的）
         @Query("SELECT p FROM Product p")
