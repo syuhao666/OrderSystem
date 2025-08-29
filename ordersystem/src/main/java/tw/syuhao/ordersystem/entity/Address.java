@@ -30,6 +30,10 @@ public class Address {
     @Column(nullable=false, length=255)
     private String address;
 
+    private String name;
+    private String phone;
+
+
     // 外鍵在這裡（user_id），欄位名「user」要和 Users.mappedBy 對上
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
