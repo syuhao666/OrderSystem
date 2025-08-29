@@ -7,8 +7,10 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tw.syuhao.ordersystem.Ddto.ChangePasswordRequest;
+import tw.syuhao.ordersystem.Ddto.UpdateProfileRequest;
 import tw.syuhao.ordersystem.entity.Users;
 import tw.syuhao.ordersystem.repository.UserRepository;
+import tw.syuhao.ordersystem.service.ProfileService;
 import tw.syuhao.ordersystem.service.UserService;
 
 @Slf4j
@@ -19,6 +21,7 @@ public class ProfileApiController {
 
     private final UserRepository userRepository;
     private final UserService userService;
+    private final ProfileService profileService;
 
     private Users requireLogin(HttpSession session){
         Users u = (Users) session.getAttribute("user");
@@ -66,6 +69,22 @@ public class ProfileApiController {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e){
             log.error("變更密碼異常", e);
+            return ResponseEntity.status(500).body("系統錯誤");
+        }
+    }
+
+    /** 更新個資 */
+    @PutMapping("/me")
+    public ResponseEntity<?> updateProfile(@RequestBody UpdateProfileRequest req, HttpSession session) {
+        try {
+            Users user = requireLogin(session);
+            profileService.updateMyProfile(user.getId(), req);
+            return ResponseEntity.noContent().build(); // 204
+        } catch (IllegalStateException e) {
+            if ("未登入".equals(e.getMessage())) return ResponseEntity.status(401).body("未登入");
+            return ResponseEntity.status(409).body(e.getMessage());
+        } catch (Exception e) {
+            log.error("更新個資異常", e);
             return ResponseEntity.status(500).body("系統錯誤");
         }
     }

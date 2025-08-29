@@ -58,19 +58,16 @@ public class ProfileService {
         boolean hasAddr  = notBlank(req.getAddress());
 
         Address addr = u.getAddress();
+        // 無論有沒有 phone/address，只要 Address 尚未建立就新建
         if (addr == null) {
-            // 若尚未建立 Address，但有任一欄需要寫入，就新建
-            if (hasPhone || hasAddr) {
-                addr = new Address();
-                addr.setUsers(u);   // 維護雙向關係（Users <-> Address）
-                u.setAddress(addr);
-            }
+            addr = new Address();
+            addr.setUsers(u);   // 維護雙向關係（Users <-> Address）
+            u.setAddress(addr);
         }
 
-        if (addr != null) {
-            addr.setPhone(hasPhone ? req.getPhone().trim() : null);
-            addr.setAddress(hasAddr ? req.getAddress().trim() : null);
-        }
+        // Address 欄位允許為空，若資料庫不允許，給預設值
+        addr.setPhone(hasPhone ? req.getPhone().trim() : "-");
+        addr.setAddress(hasAddr ? req.getAddress().trim() : "-");
 
         try {
             // 交由 Users 端 CascadeType.ALL 保存 Address
