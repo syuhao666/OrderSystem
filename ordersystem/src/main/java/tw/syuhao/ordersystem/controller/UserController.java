@@ -10,21 +10,19 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import tw.syuhao.ordersystem.entity.Users;
-import tw.syuhao.ordersystem.repository.UserRepository;
+
 import tw.syuhao.ordersystem.service.UserService;
 
 @RestController
 @RequestMapping("/api") // ★ 統一把這支變成 API Controller
 public class UserController {
 
-    private final UserRepository userRepository;
+   
 
     @Autowired
     private UserService service;
-
-    UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    
+    
 
     // 註冊（表單頁還是用 /register 的 Thymeleaf；這支給前端 AJAX 用也行）
     @PostMapping("/register")

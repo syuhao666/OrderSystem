@@ -10,6 +10,7 @@ import tw.syuhao.ordersystem.entity.Users;
 public interface CartRepository extends JpaRepository<Cart, Long> {
 
     Optional<Cart> findByUser(Users user);
-
+    
+    Optional<Cart> findByUser_Id(Long userId);
     
 }

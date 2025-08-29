@@ -2,11 +2,7 @@
 package tw.syuhao.ordersystem.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,9 +27,27 @@ public class ProfileApiController {
         return userRepository.findById(u.getId()).orElseThrow();
     }
 
-    // ...（你原本 /me 相關方法可保留）
+    /** 補上 /me，避免 404 */
+    @GetMapping("/me")
+    public ResponseEntity<?> me(HttpSession session){
+        try {
+            Users u = requireLogin(session);
+            // 只回需要的欄位，避免 Lazy 序列化踩雷
+            record Me(Long id, String username, String email) {}
+            return ResponseEntity.ok(new Me(u.getId(), u.getUsername(), u.getEmail()));
+        } catch (IllegalStateException e){
+            if ("未登入".equals(e.getMessage())) {
+                return ResponseEntity.status(401).body("未登入");
+            }
+            return ResponseEntity.status(409).body(e.getMessage());
+        } catch (Exception e){
+            log.error("讀取個資異常", e);
+            return ResponseEntity.status(500).body("系統錯誤");
+        }
+    }
 
-   @PutMapping("/password")
+    /** 變更密碼 */
+    @PutMapping("/password")
     public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest req, HttpSession session){
         try{
             Users user = requireLogin(session);
@@ -46,10 +60,9 @@ public class ProfileApiController {
             return ResponseEntity.noContent().build(); // 204
 
         } catch (IllegalStateException e){
-            if ("未登入".equals(e.getMessage())) return ResponseEntity.status(401).build();
+            if ("未登入".equals(e.getMessage())) return ResponseEntity.status(401).body("未登入");
             return ResponseEntity.status(409).body(e.getMessage());
         } catch (IllegalArgumentException e){
-            // 例如：舊密碼不正確
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e){
             log.error("變更密碼異常", e);
