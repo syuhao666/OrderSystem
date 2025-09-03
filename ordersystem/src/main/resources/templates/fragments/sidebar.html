@@ -49,11 +49,9 @@
       </li>
 
       <li class="nav-item mt-2">
-        <form th:action="@{/logout}" method="post" class="d-inline">
-          <button type="submit" class="nav-link border-0 bg-transparent">
-            <i class="bi bi-box-arrow-right"></i>登出
-          </button>
-        </form>
+        <a class="nav-link" href="/logout">
+          <i class="bi bi-box-arrow-right"></i>登出
+        </a>
       </li>
     </ul>
   </nav>

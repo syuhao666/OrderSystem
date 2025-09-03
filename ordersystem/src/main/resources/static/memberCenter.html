@@ -15,7 +15,7 @@
 <body>
 
   <!-- Header（與首頁一致） -->
-  <!-- <header>
+  <header>
     <div class="container">
       <nav>
         <div class="logo">簡約家居</div>
@@ -37,10 +37,12 @@
             </a>
           </li>
 
+          <!-- 未登入 -->
           <li id="login-link">
             <a href="/login"><img src="./images/login.svg" class="icon-cart" alt="登入"></a>
           </li>
 
+          <!-- 已登入：會員頭像＋名稱 -->
           <li id="member-icon" style="display:none;">
             <a href="./memberCenter.html" class="member-link">
               <div id="member-avatar" class="member-avatar">會</div>
@@ -48,15 +50,14 @@
             </a>
           </li>
 
+          <!-- 已登入：登出 -->
           <li id="real-logout" style="display:none;">
             <button type="button" class="btn-logout" id="btn-logout">登出</button>
           </li>
         </ul>
       </nav>
     </div>
-  </header> -->
-
-  <div id="header"></div>
+  </header>
 
   <!-- 會員中心內容 -->
   <section class="mc-wrap">
@@ -136,7 +137,7 @@
   </section>
 
   <!-- Footer -->
-  <!-- <footer>
+  <footer>
     <section>
       <div class="container">
         <ul>
@@ -158,12 +159,8 @@
       </div>
     </section>
     <p>&copy; 2025 簡約家居 版權所有</p>
-  </footer> -->
+  </footer>
 
-
-  <div id="footer"></div>
-
-  <script src="js/layout.js"></script>
   <script src="./js/nav.js"></script>
   <script src="./js/member.js"></script>
 </body>

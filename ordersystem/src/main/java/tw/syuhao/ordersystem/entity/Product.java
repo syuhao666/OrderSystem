@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.Where;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -25,7 +25,7 @@ import lombok.ToString;
 @Entity
 @Data
 @Table(name = "product")
-@SQLRestriction("deleted = false")
+@Where(clause = "deleted = false")
 public class Product {
 
     @Id

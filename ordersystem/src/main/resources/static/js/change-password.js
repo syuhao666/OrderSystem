@@ -1,64 +1,54 @@
-// /src/main/resources/static/js/change-password.js
-(function(){
-  const $ = (sel) => document.querySelector(sel);
+// /js/change-password.js
+const API_PUT_PASSWORD = '/api/profile/password';
 
-  function showMsg(text, ok){
-    const el = $('#pw-msg');
-    el.textContent = text;
-    el.style.display = '';
-    el.className = 'form-text ' + (ok ? 'text-success' : 'text-danger');
+(function () {
+  const $ = (id) => document.getElementById(id);
+
+  async function fetchJSON(url, options = {}) {
+    const res = await fetch(url, {
+      credentials: 'include',
+      ...options,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        ...(options.headers || {})
+      }
+    });
+    if (res.status === 401) { location.href = '/login'; return null; }
+    if (!res.ok) throw new Error(await res.text());
+    return res.json().catch(() => ({}));
   }
 
-  async function changePassword(e){
+  function showMsg(ok, text) {
+    const msg = $('pw-msg');
+    msg.style.display = '';
+    msg.className = ok ? 'form-text text-success' : 'form-text text-danger';
+    msg.textContent = text;
+  }
+
+  async function onSubmit(e) {
     e.preventDefault();
-    const current = $('#pw-current').value.trim();
-    const npw     = $('#pw-new').value.trim();
-    const confirm = $('#pw-confirm').value.trim();
+    const cur = $('pw-current').value.trim();
+    const n1  = $('pw-new').value.trim();
+    const n2  = $('pw-confirm').value.trim();
 
-    if (!current){ showMsg('請輸入目前密碼', false); return; }
-    if (!npw || npw.length < 6){ showMsg('新密碼至少 6 碼', false); return; }
-    if (npw !== confirm){ showMsg('新密碼與確認不一致', false); return; }
+    if (!cur || !n1 || !n2) { showMsg(false, '請完整填寫'); return; }
+    if (n1.length < 6)      { showMsg(false, '新密碼至少 6 碼'); return; }
+    if (n1 !== n2)          { showMsg(false, '兩次新密碼不一致'); return; }
 
-    try{
-      const res = await fetch('/api/profile/password', {
+    try {
+      await fetchJSON(API_PUT_PASSWORD, {
         method: 'PUT',
-        credentials: 'include',
-        headers: {'Content-Type':'application/json', 'Accept':'application/json'},
-        body: JSON.stringify({ oldPassword: current, newPassword: npw })
+        body: JSON.stringify({ currentPassword: cur, newPassword: n1 })
       });
-
-      if (res.status === 204){
-        showMsg('密碼已更新，下次登入請使用新密碼。', true);
-        // 清空欄位
-        $('#pw-current').value = '';
-        $('#pw-new').value = '';
-        $('#pw-confirm').value = '';
-        return;
-      }
-      if (res.status === 401){
-        // 未登入
-        location.href = '/login';
-        return;
-      }
-
-      // 其他狀態：盡量把後端訊息顯示出來
-      let msg = '變更失敗';
-      try {
-        const data = await res.json();
-        msg = typeof data === 'string' ? data : (data.message || JSON.stringify(data));
-      } catch(_) {
-        msg = await res.text();
-      }
-      showMsg(msg || '變更失敗', false);
-
-    }catch(err){
-      console.error(err);
-      showMsg('系統錯誤，請稍後再試', false);
+      $('pw-current').value = $('pw-new').value = $('pw-confirm').value = '';
+      showMsg(true, '密碼已變更');
+    } catch (err) {
+      showMsg(false, err.message || '變更失敗');
     }
   }
 
-  document.addEventListener('DOMContentLoaded', function(){
-    const form = document.getElementById('pw-form');
-    form.addEventListener('submit', changePassword);
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('pw-form').addEventListener('submit', onSubmit);
   });
 })();

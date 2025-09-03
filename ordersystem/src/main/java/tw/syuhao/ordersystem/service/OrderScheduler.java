@@ -23,11 +23,11 @@ public class OrderScheduler {
     @Autowired
     private ProductRepository productRepository;
 
-    @Scheduled(fixedRate = 1 * 600 * 1000)
+    @Scheduled(fixedRate = 5 * 60 * 1000)
     @Transactional
     public void releaseExpiredOrders() {
         LocalDateTime expireTime = LocalDateTime.now().minusMinutes(30);
-        List<Order> expiredOrders = orderRepository.findByStatusAndCreatedAtBefore("PENDING", expireTime);
+        List<Order> expiredOrders = orderRepository.findByStatusAndCreatedAtBefore("未付款", expireTime);
 
         for (Order order : expiredOrders) {
             for (OrderItem item : order.getItems()) {
@@ -35,7 +35,7 @@ public class OrderScheduler {
                 product.setStock(product.getStock() + item.getQuantity());
                 productRepository.save(product);
             }
-            order.setStatus("CANCELLED");   // 改狀態
+            order.setStatus("付款失敗");   // 改狀態
             orderRepository.save(order);    // 確保寫回資料庫
             
         }
