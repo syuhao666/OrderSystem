@@ -27,6 +27,7 @@ createApp({
         .get("/cart/count")
         .then((res) => {
           cartCount.value = res.data; // 後端算好的總數量
+          updateCartCount(cartCount.value); // ← 加這行，確保 header 也同步
         })
         .catch((err) => console.error("無法取得購物車數量", err));
     }
@@ -66,7 +67,7 @@ createApp({
         .then(() => {
           alert(`已成功將 ${product.name} 加入購物車！`);
           fetchCart();
-          fetchCartCount();
+          fetchCartCount(); // ← 這裡會自動更新 header 數量
         })
         .catch((error) => {
           console.error("加入購物車失敗", error);
@@ -74,12 +75,32 @@ createApp({
         });
     };
 
+    function updateCartCount(count) {
+      const badge = document.getElementById("cart-count-badge");
+      if (badge) {
+        badge.textContent = count;
+        badge.style.display = count > 0 ? "" : "none";
+      }
+    }
+
+    // 假設你有一個方法可以取得購物車商品數量
+    function getCartCount() {
+      // 例如從 localStorage 取
+      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+      return cart.length;
+    }
+
+    // 頁面載入時自動更新
+    document.addEventListener("DOMContentLoaded", function () {
+      updateCartCount(getCartCount());
+    });
+
     onMounted(() => {
       const urlParams = new URLSearchParams(window.location.search);
       const productId = urlParams.get("id"); // URL 範例: product.html?id=123
       fetchProductDetails(productId);
       fetchCart();
-      fetchCartCount();
+      fetchCartCount(); // 頁面載入時也同步 header 數量
     });
 
     return {
