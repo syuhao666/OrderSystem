@@ -12,7 +12,7 @@
 
 <body>
   <!-- Header（與全站一致） -->
-  <header>
+  <!-- <header>
     <div class="container">
       <nav>
         <div class="logo">簡約家居</div>
@@ -48,6 +48,57 @@
         </ul>
       </nav>
     </div>
+  </header> -->
+
+  <header id="app">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand" href="./index.html">簡約家居</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+          <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="./index.html">首頁</a></li>
+            <li class="nav-item"><a class="nav-link" href="./products.html">商品</a></li>
+            <li class="nav-item"><a class="nav-link" href="#about">關於我們</a></li>
+            <li class="nav-item" id="member-center-link" style="display:none;">
+              <a class="nav-link" href="./memberCenter.html" id="member-name"></a>
+            </li>
+          </ul>
+
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a href="./cart.html" class="nav-link position-relative" id="cart-link">
+                <img src="./images/shopping.svg" class="icon-cart">
+                <span id="cart-count-badge" v-show="cartCount > 0"
+                  class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                  style="display:none;">
+                  {{ cartCount }}
+                </span>
+              </a>
+            </li>
+            <li class="nav-item" id="login-link">
+              <a href="/login" class="nav-link"><img src="./images/login.svg" class="icon-cart"></a>
+            </li>
+            <li class="nav-item" id="member-icon" style="display:none;">
+              <a href="./memberCenter.html" class="nav-link d-flex align-items-center">
+                <div id="member-avatar" class="member-avatar me-1">會</div>
+                <span id="member-displayname" style="font-weight:bold;"></span>
+              </a>
+            </li>
+            <li class="nav-item" id="real-logout" style="display:none;">
+              <form action="/logout" method="post">
+                <button type="submit" class="btn btn-sm btn-outline-light">登出</button>
+              </form>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
   </header>
 
   <section class="mc-wrap">
@@ -109,18 +160,18 @@
     <p>&copy; 2025 簡約家居 版權所有</p>
   </footer>
 
-  
-  
-  
-  
-  
+
+
+
+
+
   <script src="/js/nav.js"></script>
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="/js/index.js"></script>
   <script src="/js/profile.js"></script>
-  
-  
+
+
 </body>
 
 </html>
