@@ -17,6 +17,10 @@ import jakarta.persistence.LockModeType;
 import tw.syuhao.ordersystem.entity.Product;
 
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
+        List<Product> findByStatus(String status);
+
+        Page<Product> findByCategoryContainingAndStatus(String category, String status, Pageable pageable);
+
         Page<Product> findByNameContaining(String name, Pageable pageable);
 
         Page<Product> findByCategoryContaining(String category, Pageable pageable);

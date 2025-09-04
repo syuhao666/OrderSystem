@@ -8,7 +8,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +48,7 @@ public class ProductController {
     /** 取得全部商品（小型站可用；若量大改用分頁） */
     @GetMapping("/products")
     public List<Product> getAllProducts() {
-        return productRepository.findAll();
+        return productRepository.findByStatus("上架");
     }
 
     /** 依分類查詢（分頁） */
@@ -126,7 +130,7 @@ public class ProductController {
             @RequestParam(defaultValue = "10") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
-        return productRepository.findByCategoryContaining(category, pageable);
+        return productRepository.findByCategoryContainingAndStatus(category, "上架", pageable);
     }
 
     // 新增的商品詳細內容 API
