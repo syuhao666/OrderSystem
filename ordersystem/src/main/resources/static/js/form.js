@@ -19,14 +19,14 @@ createApp({
     });
 
     const formData = reactive({
-      name: "hwgtwet",
+      name: "張家綸",
       phone: "0987654321",
-      email: "fsdfsfsfd@gmail.com",
+      email: "ms0590341d@gmail.com",
       city: "",
       district: "",
       zip: "",
-      address: "rawsrar",
-      paymentMethod: "信用卡",
+      address: "",
+      paymentMethod: "",
     });
 
     const fullAddress = computed(() => {
@@ -131,11 +131,11 @@ createApp({
         )
         .then((res) => {
           // 後端回傳的會是綠界付款表單 HTML
-          //   document.open();
-          //   document.write(res.data);
-          //   document.close();
-          document.body.innerHTML = res.data; // 把表單放進去
-          document.getElementById("ecpayForm").submit();
+            document.open();
+            document.write(res.data);
+            document.close();
+          // document.body.innerHTML = res.data; // 把表單放進去
+          // document.getElementById("ecpayForm").submit();
         })
         .catch((err) => {
           console.error("結帳失敗", err);

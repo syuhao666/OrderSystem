@@ -335,3 +335,50 @@ video {
   border-radius: 50%; /* 圖片跟按鈕一樣是圓的 */
   object-fit: cover; /* 填滿按鈕，不留白 */
 }
+/* --- 漢堡按鈕樣式 --- */
+.hamburger {
+  display: none; /* 預設隱藏 (桌機版不要顯示) */
+  font-size: 28px;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* 手機版 (768px 以下) */
+@media (max-width: 768px) {
+  .nav-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  /* 顯示漢堡 */
+  .hamburger {
+    display: block;
+    margin-left: auto;
+  }
+
+  /* 預設隱藏選單 */
+  nav ul {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 70px; /* header 高度之下 */
+    right: 20px;
+    background: #f8f8f8;
+    width: 200px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    padding: 10px 0;
+    z-index: 1000;
+  }
+
+  /* 點擊後展開 */
+  nav ul.active {
+    display: flex;
+  }
+
+  nav ul li {
+    margin: 10px 0;
+    text-align: center;
+  }
+}

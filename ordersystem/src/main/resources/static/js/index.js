@@ -6,6 +6,12 @@ createApp({
     const cartCount = ref(0); // 🔴 購物車紅點數量
     const cartItems = ref([]);
 
+    // 🔹 漢堡選單開關狀態
+    const menuOpen = ref(false);
+    const toggleMenu = () => {
+      menuOpen.value = !menuOpen.value;
+    };
+
     // 取得購物車內容
     function fetchCart() {
       axios
@@ -64,6 +70,15 @@ createApp({
         });
     }
 
-    return { products, addToCart, cartCount, fetchCart, cartItems, fetchCartCount };
+    return {
+      products,
+      addToCart,
+      cartCount,
+      fetchCart,
+      cartItems,
+      fetchCartCount,
+      menuOpen, 
+      toggleMenu
+    };
   },
 }).mount("#app");

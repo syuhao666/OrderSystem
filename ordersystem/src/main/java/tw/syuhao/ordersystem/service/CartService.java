@@ -145,10 +145,10 @@ public class CartService {
         }
 
         // 運送費
-        int deliveryFee = "DELIVERY".equalsIgnoreCase(request.getDeliveryMethod()) ? 100 : 0;
+        int deliveryFee = "DELIVERY".equalsIgnoreCase(request.getDeliveryMethod()) ? 600 : 0;
 
         // 樓層費
-        int floorFee = request.getFloor() > 1 ? (request.getFloor() - 1) * 50 : 0;
+        int floorFee = request.getFloor() > 1 ? (request.getFloor() - 1) * 500 : 0;
 
         // 總金額
         BigDecimal finalTotal = productTotal
