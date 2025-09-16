@@ -70,7 +70,8 @@ createApp({
         })
         .catch((error) => {
           console.error("加入購物車失敗", error);
-          alert("加入購物車失敗，請稍後再試。");
+          alert("加入購物車失敗，請先登入會員。");
+          window.location.href = "login";
         });
     };
 

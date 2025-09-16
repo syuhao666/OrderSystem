@@ -19,14 +19,14 @@ createApp({
     });
 
     const formData = reactive({
-      name: "hwgtwet",
+      name: "王小明",
       phone: "0987654321",
-      email: "fsdfsfsfd@gmail.com",
+      email: "ms0590341d@gmail.com",
       city: "",
       district: "",
       zip: "",
-      address: "rawsrar",
-      paymentMethod: "信用卡",
+      address: "公益路二段53號",
+      paymentMethod: "",
     });
 
     const fullAddress = computed(() => {
